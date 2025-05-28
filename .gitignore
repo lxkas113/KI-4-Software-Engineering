@@ -1,7 +1,9 @@
 ﻿/.idea
+/latex/src
 
 # Latex
 *.aux
 *.log
 *.tex
 *.gz
+*.out

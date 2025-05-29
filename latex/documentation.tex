@@ -1,0 +1,241 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\geometry{margin=2.5cm}
+
+\begin{document}
+
+\title{Projekt Software Engineering
+ Temperatureinstellung und Steuerung eines Backofens}
+\author{Lukas Kraft}
+\date{28. Mai 2025}
+
+\maketitle
+
+\newpage
+
+\section*{Einleitung}
+
+Dieses Dokument beschreibt die funktionalen und sicherheitsrelevanten Anforderungen an die Steuerung und Temperatureinstellung eines elektrischen Haushaltsbackofens. Ziel ist es, eine benutzerfreundliche, sichere und zuverlässige Ofensteuerung zu realisieren.
+
+\newpage
+
+\section{Annahmen}
+
+Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf denen das Design, die Funktion und die Umsetzung der Steuerung basieren:
+
+\begin{itemize}
+    \item Das System verfügt über ein Display, das folgende Informationen anzeigen kann:
+    \begin{itemize}
+        \item Aktuelle Temperatur im Garraum
+        \item Symbol für den Vorheizstatus
+        \item Aktuell ausgewählte Heizart
+        \item Uhrzeit bzw. Restlaufzeit eines Timers
+        \item Warnung bei automatischer Abschaltung des Heizvorgangs
+    \end{itemize}
+
+    \item Zur Bedienung stehen zwei physische Drehregler zur Verfügung:
+    \begin{itemize}
+        \item Ein Regler zur Auswahl der Betriebsart (Heizfunktion)
+        \item Ein Regler zur Einstellung der Temperatur
+    \end{itemize}
+
+    \item Der Backofen verfügt über drei separat ansteuerbare Heizaggregate:
+    \begin{itemize}
+        \item Oberer Heizkörper („Rohrhitzeaggregat“) mit einer Leistung von 3000\,W
+        \item Unterer Heizkörper mit einer Leistung von 1500\,W
+        \item Ringheizkörper an der Rückseite mit einer Leistung von 2000\,W
+    \end{itemize}
+
+    \item Ein Ventilator befindet sich an der Rückseite des Garraums und ist separat schaltbar (Ein/Aus).
+
+    \item Ein Türkontaktsensor ist verbaut, der den Zustand der Backofentür (offen/geschlossen) erkennt.
+
+    \item Ein Thermometer zur Messung der aktuellen Backofentemperatur ist vorhanden.
+
+    \item Alle Heizaggregate sind ausschließlich binär schaltbar (Ein/Aus).
+
+    \item Der Ventilator ist ebenfalls ausschließlich binär schaltbar (Ein/Aus).
+\end{itemize}
+
+\newpage
+
+\section{Requirements Engineering}
+
+\subsection{Funktionale Anforderungen}
+
+\begin{enumerate}[label=\textbf{2.1.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item Das System muss es dem Benutzer ermöglichen, die Temperatur über einen Drehregler einzustellen.
+    \item Das System muss Temperatureinstellungen in 1\,\textdegree{}C-Schritten zulassen.
+    \item Das System muss Temperatureinstellungen im Bereich von 50\,\textdegree{}C bis 300\,\textdegree{}C unterstützen.
+    \item Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
+    \item Folgende Betriebsmodi müssen wählbar sein:
+    \begin{itemize}
+        \item Ober-/Unterhitze
+        \item Oberhitze
+        \item Unterhitze
+        \item Grillfunktion
+        \item Umluft
+        \item Heißluft
+    \end{itemize}
+    \item Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
+    \begin{itemize}
+        \item Ober-/Unterhitze: Oberer und unterer Heizkörper
+        \item Oberhitze: Oberer Heizkörper
+        \item Unterhitze: Unterer Heizkörper
+        \item Grillfunktion: Oberer Heizkörper
+        \item Umluft: Oberer und unterer Heizkörper + Ventilator
+        \item Heißluft: Ringheizkörper hinten + Ventilator
+    \end{itemize}
+    \item Das System muss die Heizaggregate einzeln ansteuern können.
+    \item Das System muss die Temperaturregelung mit einer Abtastrate von 1\,Hz durchführen.
+    \item Das System muss alle Heizaggregate deaktivieren, wenn die aktuelle Temperatur gleich oder größer der Solltemperatur ist.
+    \item Das System muss die gemäß Betriebsart definierten Heizaggregate aktivieren, wenn die aktuelle Temperatur unterhalb der Solltemperatur liegt.
+    \item Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen umwandeln:
+    \begin{itemize}
+        \item Stufe 1: bis einschließlich 240\,\textdegree{}C
+        \item Stufe 2: bis einschließlich 260\,\textdegree{}C
+        \item Stufe 3: bis einschließlich 280\,\textdegree{}C
+        \item Stufe 4: bis einschließlich 300\,\textdegree{}C
+    \end{itemize}
+    \item Das System muss dem Benutzer folgende Informationen über ein Display anzeigen:
+    \begin{itemize}
+        \item Aktuelle Temperatur im Garraum
+        \item Aktuell gewählte Betriebsart
+        \item Vorheizstatus (z.\,B. Symbol, wenn Solltemperatur erreicht)
+        \item Restzeit eines eingestellten Timers
+        \item Warnung bei automatischer Abschaltung
+    \end{itemize}
+    \item Das System muss die Heizfunktion automatisch deaktivieren, wenn ein Timer abgelaufen ist.
+\end{enumerate}
+
+\subsection{Sicherheitsanforderungen}
+
+\begin{enumerate}[label=\textbf{2.2.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320\,\textdegree{}C überschreitet.
+    \item Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
+    \item Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn:
+    \begin{itemize}
+        \item die Temperatur innerhalb von 10 Sekunden (10 Abtastzyklen) um weniger als 1\,\textdegree{}C steigt und
+        \item gleichzeitig die Ist-Temperatur mehr als 10\,\% unter der Solltemperatur liegt.
+    \end{itemize}
+    In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
+\end{enumerate}
+
+\subsection{Nicht-funktionale Anforderungen}
+
+\begin{enumerate}[label=\textbf{2.3.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item Das System muss in der Lage sein, die Solltemperatur von 200\,\textdegree{}C innerhalb von maximal 10 Minuten zu erreichen.
+    \item Das Display muss Statusänderungen (z.\,B. Temperatur, Timer) innerhalb von 1 Sekunde anzeigen.
+    \item Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
+\end{enumerate}
+
+\newpage
+
+\section{Software Architektur}
+
+Im Folgenden werden alle Module des Systems beschrieben und deren jeweilige Funktionalität erläutert. Die strukturellen Abhängigkeiten zwischen den Modulen sind in Abbildung~\ref{fig:moduluebersicht} visuell dargestellt.
+
+\subsection*{Main}
+Das \texttt{Main}-Modul bildet den Einstiegspunkt des Programms. Es initialisiert das Gesamtsystem und erstellt eine Instanz des zentralen Steuerungsmoduls \texttt{OvenRunner}.
+
+\subsection*{OvenRunner}
+Der \texttt{OvenRunner} ist die zentrale Steuereinheit der Anwendung. Er übernimmt die Koordination aller funktionalen Module innerhalb einer kontinuierlich laufenden Hauptschleife. Zu seinen Aufgaben gehören:
+\begin{itemize}
+    \item Aufruf und Steuerung aller relevanten Module (z.\,B. \texttt{InputHandlerModule}, \texttt{ModeControlModule}, \texttt{OutputHandlerModule})
+    \item Initialisierung und Start des \texttt{SafetyModule} in einem separaten Thread
+    \item Start eines Timers nach Empfang eines entsprechenden Signals vom \texttt{InputHandlerModule}
+\end{itemize}
+Der genaue Ablauf dieser Kontrollschleife ist in Abbildung~\ref{fig:controllloop} dargestellt.
+
+\subsection*{SafetyModule}
+Das \texttt{SafetyModule} führt kontinuierlich Sicherheitsüberprüfungen durch (z.\,B. Temperaturüberschreitung, geöffnete Tür, Ausfall eines Heizaggregats). Es wird in einem eigenen Thread betrieben und läuft parallel zu den übrigen Modulen.
+
+\subsection*{InputHandlerModule}
+Dieses Modul erfasst und verarbeitet sämtliche Benutzereingaben. Es liest die Drehregler für Temperatur und Betriebsmodus aus und erkennt, ob ein Timerwert eingestellt wurde. Die daraus resultierenden Informationen werden an den \texttt{OvenRunner} zurückgemeldet.
+
+\subsection*{ModeControlModule}
+Das \texttt{ModeControlModule} interpretiert die übergebenen Eingabewerte und leitet basierend darauf die Steuerung der Heizaggregate ein. Die konkrete Aktivierung erfolgt über das \texttt{ThermalControlModule}.
+
+\subsection*{ThermalControlModule}
+Im \texttt{ThermalControlModule} ist die Logik zur Steuerung aller Heizaggregate und des Ventilators implementiert. Es bildet die Schnittstelle zur Hardware und übernimmt das gezielte Aktivieren oder Deaktivieren der Komponenten gemäß dem gewählten Betriebsmodus.
+
+\subsection*{OutputHandlerModule}
+Das \texttt{OutputHandlerModule} ist für die Darstellung aller relevanten Systeminformationen auf dem Display verantwortlich. Dazu zählen insbesondere:
+\begin{itemize}
+    \item Aktuelle Temperatur
+    \item Eingestellter Betriebsmodus
+    \item Status des Timers
+    \item Sicherheits- und Warnhinweise (z.\,B. automatische Abschaltung)
+\end{itemize}
+
+\subsection*{SensorModule}
+Das \texttt{SensorModule} stellt die Anbindung und Abfrage der physischen Sensoren des Backofens bereit. Es enthält unter anderem:
+\begin{itemize}
+    \item einen \texttt{TemperatureSensor}, der die aktuelle Temperatur im Garraum liefert
+    \item einen \texttt{DoorSensor}, der überprüft, ob die Backofentür geöffnet oder geschlossen ist
+\end{itemize}
+
+\subsection*{GlobalModels}
+Das \texttt{GlobalModels}-Modul kapselt zentrale Datenstrukturen, die zur systemweiten Kommunikation und Zustandshaltung verwendet werden. Dazu gehören unter anderem:
+\begin{itemize}
+    \item \texttt{InputValues}: Enthält Temperatur, Modus und Timerinformationen aus der Benutzereingabe
+    \item \texttt{CookingMode}: Definiert alle verfügbaren Betriebsmodi des Backofens (z.\,B. Grill, Umluft, Ober-/Unterhitze)
+    \item \texttt{OvenState}: Hält den aktuellen Zustand des Backofens (z.\,B. \texttt{Idle}, \texttt{Preheating}, \texttt{Active})
+\end{itemize}
+
+\subsection*{LoggingModule}
+Das \texttt{LoggingModule} verwaltet die zentrale Protokollierung aller sicherheitsrelevanten Ereignisse und Zustandsänderungen. Es wird von sämtlichen Modulen aufgerufen und speichert alle Einträge mit einem Zeitstempel. Üblicherweise ist dieses Modul als Singleton implementiert, um globalen Zugriff zu gewährleisten.
+
+\clearpage
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{src/software_architecture_modules.png}
+  \caption{Modulübersicht des Systems}
+  \label{fig:moduluebersicht}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{src/software_architecture_controll_loop.png}
+  \caption{Kontrollschleife des OvenRunners}
+  \label{fig:controllloop}
+\end{figure}
+
+\clearpage
+
+
+\section*{Quellen}
+
+\subsection*{Requirements Engineering}
+
+Die folgenden Onlinequellen wurden für die Erstellung der funktionalen und technischen Anforderungen herangezogen. Alle Links wurden zuletzt am \textbf{28.05.2025} auf ihren Inhalt überprüft (Zugriffsdatum).
+
+\begin{itemize}
+    \item \url{https://www.hea.de/fachwissen/herde-backoefen/elektroherde-aufbau-und-funktion}
+    \item \url{https://www.schoener-wohnen.de/service/umluft-oder-heissluft-beim-backofen-13488958.html}
+    \item \url{https://de.wikipedia.org/wiki/Backofen#Haushaltsback%C3%B6fen}
+\end{itemize}
+
+\newpage
+
+\section*{Nutzung von Künstlicher Intelligenz als Unterstützung}
+
+\subsection*{Requirements Engineering}
+
+Für die Umsetzung dieses Projektes wurde ChatGPT4o als Unterstützung verwendet. Die folgenden Punkte zeigen, wo in welcher Form KI zum Einzatz kam.
+
+\begin{itemize}
+    \item Beim Requirements Engineering wurde es zur Formulierung und Validierung eigener Ideen verwendet.
+    \item Beim der Software-Architektur wurde es zur Formulierung, Benennung von Modulen und Validierung eigener Ideen verwendet.
+\end{itemize}
+
+\end{document}

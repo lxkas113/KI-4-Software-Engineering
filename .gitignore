@@ -4,6 +4,5 @@
 # Latex
 *.aux
 *.log
-*.tex
 *.gz
 *.out

@@ -28,6 +28,5 @@ public class RearHeater : IThermalController, ITemperatureSource
 
     public bool IsActive() => _active;
 
-    public int GetTemperature() => _active ? 180 : 30;
     public int Temperature { get; set; }
 }

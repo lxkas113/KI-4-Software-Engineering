@@ -17,7 +17,7 @@ public class DefaultMode : IModeStrategy
         };
     }
     
-    public void Run(double targetTemperature)
+    public void Run(int targetTemperature)
     {
         Console.WriteLine($"[DefaultMode] Target temperature: {targetTemperature}°C");
 

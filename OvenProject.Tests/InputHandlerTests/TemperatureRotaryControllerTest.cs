@@ -5,6 +5,7 @@ namespace OvenProject.Tests.InputHandlerTests;
 
 public class TemperatureRotaryControllerTest
 {
+    // TC-3-1
     // Requirements tested: 2.1.1; 2.1.2; 2.1.3; 
     [Theory]
     [InlineData(0, 0)]

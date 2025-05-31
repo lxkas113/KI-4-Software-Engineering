@@ -2,7 +2,7 @@
 
 public class InputValues
 {
-    public double Temperature { get; set; }
+    public int Temperature { get; set; }
     public CookingMode Mode { get; set; }
     public TimeSpan Timer { get; set; }
 }

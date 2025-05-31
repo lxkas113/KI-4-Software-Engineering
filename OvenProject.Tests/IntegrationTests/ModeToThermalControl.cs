@@ -3,9 +3,9 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.ModeHandlerTest;
 
-public class DefaultModeTest
+public class ModeToThermalControl
 {
-    // Requirements tested: 2.1.6 (partially)
+    // TC-4-1
     [Fact]
     public void Run_TurnsOnVentilator()
     {
@@ -19,6 +19,7 @@ public class DefaultModeTest
         Assert.True(ventilator.IsActive());
     }
 
+    // TC-4-2
     // Requirements tested: 2.1.9; 2.1.10 
     [Theory]
     [InlineData(150, true)]

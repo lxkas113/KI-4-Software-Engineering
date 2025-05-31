@@ -4,6 +4,7 @@ namespace OvenProject.Tests.SensorTests;
 
 public class TemperatureSensorTest
 {
+    // TC-7-3
     [Fact]
     public void UpdateTemperature_SetsTemperatureToMaximumSource()
     {

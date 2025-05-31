@@ -4,7 +4,8 @@ namespace OvenProject.Tests.ThermalControlTests;
 
 public class VentilatorTest
 {
-    // Requirements tested: 2.1.10
+    // TC-5-7
+    
     [Fact]
     public void TurnOn_ShouldActivateVentilator()
     {
@@ -16,6 +17,7 @@ public class VentilatorTest
         Assert.True(fan.IsActive());
     }
 
+    // TC-5-8
     [Fact]
     public void TurnOff_ShouldDeactivateVentilator()
     {

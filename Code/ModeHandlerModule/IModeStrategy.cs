@@ -4,5 +4,5 @@ namespace OvenProject.ModeHandlerModule;
 
 public interface IModeStrategy
 {
-    void Run(double targetTemperature);
+    void Run(int targetTemperature);
 }

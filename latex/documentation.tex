@@ -8,6 +8,11 @@
 \usepackage{geometry}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{float}
+
+
 
 \geometry{margin=2.5cm}
 
@@ -74,12 +79,12 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
 
 \subsection{Funktionale Anforderungen}
 
-\begin{enumerate}[label=\textbf{2.1.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
-    \item Das System muss es dem Benutzer ermöglichen, die Temperatur über einen Drehregler einzustellen.
-    \item Das System muss Temperatureinstellungen in 1\,\textdegree{}C-Schritten zulassen.
-    \item Das System muss Temperatureinstellungen im Bereich von 50\,\textdegree{}C bis 300\,\textdegree{}C unterstützen.
-    \item Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
-    \item Folgende Betriebsmodi müssen wählbar sein:
+\begin{enumerate}[label=\textbf{R-1.\arabic*}, ref=R-1.\arabic*, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item \label{req:1.1} Das System muss es dem Benutzer ermöglichen, die Temperatur über einen Drehregler einzustellen.
+    \item \label{req:1.2} Das System muss Temperatureinstellungen in 1\,\textdegree{}C-Schritten zulassen.
+    \item \label{req:1.3} Das System muss Temperatureinstellungen im Bereich von 50\,\textdegree{}C bis 300\,\textdegree{}C unterstützen.
+    \item \label{req:1.4} Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
+    \item \label{req:1.5} Folgende Betriebsmodi müssen wählbar sein:
     \begin{itemize}
         \item Ober-/Unterhitze
         \item Oberhitze
@@ -88,7 +93,7 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
         \item Umluft
         \item Heißluft
     \end{itemize}
-    \item Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
+    \item \label{req:1.6} Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
     \begin{itemize}
         \item Ober-/Unterhitze: Oberer und unterer Heizkörper
         \item Oberhitze: Oberer Heizkörper
@@ -97,46 +102,46 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
         \item Umluft: Oberer und unterer Heizkörper + Ventilator
         \item Heißluft: Ringheizkörper hinten + Ventilator
     \end{itemize}
-    \item Das System muss die Heizaggregate einzeln ansteuern können.
-    \item Das System muss die Temperaturregelung mit einer Abtastrate von 1\,Hz durchführen.
-    \item Das System muss alle Heizaggregate deaktivieren, wenn die aktuelle Temperatur gleich oder größer der Solltemperatur ist.
-    \item Das System muss die gemäß Betriebsart definierten Heizaggregate aktivieren, wenn die aktuelle Temperatur unterhalb der Solltemperatur liegt.
-    \item Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen umwandeln:
+    \item \label{req:1.7} Das System muss die Heizaggregate einzeln ansteuern können.
+    \item \label{req:1.8} Das System muss die Temperaturregelung mit einer Abtastrate von 1\,Hz durchführen.
+    \item \label{req:1.9} Das System muss alle Heizaggregate deaktivieren, wenn die aktuelle Temperatur gleich oder größer der Solltemperatur ist.
+    \item \label{req:1.10} Das System muss die gemäß Betriebsart definierten Heizaggregate aktivieren, wenn die aktuelle Temperatur unterhalb der Solltemperatur liegt.
+    \item \label{req:1.11} Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen umwandeln:
     \begin{itemize}
         \item Stufe 1: bis einschließlich 240\,\textdegree{}C
         \item Stufe 2: bis einschließlich 260\,\textdegree{}C
         \item Stufe 3: bis einschließlich 280\,\textdegree{}C
         \item Stufe 4: bis einschließlich 300\,\textdegree{}C
     \end{itemize}
-    \item Das System muss dem Benutzer folgende Informationen über ein Display anzeigen:
+    \item \label{req:1.12} Das System muss dem Benutzer folgende Informationen über ein Display anzeigen:
     \begin{itemize}
         \item Aktuelle Temperatur im Garraum
         \item Vorheizstatus (z.\,B. Symbol, wenn Solltemperatur erreicht)
         \item Restzeit eines eingestellten Timers
         \item Warnung bei automatischer Abschaltung
     \end{itemize}
-    \item Das System muss die Heizfunktion automatisch deaktivieren, wenn ein Timer abgelaufen ist.
+    \item \label{req:1.13} Das System muss die Heizfunktion automatisch deaktivieren, wenn ein Timer abgelaufen ist.
 \end{enumerate}
 
 \subsection{Sicherheitsanforderungen}
 
-\begin{enumerate}[label=\textbf{2.2.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
-    \item Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320\,\textdegree{}C überschreitet.
-    \item Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
-    \item Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn:
+\begin{enumerate}[label=\textbf{R-2.\arabic*}, ref=R-2.\arabic*, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item \label{req:2.1} Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320\,\textdegree{}C überschreitet.
+    \item \label{req:2.2} Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
+    \item \label{req:2.3} Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn:
     \begin{itemize}
         \item die Temperatur innerhalb von 10 Sekunden (10 Abtastzyklen) um weniger als 1\,\textdegree{}C steigt und
         \item gleichzeitig die Ist-Temperatur mehr als 10\,\% unter der Solltemperatur liegt.
-    \end{itemize}
+   \end{itemize}
     In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
 \end{enumerate}
 
 \subsection{Nicht-funktionale Anforderungen}
 
-\begin{enumerate}[label=\textbf{2.3.\arabic*}, itemsep=0pt, topsep=0pt, font=\bfseries]
-    \item Das System muss in der Lage sein, die Solltemperatur von 200\,\textdegree{}C innerhalb von maximal 10 Minuten zu erreichen.
-    \item Das Display muss Statusänderungen (z.\,B. Temperatur, Timer) innerhalb von 1 Sekunde anzeigen.
-    \item Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
+\begin{enumerate}[label=\textbf{R-3.\arabic*}, ref=R-3.\arabic*, itemsep=0pt, topsep=0pt, font=\bfseries]
+    \item \label{req:3.1} Das System muss in der Lage sein, die Solltemperatur von 200\,\textdegree{}C innerhalb von maximal 10 Minuten zu erreichen.
+    \item \label{req:3.2} Das Display muss Statusänderungen (z.\,B. Temperatur, Timer) innerhalb von 1 Sekunde anzeigen.
+    \item \label{req:3.3} Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
 \end{enumerate}
 
 \newpage
@@ -463,9 +468,74 @@ Die finale Iteration wird sich der Umsetzung des \texttt{SafetyModule} widmen. D
 
 \newpage
 
-\section*{Quellen}
+\section{Iteration 1 – Grundfunktionen}
+\label{sec:iteration1}
 
-\subsection*{Requirements Engineering}
+\subsection{Zeitraum}
+29.05.2025 – 30.05.2025
+
+\subsection{Ziele der Iteration}
+Ziel dieser Iteration war die Implementierung einer grundlegenden Temperaturregelung. Die Temperatur sollte über einen simulierten Drehregler einstellbar sein. Entsprechend dem gewählten Wert sollten alle relevanten Heizaggregate sowie der Ventilator automatisch aktiviert werden. Das System sollte die Zieltemperatur erreichen und anschließend stabil halten. Komplexe Zustandsverwaltung oder alternative Steuerstrategien wurden in dieser Phase noch nicht berücksichtigt.
+
+Folgende Anforderungen wurden in dieser Iteration umgesetzt:
+
+\begin{itemize}
+    \item \label{req:1.1} \textbf{R-\ref{req:1.1}}: Temperatureinstellung über Drehregler
+    \item \label{req:1.2} \textbf{R-\ref{req:1.2}}: Temperatureinstellung in 1 °C-Schritten
+    \item \label{req:1.3} \textbf{R-\ref{req:1.3}}: Temperaturbereich von 50 °C bis 300 °C
+    \item \label{req:1.7} \textbf{R-\ref{req:1.7}}: Einzelansteuerung der Heizaggregate
+    \item \label{req:1.8} \textbf{R-\ref{req:1.8}}: Temperaturregelung mit 1 Hz Abtastrate
+    \item \label{req:1.9} \textbf{R-\ref{req:1.9}}: Abschalten der Heizaggregate bei erreichter Zieltemperatur
+    \item \label{req:1.10} \textbf{R-\ref{req:1.10}}: Aktivierung der Heizaggregate unterhalb der Zieltemperatur
+    \item \label{req:1.12} \textbf{R-\ref{req:1.12}}: Anzeige von Temperatur, Vorheizstatus, Timer und Warnungen auf dem Display
+    \item \label{req:3.1} \textbf{R-\ref{req:3.1}}: Erreichen von 200 °C innerhalb von 10 Minuten
+\end{itemize}
+
+\subsection{Modultests}
+
+\begin{tabular}{|l|p{5cm}|l|l|l|}
+\hline
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\hline
+R-\ref{req:1.1} & Temperatureinstellung über einen Drehregler & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\hline
+R-\ref{req:1.2} & Temperatureinstellungen in 1 °C-Schritten & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\hline
+R-\ref{req:1.3} & Temperaturbereich von 50 °C bis 300 °C & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\hline
+R-\ref{req:1.7} & Einzelansteuerung der Heizaggregate & IModeStrategy.Run(int targetTemperature) & TC-5-1 & OK \\
+\hline
+R-\ref{req:1.8} & Temperaturregelung mit 1 Hz Abtastrate & OvenController.Run() & TC-0-1 & OK \\
+\hline
+R-\ref{req:1.9} & Abschalten der Heizaggregate bei Zieltemperatur & IModeStrategy.Run(int targetTemperature) & TC-4-2, TC-5-1 & OK \\
+\hline
+R-\ref{req:1.10} & Aktivierung der Heizaggregate unterhalb der Zieltemperatur & IModeStrategy.Run(int targetTemperature) & TC-4-2, TC-5-1 & OK \\
+\hline
+R-\ref{req:1.12} & Anzeige von Temperatur, Status, Timer und Warnungen & DisplayDummy.Update(OutputValues) & TC-6-1 & OK \\
+\hline
+R-\ref{req:3.1} & Erreichen von 200 °C in 10 Minuten & OvenController.Run() & TC-0-2 & OK \\
+\hline
+\end{tabular}
+
+\subsection{Abweichungen vom Feinentwurf}
+
+\begin{itemize}
+    \item \texttt{BaseRotaryController}: Methode \texttt{GetModuloAngle()} hinzugefügt, um das Durchdrehen zu ermöglichen
+    \item \texttt{BaseRotaryController}: neue Eigenschaft \texttt{Angle}, um Vererbung zu erleichtern
+    \item \texttt{TemperatureRotaryController}: neue Parameter \texttt{min} und \texttt{max} zur Begrenzung der Temperatur
+    \item \texttt{Main} wurde in \texttt{Program} umbenannt (C\#-Konvention)
+    \item \texttt{ModeControl} wurde in \texttt{ModeController} umbenannt
+    \item \texttt{Modes} enthalten jetzt eine Liste von \texttt{ThermalController} zur gezielten Steuerung
+    \item \texttt{DisplayDummy}: neue Methode zur Anzeige von Werten auf der Konsole
+    \item \texttt{OvenController}: neue Referenz auf \texttt{InputHandler}
+    \item \texttt{OvenController}: Methode \texttt{GetTemperature()} zur Abfrage des Sensors
+    \item \texttt{OvenController}: neue Methode \texttt{Loop()} für zyklisches \texttt{Run()}
+    \item \texttt{DoorSensor}: neue Variable für Türstatus und Methode \texttt{SetDoorState()}
+    \item \texttt{TemperatureSensor}: neue Variable für Temperaturwert und Methode \texttt{UpdateTemperature()}
+    \item \texttt{FanController}: Methode \texttt{GetTemperature()} entfernt
+\end{itemize}
+
+\section*{Quellen}
 
 Die folgenden Onlinequellen wurden für die Erstellung der funktionalen und technischen Anforderungen herangezogen. Alle Links wurden zuletzt am \textbf{28.05.2025} auf ihren Inhalt überprüft (Zugriffsdatum).
 

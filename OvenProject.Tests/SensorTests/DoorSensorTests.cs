@@ -4,6 +4,7 @@ namespace OvenProject.Tests.SensorTests;
 
 public class DoorSensorTests
 {
+    // TC-7-1
     [Fact]
     public void DefaultState_ShouldBeClosed()
     {
@@ -14,6 +15,7 @@ public class DoorSensorTests
         Assert.True(result);
     }
     
+    // TC-7-2
     [Theory]
     [InlineData(true)]
     [InlineData(false)]

@@ -1,18 +1,14 @@
-﻿using OvenProject.GlobalModels;
-using OvenProject.ModeHandlerModule;
-using OvenProject.OutputHandlerModule;
-using OvenProject.OvenControllerModule;
+﻿using OvenProject.OvenControllerModule;
 
 namespace OvenProject.Tests.OvenControllerTests;
 
-public class ActiveStateTest
+public class PreheatStateTest
 {
-    // TC-2-1
     [Fact]
     public void Run_ActiveState_ShouldProduceOutputAndIncreaseTemperature()
     {
         var controller = new OvenController();
-        controller.SetState(new ActiveState());
+        controller.SetState(new PreHeatingState());
         int initialTemp = controller.GetTemperature();
 
         controller.Run();

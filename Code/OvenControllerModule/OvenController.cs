@@ -30,12 +30,7 @@ public class OvenController
 
     public void Run()
     {
-        _currentState.Run(this);
-    }
-
-    public virtual InputValues GetInput()
-    {
-        return _inputHandler.ReadInputs();
+        _currentState.Run(this, _inputHandler.ReadInputs());
     }
 
     public virtual ModeControllerProxy GetModeController()
@@ -61,4 +56,20 @@ public class OvenController
         }
         
     }
+    
+    #if DEBUG
+    public IState GetCurrentState() => _currentState;
+    #endif
+    
+    #if DEBUG
+    public InputValues GetInput() => _inputHandler.ReadInputs();
+    #endif
+    
+    #if DEBUG
+    public void SetModeController(ModeControllerProxy modeController) => _modeController = modeController;
+    #endif
+    
+#if DEBUG
+    public void SetDisplay(DisplayDummyProxy display) => _display = display;
+#endif
 }

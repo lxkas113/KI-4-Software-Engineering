@@ -9,7 +9,7 @@ public class DisplayDummyProxy
     private readonly DisplayDummy _displayDummy = new DisplayDummy();
     private readonly Logger _logger = LoggingHandler.Instance.GetLoggerForModule("Display");
 
-    public void Update(OutputValues outputValues)
+    public virtual void Update(OutputValues outputValues)
     {
         _logger.Info($"""
                       Display update:

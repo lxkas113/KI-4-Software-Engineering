@@ -2,9 +2,8 @@
 
 namespace OvenProject.OvenControllerModule;
 
-public class ActiveState : IState
+public class IdleState : IState
 {
-    private bool _timerStarted = false;
     private InputValues _input;
     
     public void Run(OvenController context, InputValues input)
@@ -12,9 +11,9 @@ public class ActiveState : IState
         _input = input;
         CheckStateTransition(context);
         
-        context.GetModeController().Run(_input);
+        context.GetModeController().Run(input);
         var output = new OutputValues(
-            context.GetTemperature(),
+            0,
             false,
             new TimeSpan(0),
             false
@@ -24,9 +23,9 @@ public class ActiveState : IState
 
     public void CheckStateTransition(OvenController context)
     {
-        if (_input.Temperature == 0)
+        if (_input.Temperature > 0)
         {
-            context.SetState(new IdleState());
+            context.SetState(new PreHeatingState());
         }
     }
 }

@@ -17,8 +17,10 @@ public class DefaultMode : IModeStrategy
         };
     }
     
-    public void Run(int targetTemperature)
+    public bool Run(int targetTemperature)
     {
+        bool stillPreheating = true;
+
         foreach (var controller in _thermalControllers)
         {
             // Ventilator immer einschalten
@@ -40,8 +42,11 @@ public class DefaultMode : IModeStrategy
                 else
                 {
                     controller.TurnOff();
+                    stillPreheating = false; // eine Quelle ist schon heiß genug
                 }
             }
         }
+
+        return stillPreheating;
     }
 }

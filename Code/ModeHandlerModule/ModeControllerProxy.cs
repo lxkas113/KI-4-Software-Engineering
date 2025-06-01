@@ -9,9 +9,9 @@ public class ModeControllerProxy
     private readonly ModeController _controller = new ModeController();
     private readonly Logger _logger = LoggingHandler.Instance.GetLoggerForModule("ModeController");
 
-    public void Run(InputValues input)
+    public bool Run(InputValues input)
     {
         _logger.Info($"{input.Mode} toggles to {input.Temperature}");
-        _controller.Run(input);
+        return _controller.Run(input);
     }
 }

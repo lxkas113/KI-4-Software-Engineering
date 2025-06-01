@@ -2,12 +2,12 @@
 
 public class OutputValues
 {
-    public double Temperature { get; set; }
+    public int Temperature { get; set; }
     public bool PreheatStatus { get; set; }
     public TimeSpan Timer { get; set; }
     public bool Warning { get; set; }
     
-    public OutputValues(double temperature, bool preheatStatus, TimeSpan timer, bool warning)
+    public OutputValues(int temperature, bool preheatStatus, TimeSpan timer, bool warning)
     {
         Temperature = temperature;
         PreheatStatus = preheatStatus;

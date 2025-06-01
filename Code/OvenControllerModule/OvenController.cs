@@ -10,17 +10,17 @@ public class OvenController
 {
     private IState _currentState;
     private TemperatureSensor _tempSensor;
-    private ModeController _modeController;
-    private InputHandler _inputHandler;
-    private DisplayDummy _display;
+    private ModeControllerProxy _modeController;
+    private InputHandlerProxy _inputHandler;
+    private DisplayDummyProxy _display;
 
     public OvenController()
     {
-        _inputHandler = new InputHandler();
-        _modeController = new ModeController();
+        _inputHandler = new InputHandlerProxy();
+        _modeController = new ModeControllerProxy();
         _currentState = new ActiveState();
         _tempSensor = new TemperatureSensor();
-        _display = new DisplayDummy();
+        _display = new DisplayDummyProxy();
     }
 
     public void SetState(IState newState)
@@ -38,7 +38,7 @@ public class OvenController
         return _inputHandler.ReadInputs();
     }
 
-    public virtual ModeController GetModeController()
+    public virtual ModeControllerProxy GetModeController()
     {
         return _modeController;
     }
@@ -48,7 +48,7 @@ public class OvenController
         return _tempSensor.GetValue();
     }
 
-    public virtual DisplayDummy GetDisplay()
+    public virtual DisplayDummyProxy GetDisplay()
     {
         return _display;
     }
@@ -58,7 +58,6 @@ public class OvenController
         for (int i = 0; i < 210; i++)
         {
             Run();
-            _tempSensor.UpdateTemperature();
         }
         
     }

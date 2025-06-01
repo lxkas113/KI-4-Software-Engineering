@@ -1,7 +1,7 @@
 ﻿using OvenProject.ModeHandlerModule;
 using OvenProject.ThermalControllerModule;
 
-namespace OvenProject.Tests.ModeHandlerTest;
+namespace OvenProject.Tests.IntegrationTests;
 
 public class ModeToThermalControl
 {

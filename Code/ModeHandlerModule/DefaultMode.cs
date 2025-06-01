@@ -19,15 +19,12 @@ public class DefaultMode : IModeStrategy
     
     public void Run(int targetTemperature)
     {
-        Console.WriteLine($"[DefaultMode] Target temperature: {targetTemperature}°C");
-
         foreach (var controller in _thermalControllers)
         {
             // Ventilator immer einschalten
             if (controller is Ventilator)
             {
                 controller.TurnOn();
-                Console.WriteLine($"→ {controller.GetType().Name} turned ON (always)");
                 continue;
             }
 
@@ -39,12 +36,10 @@ public class DefaultMode : IModeStrategy
                 if (currentTemp < targetTemperature)
                 {
                     controller.TurnOn();
-                    Console.WriteLine($"→ {controller.GetType().Name} turned ON (temp: {currentTemp}°C)");
                 }
                 else
                 {
                     controller.TurnOff();
-                    Console.WriteLine($"→ {controller.GetType().Name} turned OFF (temp: {currentTemp}°C)");
                 }
             }
         }

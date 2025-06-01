@@ -491,7 +491,7 @@ Folgende Anforderungen wurden in dieser Iteration umgesetzt:
     \item \label{req:3.1} \textbf{R-\ref{req:3.1}}: Erreichen von 200 °C innerhalb von 10 Minuten
 \end{itemize}
 
-\subsection{Modultests}
+\subsection{Tracability}
 
 \begin{tabular}{|l|p{5cm}|l|l|l|}
 \hline
@@ -534,6 +534,44 @@ R-\ref{req:3.1} & Erreichen von 200 °C in 10 Minuten & OvenController.Run() & T
     \item \texttt{TemperatureSensor}: neue Variable für Temperaturwert und Methode \texttt{UpdateTemperature()}
     \item \texttt{FanController}: Methode \texttt{GetTemperature()} entfernt
 \end{itemize}
+
+\newpage
+
+\section{Iteration 2 – Logging}
+\label{sec:iteration2}
+
+\subsection{Zeitraum}
+01.06.2025 – 01.06.2025
+
+\subsection{Ziele der Iteration}
+Ziel dieser Iteration war die Entwicklung und Integration einer grundlegenden Logging-Struktur zur Protokollierung von Systemverhalten und potenziellen Fehlern. Die Funktionalität wurde exemplarisch in bestehenden Komponenten eingebaut, sodass sie bereits zur Laufzeit relevante Informationen ausgeben können. Zudem wurden die Voraussetzungen geschaffen, um zukünftige Module ohne zusätzlichen Implementierungsaufwand in das Logging-System einzubinden.
+
+Folgende Anforderung wurde in dieser Iteration (teilweise) umgesetzt:
+
+\begin{itemize}
+    \item \textbf{\ref{req:3.3}}: Logging von Informationen und Fehlern (teilweise umgesetzt; derzeit beschränkt auf bereits entwickelte Funktionalitäten)
+\end{itemize}
+
+\subsection{Tracability}
+
+\begin{tabular}{|l|p{5cm}|l|l|l|}
+\hline
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\hline
+\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\hline
+\end{tabular}
+
+Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+
+\subsection{Abweichungen vom Feinentwurf}
+
+\begin{itemize}
+    \item Zusätzlich zum ursprünglichen Entwurf wurde für die Display-Komponente eine Proxy-Klasse eingeführt, um gezielt Logging-Funktionalitäten zu integrieren.
+    \item Der \texttt{TemperatureRotaryController} wurde um eine dedizierte Testmethode erweitert, mit der der Winkelwert direkt aus Testfällen heraus gesetzt werden kann. Diese Methode ist mit einem \texttt{\#if DEBUG}-Block versehen und wird im Release-Build ausgeschlossen.
+\end{itemize}
+
+\newpage
 
 \section*{Quellen}
 

@@ -2,7 +2,7 @@
 
 public abstract class BaseRotaryController<T> : IRotaryController<T>
 {
-    public int Angle { get; set; } = 200;
+    public int Angle { get; set; } = 0;
 
     protected int GetModuloAngle()
     {

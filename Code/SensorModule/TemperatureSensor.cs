@@ -14,6 +14,7 @@ namespace OvenProject.SensorModule
 
         public int GetValue()
         {
+            UpdateTemperature();
             return _temperature;
         }
 
@@ -29,7 +30,7 @@ namespace OvenProject.SensorModule
                 }
             }
             _temperature = maxTemp;
-            Console.WriteLine($"Temperature updated to -> {_temperature}");
+            Console.WriteLine("Max temperature: " + maxTemp);
         }
     }
 }

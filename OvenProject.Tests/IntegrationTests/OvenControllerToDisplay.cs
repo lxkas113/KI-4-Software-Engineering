@@ -10,6 +10,7 @@ public class OvenControllerToDisplay
     public void OvenController_Run_UpdatesDisplayCorrectly()
     {
         var oven = new OvenController();
+        GlobalHelper.SetTargetTemperature(oven, 200);
 
         TopHeater.GetInstance().Temperature = 180;
         RearHeater.GetInstance().Temperature = 160;
@@ -20,10 +21,10 @@ public class OvenControllerToDisplay
         var tempSensor = tempSensorField.GetValue(oven)!;
         var updateMethod = tempSensor.GetType().GetMethod("UpdateTemperature")!;
         updateMethod.Invoke(tempSensor, null);
-
+            
         oven.Run();
 
-        var display = oven.GetDisplay();
+        var display = oven.GetDisplay().GetDisplayDummy();
         Assert.Equal(180, display.Temperature);
         Assert.False(display.PreheatStatus);
         Assert.Equal(TimeSpan.Zero, display.Timer);

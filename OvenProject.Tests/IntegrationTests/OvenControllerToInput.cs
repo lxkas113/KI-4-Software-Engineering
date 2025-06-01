@@ -13,26 +13,24 @@ public class OvenControllerToInput
     [InlineData(270, 300)]
     public void GetInput_ShouldReturnTemperatureFromRotaryController(int angle, int expectedTemperature)
     {
-        // Arrange
         var oven = new OvenController();
 
-        // Zugriff auf InputHandler
-        var inputHandlerField = typeof(OvenController)
-            .GetField("_inputHandler", BindingFlags.NonPublic | BindingFlags.Instance);
-        var inputHandler = (InputHandler)inputHandlerField!.GetValue(oven)!;
+        var inputHandlerProxyField = typeof(OvenController)
+            .GetField("_inputHandler", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        var inputHandlerProxy = inputHandlerProxyField.GetValue(oven)!;
 
-        // Zugriff auf TemperatureRotaryController
-        var tempControllerField = typeof(InputHandler)
-            .GetField("_tempController", BindingFlags.NonPublic | BindingFlags.Instance);
-        var tempController = (BaseRotaryController<int>)tempControllerField!.GetValue(inputHandler)!;
+        var inputHandlerField = inputHandlerProxy.GetType()
+            .GetField("_inputHandler", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        var inputHandler = inputHandlerField.GetValue(inputHandlerProxy)!;
 
-        // Simuliere Drehwinkel
-        tempController.Angle = angle;
+        var tempControllerField = inputHandler.GetType()
+            .GetField("_tempController", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        var tempController = (TemperatureRotaryController)tempControllerField.GetValue(inputHandler)!;
 
-        // Act
+        tempController.SetTestAngle(angle);
+
         var input = oven.GetInput();
 
-        // Assert
         Assert.Equal(expectedTemperature, input.Temperature);
     }
 }

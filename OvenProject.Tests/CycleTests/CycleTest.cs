@@ -1,7 +1,7 @@
 ﻿using OvenProject.OvenControllerModule;
 using Xunit.Abstractions;
 
-namespace OvenProject.Tests;
+namespace OvenProject.Tests.CycleTests;
 
 public class CycleTest
 {

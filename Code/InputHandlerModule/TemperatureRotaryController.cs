@@ -13,4 +13,11 @@ public class TemperatureRotaryController : BaseRotaryController<int>
         if (temperature > MaxTemperature) return MaxTemperature;
         return temperature;
     }
+    
+    #if DEBUG
+    public void SetTestAngle(int angle)
+    {
+        Angle = angle;
+    }
+    #endif
 }

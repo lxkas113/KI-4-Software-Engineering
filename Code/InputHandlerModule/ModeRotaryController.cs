@@ -6,17 +6,16 @@ public class ModeRotaryController : BaseRotaryController<CookingMode>
 {
     public override CookingMode ReadInput()
     {
-        int step = GetModuloAngle() / 50;
-        return step switch
+        return GetModuloAngle() switch
         {
-            0 => CookingMode.Idle,
-            1 => CookingMode.TopBottomHeat,
-            2 => CookingMode.TopHeat,
-            3 => CookingMode.BottomHeat,
-            4 => CookingMode.Grill,
-            5 => CookingMode.CirculatingAir,
-            6 => CookingMode.HotAir,
-            _ => CookingMode.Idle
+            0   => CookingMode.Idle,
+            50  => CookingMode.TopBottomHeat,
+            100 => CookingMode.TopHeat,
+            150 => CookingMode.BottomHeat,
+            200 => CookingMode.Grill,
+            250 => CookingMode.CirculatingAir,
+            300 => CookingMode.HotAir,
+            _   => CookingMode.Idle
         };
     }
     

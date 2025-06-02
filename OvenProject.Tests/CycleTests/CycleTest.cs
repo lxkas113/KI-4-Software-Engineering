@@ -13,7 +13,7 @@ public class CycleTest
     }
 
     // TC-0-1
-    // Requirements tested: 2.1.8
+    // Requirements tested: R-1.8
     [Fact]
     public void Run_ShouldCompleteInUnderOneSecond()
     {
@@ -27,7 +27,7 @@ public class CycleTest
     }
     
     // TC-0-2
-    // Requirements tested: 2.3.1
+    // Requirements tested: R-3.1
     [Fact]
     public void ShouldReach200CelsiusWithin10Minutes()
     {

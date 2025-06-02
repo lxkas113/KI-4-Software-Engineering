@@ -6,7 +6,7 @@ namespace OvenProject.Tests.DisplayTest;
 public class DisplayTest
 {
     // TC-6-1
-    // Requirements tested: 2.1.12
+    // Requirements tested: R-1.12
     [Fact]
     public void Update_ShouldSetAllPropertiesCorrectly()
     {

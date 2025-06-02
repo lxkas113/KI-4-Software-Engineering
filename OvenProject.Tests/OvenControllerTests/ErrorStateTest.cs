@@ -6,6 +6,7 @@ namespace OvenProject.Tests.OvenControllerTests;
 
 public class ErrorStateTest
 {
+    // TC-2-2
     public class FakeDisplay : DisplayDummyProxy
     {
         public OutputValues? LastOutput { get; private set; }
@@ -16,6 +17,7 @@ public class ErrorStateTest
         }
     }
     
+    // TC-2-3
     [Fact]
     public void ErrorState_ShouldSetWarningTrueInDisplay()
     {

@@ -5,6 +5,8 @@ namespace OvenProject.Tests.ModeControllerTests;
 
 public class GrillModeTest
 {
+    // TC-4-3
+    // Requirements tested: R-1.6 
     [Fact]
     public void BottomHeatMode_ShouldIncreaseBottomHeaterTemperatureByOne()
     {
@@ -28,6 +30,8 @@ public class GrillModeTest
         Assert.False(ventilator.IsActive());
     }
     
+    // TC-4-4
+    // Requirements tested: R-1.11
     [Theory]
     [InlineData(100, 0)]
     [InlineData(239, 0)]

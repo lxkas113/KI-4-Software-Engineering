@@ -6,6 +6,7 @@ namespace OvenProject.Tests;
 
 public class GlobalHelper
 {
+    // TC-0-3
     public static void SetTargetTemperature(OvenController oven, int targetTemp)
     {
         int angle = (targetTemp * 270) / 300;
@@ -32,6 +33,7 @@ public class GlobalHelper
         angleProperty.SetValue(tempController, angle);
     }
     
+    // TC-0-4
     public static TemperatureRotaryController GetTemperatureController(OvenController oven)
     {
         var inputHandlerProxyField = typeof(OvenController).GetField("_inputHandler", BindingFlags.NonPublic | BindingFlags.Instance)!;

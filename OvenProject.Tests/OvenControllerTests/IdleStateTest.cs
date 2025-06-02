@@ -4,6 +4,7 @@ namespace OvenProject.Tests.OvenControllerTests;
 
 public class IdleStateTest
 {
+    // TC-2-4
     [Fact]
     public void Run_ActiveState_ShouldProduceOutputAndIncreaseTemperature()
     {

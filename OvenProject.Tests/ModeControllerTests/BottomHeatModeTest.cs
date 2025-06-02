@@ -5,6 +5,8 @@ namespace OvenProject.Tests.ModeControllerTests;
 
 public class BottomHeatModeTest
 {
+    // TC-4-1
+    // Requirements tested: R-1.6 
     [Fact]
     public void BottomHeatMode_ShouldIncreaseBottomHeaterTemperatureByOne()
     {

@@ -8,6 +8,7 @@ namespace OvenProject.Tests.OvenControllerTests;
 
 public class TransitionTests
 {
+    // TC-2-6
     [Fact]
     public void IdleState_ShouldTransitionToPreHeating_WhenTemperatureAboveZero()
     {
@@ -28,6 +29,7 @@ public class TransitionTests
         Assert.IsType<PreHeatingState>(newState);
     }
 
+    // TC-2-7
     [Fact]
     public void PreHeatingState_ShouldTransitionToIdle_WhenTemperatureIsZero()
     {
@@ -47,7 +49,8 @@ public class TransitionTests
         var newState = proxy.GetState();
         Assert.IsType<IdleState>(newState);
     }
-
+    
+    // TC-2-8
     [Fact]
     public void ActiveState_TransitionsToIdle_WhenTemperatureZero()
     {
@@ -67,7 +70,8 @@ public class TransitionTests
         var newState = proxy.GetState();
         Assert.IsType<IdleState>(newState);
     }
-
+    
+    // TC-2-9
     [Fact]
     public void PreHeatingState_TransitionsToActive_WhenPreheatingDone()
     {
@@ -95,5 +99,4 @@ public class TransitionTests
         var innerState = newProxy.GetState();
         Assert.IsType<ActiveState>(innerState);
     }
-
 }

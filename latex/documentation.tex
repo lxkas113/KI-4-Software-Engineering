@@ -4,15 +4,13 @@
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
 \usepackage{lmodern}
-\usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{float}
-
-
+\usepackage{hyperref}
 
 \geometry{margin=2.5cm}
 
@@ -52,7 +50,7 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
     \item Zur Bedienung stehen zwei physische Drehregler zur Verfügung:
     \begin{itemize}
         \item Ein Regler zur Auswahl der Betriebsart (Heizfunktion)
-        \item Ein Regler zur Einstellung der Temperatur
+        \item Ein Regler zur Einstellung der Temperatur. Dieser hat eine Einrastfunktion, dass man nicht zwischen zwei Modi sein kann.
     \end{itemize}
 
     \item Der Backofen verfügt über drei separat ansteuerbare Heizaggregate:
@@ -120,6 +118,7 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
         \item Restzeit eines eingestellten Timers
         \item Warnung bei automatischer Abschaltung
     \end{itemize}
+    \item \label{req:1.13} Das System muss die Heizfunktion automatisch deaktivieren, wenn ein Timer abgelaufen ist. -> macht gar kein sinn weil drehregler
 \end{enumerate}
 
 \subsection{Sicherheitsanforderungen}
@@ -568,6 +567,65 @@ Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde 
 \begin{itemize}
     \item Zusätzlich zum ursprünglichen Entwurf wurde für die Display-Komponente eine Proxy-Klasse eingeführt, um gezielt Logging-Funktionalitäten zu integrieren.
     \item Der \texttt{TemperatureRotaryController} wurde um eine dedizierte Testmethode erweitert, mit der der Winkelwert direkt aus Testfällen heraus gesetzt werden kann. Diese Methode ist mit einem \texttt{\#if DEBUG}-Block versehen und wird im Release-Build ausgeschlossen.
+\end{itemize}
+
+\newpage
+
+\section{Iteration 3 – Statemachine und Modestrategien}
+\label{sec:iteration2}
+
+\subsection{Zeitraum}
+02.06.2025 – 02.06.2025
+
+\subsection{Ziele der Iteration}
+Das Ziel dieser Iteration ist die Implementierung einer Statemachine des Ofens und von verschiedenen Strategien die je nach ausgewähltem Modus unterschiedlich agieren. Dies ermöglicht erstmals eine variable Nutzung des Backofens.
+
+\begin{itemize}
+    \item \textbf{\ref{req:1.4}}: Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
+    \item \textbf{\ref{req:1.5}}: Folgende Betriebsmodi müssen wählbar sein: Ober-/Unterhitze, Oberhitze, Unterhitze, Grillfunktion, Umluft, Heißluft.
+    \item \textbf{\ref{req:1.6}}: Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
+    \begin{itemize}
+        \item Ober-/Unterhitze: Oberer und unterer Heizkörper
+        \item Oberhitze: Oberer Heizkörper
+        \item Unterhitze: Unterer Heizkörper
+        \item Grillfunktion: Oberer Heizkörper
+        \item Umluft: Oberer und unterer Heizkörper + Ventilator
+        \item Heißluft: Ringheizkörper hinten + Ventilator
+    \end{itemize}
+    \item \textbf{\ref{req:1.11}}: Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen (240–300°C) umwandeln.
+    \item \textbf{\ref{req:3.3}}: Logging von Informationen und Fehlern (teilweise umgesetzt; derzeit beschränkt auf bereits entwickelte Funktionalitäten)
+\end{itemize}
+
+\subsection{Tracability}
+
+\begin{tabular}{|l|p{5cm}|l|l|l|}
+\hline
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\hline
+\ref{req:1.4} & Auswählen eines Betriebsmodus über einen Drehregler & \texttt{ModeRotaryController.ReadInput()} & TC-3-2 & OK \\
+\hline
+\ref{req:1.5} & Auswahl an Betriebsmodi & \texttt{BaseModeStrategy.Run()} & TC-3-2 & OK \\
+\hline
+\ref{req:1.6} & Zuordnung der Heizaggregate zu den Betriebsmodi & \texttt{BaseModeStrategy.\_thermalControllers} & TC-4-1, TC-4-2, TC-4-3, TC-4-5, TC-4-6, TC-4-7, TC-4-8 & OK \\
+\hline
+\ref{req:1.11} & Stufen der Grillfunktion & \texttt{GrillMode.CalculateStepTemperature()} & TC-4-4 & OK \\
+\hline
+\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\hline
+\end{tabular}
+
+
+Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen, ebenso die der \texttt{ModeRotaryController}. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+
+\subsection{Abweichungen vom Feinentwurf}
+
+\begin{itemize}
+    \item Es wurde eine weitere Proxyklasse für die Statemachine im OvenControllerModule implementiert um auch das verhalten dieser zu loggen. Daher benötigt auch der OvenController keine Loggingfunktionalität mehr.
+    \item Der OvenState wurde gänzlich weg gelassen, da er bei der Implementierung als irrelevant empfunden wurde. CurrentState im OvenController wird direkt über das State-Objekt geregelt.
+    \item Der Übergang von einem State in einen anderen wurde in IState eine eigene Methode CheckStateTransition() ausgelagert. Diese wird in jeder Unterklasse implementiert.
+    \item Die States bekommen wichtige Instanzvariablen, die sie für ihre Funktionalität benötigen.
+    \item Der OffState wurde weg gelassen, da er bei der Implementierung als irrelevant empfunden wurde.
+    \item Die Vererbungshierarchie im ModeControlModule wurde um die BaseModeStrategy erweitert. Diese übernimmt Algorithmen, die in jedem State vorhanden wäre. Ebenso bekommt diese eine Liste mit IThermalController die die jeweilige Strategie steuert. 
 \end{itemize}
 
 \newpage

@@ -5,7 +5,7 @@ namespace OvenProject.Tests.IntegrationTests;
 
 public class ModeToThermalControl
 {
-    // TC-4-1
+    // TC-0-3
     [Fact]
     public void Run_TurnsOnVentilator()
     {
@@ -19,8 +19,8 @@ public class ModeToThermalControl
         Assert.True(ventilator.IsActive());
     }
 
-    // TC-4-2
-    // Requirements tested: 2.1.9; 2.1.10 
+    // TC-0-4
+    // Requirements tested: R-1.9; R-1.10 
     [Theory]
     [InlineData(150, true)]
     [InlineData(210, false)]

@@ -5,6 +5,8 @@ namespace OvenProject.Tests.InputHandlerTests;
 
 public class ModeRotaryControllerTest
 {
+    // TC-3-2
+    // Requirements tested: R-1.4; R-1.5;
     [Theory]
     [InlineData(0, CookingMode.Idle)]
     [InlineData(50, CookingMode.TopBottomHeat)]

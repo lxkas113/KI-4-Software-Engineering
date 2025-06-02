@@ -9,9 +9,12 @@ public class IdleState : IState
     public void Run(OvenController context, InputValues input)
     {
         _input = input;
-        CheckStateTransition(context);
+        if (CheckStateTransition(context))
+        {
+            return;
+        }
         
-        context.GetModeController().Run(input);
+        context.GetModeController().Run(_input);
         var output = new OutputValues(
             0,
             false,
@@ -21,11 +24,13 @@ public class IdleState : IState
         context.GetDisplay().Update(output);
     }
 
-    public void CheckStateTransition(OvenController context)
+    public bool CheckStateTransition(OvenController context)
     {
         if (_input.Temperature > 0)
         {
             context.SetState(new PreHeatingState());
+            return true;
         }
+        return false;
     }
 }

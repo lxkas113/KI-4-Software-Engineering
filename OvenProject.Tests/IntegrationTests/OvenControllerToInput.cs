@@ -14,6 +14,7 @@ public class OvenControllerToInput
     public void GetInput_ShouldReturnTemperatureFromRotaryController(int angle, int expectedTemperature)
     {
         var oven = new OvenController();
+        oven.SetState(new IdleState());
 
         var inputHandlerProxyField = typeof(OvenController)
             .GetField("_inputHandler", BindingFlags.NonPublic | BindingFlags.Instance)!;

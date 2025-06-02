@@ -2,5 +2,12 @@
 
 public enum CookingMode
 {
-    Heat
+    Heat, //für Testen
+    Idle,
+    TopBottomHeat,
+    TopHeat,
+    BottomHeat,
+    Grill,
+    CirculatingAir,
+    HotAir
 }

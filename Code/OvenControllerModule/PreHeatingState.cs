@@ -9,6 +9,7 @@ public class PreHeatingState : IState
     
     public void Run(OvenController context, InputValues input)
     {
+        //Console.WriteLine("PreHeatingState");
         _input = input;
         _stillPreheating = context.GetModeController().Run(_input);
 
@@ -24,17 +25,19 @@ public class PreHeatingState : IState
         CheckStateTransition(context);
     }
 
-    public void CheckStateTransition(OvenController context)
+    public bool CheckStateTransition(OvenController context)
     {
         if (_input.Temperature == 0)
         {
             context.SetState(new IdleState());
-            return;
+            return true;
         }
         if (!_stillPreheating)
         {
             context.SetState(new ActiveState());
+            return true;
         }
+        return false;
     }
     
     #if DEBUG

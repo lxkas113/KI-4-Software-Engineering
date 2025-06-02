@@ -10,7 +10,10 @@ public class ActiveState : IState
     public void Run(OvenController context, InputValues input)
     {
         _input = input;
-        CheckStateTransition(context);
+        if (CheckStateTransition(context))
+        {
+            return;
+        }
         
         context.GetModeController().Run(_input);
         var output = new OutputValues(
@@ -22,11 +25,13 @@ public class ActiveState : IState
         context.GetDisplay().Update(output);
     }
 
-    public void CheckStateTransition(OvenController context)
+    public bool CheckStateTransition(OvenController context)
     {
         if (_input.Temperature == 0)
         {
             context.SetState(new IdleState());
+            return true;
         }
+        return false;
     }
 }

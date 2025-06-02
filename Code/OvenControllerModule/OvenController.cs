@@ -18,14 +18,14 @@ public class OvenController
     {
         _inputHandler = new InputHandlerProxy();
         _modeController = new ModeControllerProxy();
-        _currentState = new ActiveState();
+        _currentState = new StateProxy(new IdleState());
         _tempSensor = new TemperatureSensor();
         _display = new DisplayDummyProxy();
     }
 
     public void SetState(IState newState)
     {
-        _currentState = newState;
+        _currentState = new StateProxy(newState);
     }
 
     public void Run()
@@ -50,7 +50,7 @@ public class OvenController
     
     public void Loop()
     {
-        for (int i = 0; i < 210; i++)
+        for (int i = 0; i < 110; i++)
         {
             Run();
         }
@@ -69,7 +69,11 @@ public class OvenController
     public void SetModeController(ModeControllerProxy modeController) => _modeController = modeController;
     #endif
     
-#if DEBUG
+    #if DEBUG
     public void SetDisplay(DisplayDummyProxy display) => _display = display;
-#endif
+    #endif
+    
+    #if DEBUG
+    public TemperatureSensor GetTempSensor() => _tempSensor;
+    #endif
 }

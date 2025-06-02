@@ -10,11 +10,12 @@ public class OvenControllerToDisplay
     public void OvenController_Run_UpdatesDisplayCorrectly()
     {
         var oven = new OvenController();
+        oven.SetState(new ActiveState());
         GlobalHelper.SetTargetTemperature(oven, 200);
 
         TopHeater.GetInstance().Temperature = 180;
-        RearHeater.GetInstance().Temperature = 160;
-        BottomHeater.GetInstance().Temperature = 150;
+        RearHeater.GetInstance().Temperature = 180;
+        BottomHeater.GetInstance().Temperature = 180;
 
         var tempSensorField = typeof(OvenController)
             .GetField("_tempSensor", BindingFlags.NonPublic | BindingFlags.Instance)!;

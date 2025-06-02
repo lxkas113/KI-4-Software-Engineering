@@ -21,10 +21,11 @@ public class TransitionTests
             Timer = TimeSpan.FromMinutes(10)
         };
 
-
         controller.GetCurrentState().Run(controller, input);
 
-        Assert.IsType<PreHeatingState>(controller.GetCurrentState());
+        var proxy = Assert.IsType<StateProxy>(controller.GetCurrentState());
+        var newState = proxy.GetState();
+        Assert.IsType<PreHeatingState>(newState);
     }
 
     [Fact]
@@ -39,10 +40,12 @@ public class TransitionTests
             Mode = CookingMode.Heat,
             Timer = TimeSpan.FromMinutes(10)
         };
-        
+
         controller.GetCurrentState().Run(controller, input);
 
-        Assert.IsType<IdleState>(controller.GetCurrentState());
+        var proxy = Assert.IsType<StateProxy>(controller.GetCurrentState());
+        var newState = proxy.GetState();
+        Assert.IsType<IdleState>(newState);
     }
 
     [Fact]
@@ -57,10 +60,12 @@ public class TransitionTests
             Mode = CookingMode.Heat,
             Timer = TimeSpan.FromMinutes(10)
         };
-        
+
         controller.GetCurrentState().Run(controller, input);
 
-        Assert.IsType<IdleState>(controller.GetCurrentState());
+        var proxy = Assert.IsType<StateProxy>(controller.GetCurrentState());
+        var newState = proxy.GetState();
+        Assert.IsType<IdleState>(newState);
     }
 
     [Fact]
@@ -68,7 +73,7 @@ public class TransitionTests
     {
         var controller = new OvenController();
         controller.SetState(new PreHeatingState());
-        
+
         var input = new InputValues
         {
             Temperature = 200,
@@ -76,10 +81,19 @@ public class TransitionTests
             Timer = TimeSpan.FromMinutes(10)
         };
 
-        ((PreHeatingState)controller.GetCurrentState()).SetStillPreheating(false);
-        ((PreHeatingState)controller.GetCurrentState()).SetInput(input);
-        controller.GetCurrentState().CheckStateTransition(controller);
+        var proxy = Assert.IsType<StateProxy>(controller.GetCurrentState());
 
-        Assert.IsType<ActiveState>(controller.GetCurrentState());
+        var preHeatState = proxy.GetState() as PreHeatingState;
+        Assert.NotNull(preHeatState);
+
+        preHeatState.SetStillPreheating(false);
+        preHeatState.SetInput(input);
+
+        preHeatState.CheckStateTransition(controller);
+
+        var newProxy = Assert.IsType<StateProxy>(controller.GetCurrentState());
+        var innerState = newProxy.GetState();
+        Assert.IsType<ActiveState>(innerState);
     }
+
 }

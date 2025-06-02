@@ -20,4 +20,8 @@ public class Ventilator : IThermalController
     public void TurnOff() => _active = false;
 
     public bool IsActive() => _active;
+    
+    #if DEBUG
+    public void SetActive(bool active) => _active = active;
+    #endif
 }

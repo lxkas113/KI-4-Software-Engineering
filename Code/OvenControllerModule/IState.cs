@@ -6,5 +6,5 @@ public interface IState
 {
     void Run(OvenController context, InputValues input);
 
-    void CheckStateTransition(OvenController context);
+    bool CheckStateTransition(OvenController context);
 }

@@ -11,6 +11,7 @@ public class TemperatureRotaryController : BaseRotaryController<int>
 
         if (temperature < MinTemperature) return 0;
         if (temperature > MaxTemperature) return MaxTemperature;
+        
         return temperature;
     }
     

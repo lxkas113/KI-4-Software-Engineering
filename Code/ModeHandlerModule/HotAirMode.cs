@@ -2,13 +2,11 @@
 
 namespace OvenProject.ModeHandlerModule;
 
-public class DefaultMode : BaseModeStrategy
+public class HotAirMode : BaseModeStrategy
 {
-    public DefaultMode()
+    public HotAirMode()
         : base(new List<IThermalController>
         {
-            TopHeater.GetInstance(),
-            BottomHeater.GetInstance(),
             RearHeater.GetInstance(),
             Ventilator.GetInstance()
         })

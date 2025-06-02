@@ -30,7 +30,6 @@ namespace OvenProject.SensorModule
                 }
             }
             _temperature = maxTemp;
-            Console.WriteLine("Max temperature: " + maxTemp);
         }
     }
 }

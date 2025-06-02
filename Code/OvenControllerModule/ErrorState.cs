@@ -16,8 +16,8 @@ public class ErrorState : IState
         context.GetDisplay().Update(output);
     }
 
-    public void CheckStateTransition(OvenController context)
+    public bool CheckStateTransition(OvenController context)
     {
-        
+        return false;
     }
 }

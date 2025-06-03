@@ -32,7 +32,7 @@
     {\large Projektarbeit: Entwicklung der Temperatursteuerung eines Backofens \par}
     \vspace{2cm}
     
-    \textbf{Professor:} Prof. Becker  \par
+    \textbf{Professor:} Prof. Dr. Karsten Becker  \par
     \vspace{1.5cm}
     
     \textbf{Autor:} \par
@@ -40,8 +40,32 @@
     
     \vfill
     
-    {\large 03. Juni 2025\par}
+    {\large 04. Juni 2025\par}
 \end{titlepage}
+\newpage
+
+\thispagestyle{empty}
+
+\vspace*{4cm}
+
+\begin{center}
+    {\LARGE\textbf{Eidesstattliche Erklärung}}
+\end{center}
+
+\vspace{2cm}
+
+Hiermit versichere ich, dass ich die beiliegende Arbeit ohne Hilfe Dritter und ohne Benutzung anderer als der angegebenen Quellen und Hilfsmittel angefertigt habe. Die den benutzten Quellen wörtlich oder inhaltlich entnommenen Inhalte sind als solche kenntlich gemacht.
+
+\vspace{3cm}
+
+\noindent
+Ort, Datum: \hrulefill
+
+\vspace{2cm}
+
+\noindent
+Unterschrift: \hrulefill
+
 \newpage
 
 \tableofcontents
@@ -253,6 +277,35 @@ R-3.2  & Statusanzeige innerhalb 1 Sekunde                & 2 \\
 R-3.3  & Fehlerprotokoll mit Zeitstempel                  & 3 \\
 \hline
 \end{tabular}
+
+\newpage
+
+\section{Teilfunktionalitäten der Temperatursteuerung}
+
+Die Steuerung des Backofens basiert auf einer Reihe voneinander abgegrenzter Teilfunktionalitäten. Diese bilden die Grundlage für eine modulare, testbare und erweiterbare Softwarearchitektur:
+
+\begin{itemize}
+    \item \textbf{Sensorik:}  
+    Erfassung der aktuellen Systemzustände durch Sensoren, insbesondere der Garraumtemperatur und des Türzustands. Diese Daten dienen als Eingabe für die Regel- und Sicherheitslogik.
+
+    \item \textbf{Eingabewerte lesen:}  
+    Verarbeitung der Benutzereingaben über Drehregler. Dazu zählen die Einstellung der Zieltemperatur, des Betriebsmodus sowie optional eines Timers.
+
+    \item \textbf{Modusauswahl:}  
+    Zuordnung des gewählten Betriebsmodus zu einer entsprechenden Heizstrategie. Diese legt fest, welche Heizaggregate und Lüfter im jeweiligen Modus aktiv sind.
+
+    \item \textbf{Temperaturregelung:}  
+    Steuerung der Heizaggregate und des Ventilators zur präzisen Erreichung und Stabilisierung der Solltemperatur. Die Regelung erfolgt abhängig vom gewählten Modus und dem aktuellen Temperaturverlauf.
+
+    \item \textbf{Ausgabe an das Display:}  
+    Darstellung aller relevanten Informationen auf einer Benutzeranzeige. Dazu gehören die aktuelle Temperatur, der Heizstatus, der Timerstand sowie Warnhinweise bei Störungen oder Abschaltungen.
+
+    \item \textbf{Sicherheitsüberprüfungen:}  
+    Kontinuierliche Überwachung kritischer Systemparameter wie Überhitzung, geöffnete Tür oder fehlender Temperaturanstieg. Bei Verstößen wird das System automatisch in einen sicheren Zustand überführt.
+
+    \item \textbf{Logging:}  
+    Protokollierung aller sicherheitsrelevanten Ereignisse, Zustandsänderungen und Benutzereingaben mit Zeitstempel. Die Logs unterstützen die Fehlerdiagnose und Systemanalyse.
+\end{itemize}
 
 \newpage
 

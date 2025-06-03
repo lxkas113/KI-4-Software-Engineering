@@ -1,17 +1,19 @@
-﻿namespace OvenProject.SensorModule
+﻿namespace OvenProject.SensorModule;
+public class DoorSensor(bool open = false) : ISensor<bool>
 {
-    public class DoorSensor(bool closed = true) : ISensor<bool>
+    private bool _isDoorOpen = open;
+
+    public bool GetValue()
     {
-        private bool _isDoorClosed = closed;
-
-        public bool GetValue()
-        {
-            return _isDoorClosed;
-        }
-
-        public void SetDoorState(bool closed)
-        {
-            _isDoorClosed = closed;
-        }
+        return _isDoorOpen;
     }
+
+    public void SetDoorState(bool open)
+    {
+        _isDoorOpen = open;
+    }
+    
+    #if DEBUG
+    public void SetDoorValue(bool open) => _isDoorOpen = open;
+    #endif
 }

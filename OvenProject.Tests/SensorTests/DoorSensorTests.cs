@@ -12,7 +12,7 @@ public class DoorSensorTests
 
         var result = sensor.GetValue();
 
-        Assert.True(result);
+        Assert.False(result);
     }
     
     // TC-7-2

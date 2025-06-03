@@ -15,7 +15,7 @@ public class LoggingHandler
 
     private LoggingHandler()
     {
-        _containerName = Environment.GetEnvironmentVariable("CONTAINER_NAME") ?? "default_container";
+        _containerName = Environment.GetEnvironmentVariable("CONTAINER_NAME") ?? "OvenProject";
         _containerName = _containerName.Replace(" ", "_");
 
         _config = new LoggingConfiguration();

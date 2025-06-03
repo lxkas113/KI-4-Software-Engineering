@@ -13,7 +13,7 @@ public class CycleTest
     }
 
     // TC-0-1
-    // Requirements tested: R-1.8
+    // Requirements tested: R-1.8, R-3.2
     [Fact]
     public void Run_ShouldCompleteInUnderOneSecond()
     {

@@ -29,7 +29,5 @@ public class StateProxy : IState
 
     private string GetStateName() => _innerState.GetType().Name;
     
-    #if DEBUG
     public IState GetState() => _innerState;
-    #endif
 }

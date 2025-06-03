@@ -572,7 +572,7 @@ Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde 
 \newpage
 
 \section{Iteration 3 – Statemachine und Modestrategien}
-\label{sec:iteration2}
+\label{sec:iteration3}
 
 \subsection{Zeitraum}
 02.06.2025 – 02.06.2025
@@ -594,6 +594,7 @@ Das Ziel dieser Iteration ist die Implementierung einer Statemachine des Ofens u
     \end{itemize}
     \item \textbf{\ref{req:1.11}}: Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen (240–300°C) umwandeln.
     \item \textbf{\ref{req:3.3}}: Logging von Informationen und Fehlern (teilweise umgesetzt; derzeit beschränkt auf bereits entwickelte Funktionalitäten)
+    \item Todo requirement 2.3
 \end{itemize}
 
 \subsection{Tracability}
@@ -612,6 +613,8 @@ Das Ziel dieser Iteration ist die Implementierung einer Statemachine des Ofens u
 \hline
 \ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
 \hline
+\ref{req:2.3} & Durchlaufzeit von unter 1 Sekunde & \texttt{todo} & TC-0-1 & OK \\
+\hline
 \end{tabular}
 
 
@@ -626,6 +629,51 @@ Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde 
     \item Die States bekommen wichtige Instanzvariablen, die sie für ihre Funktionalität benötigen.
     \item Der OffState wurde weg gelassen, da er bei der Implementierung als irrelevant empfunden wurde.
     \item Die Vererbungshierarchie im ModeControlModule wurde um die BaseModeStrategy erweitert. Diese übernimmt Algorithmen, die in jedem State vorhanden wäre. Ebenso bekommt diese eine Liste mit IThermalController die die jeweilige Strategie steuert. 
+\end{itemize}
+
+\newpage
+
+\section{Iteration 4 – Sicherheit und Timer}
+\label{sec:iteration4}
+
+\subsection{Zeitraum}
+02.06.2025 – 03.06.2025
+
+\subsection{Ziele der Iteration}
+Diese Iteration ist dafür da Sicherheitsüberprüfungen in dem Backofen einzubauen. Diese setzen die Requirements \ref{req:2.1} bis \ref{req:2.3} ab. Außerdem wurde ein Timer implementiert.
+
+\begin{itemize}
+    \item \textbf{\ref{req:2.1}}: Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320°C überschreitet.
+    \item \textbf{\ref{req:2.2}}: Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
+    \item \textbf{\ref{req:2.3}}: Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn die Temperatur innerhalb von 10 Abtastzyklen um weniger als 1°C steigt. In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
+    \item \textbf{\ref{req:3.3}}: Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
+\end{itemize}
+
+\subsection{Tracability}
+
+\begin{tabular}{|l|p{5cm}|l|l|l|}
+\hline
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\hline
+\ref{req:2.1} & Überhitzcheck & \texttt{OverheatRule.Check()} & TC-8-6 & OK \\
+\hline
+\ref{req:2.2} & Türcheck & \texttt{DoorOpenRule.Check()} & TC-8-1, TC-8-2 & OK \\
+\hline
+\ref{req:2.3} & Hitzeaggregatcheck & \texttt{HeaterFailureRule.Check()} & TC-8-3, TC-8-4, TC-8-5 & OK \\
+\hline
+\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\hline
+\end{tabular}
+
+
+Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen, ebenso die der \texttt{ModeRotaryController}. Es wurde Werte ausgewählt, um gezielt die Sicherheitschecks zu verletzen. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+
+\subsection{Abweichungen vom Feinentwurf}
+
+\begin{itemize}
+    \item Es wurde sich dagegen entschieden nach Ablauf des Timers den Backofen aus zu schalten, da man sonst einen Motor im Drehregler benötigen würde um diesen auf den Ursprung zurück zu stellen oder es kommt zu inkonsistenz. Ebenso ist es bei den meisten herkömmlichen Backöfen nicht der Fall, dass ein integrierter Timer diesen Ausschalten kann.
+    \item Es wurde eine weitere Proxyklasse für die Sicherheitsregeln implementiert um das Loggen außerhalb des Produktivcodes zu haben.
+    \item Die HeaterFailureRule bekommt ein int-Array anstatt eines double-Arrays für die letzten Temperaturen.
 \end{itemize}
 
 \newpage
@@ -652,6 +700,7 @@ Für die Umsetzung dieses Projektes wurde ChatGPT4o als Unterstützung verwendet
     \item Beim Requirements Engineering wurde es zur Formulierung und Validierung eigener Ideen verwendet.
     \item Beim der Software-Architektur wurde es zur Formulierung, Benennung von Modulen und Validierung eigener Ideen verwendet.
     \item Beim dem Software Design wurde es zur Formulierung, Benennung von Modulen und Validierung eigener Ideen verwendet.
+    \item Der OvenController bekommt eine Methode um den aktuellen State zurückzugeben, ebenso wie der StateProxy.
 \end{itemize}
 
 \end{document}

@@ -1,41 +1,55 @@
 ﻿using OvenProject.ThermalControllerModule;
 
-namespace OvenProject.SensorModule;
-public class TemperatureSensor : ISensor<int>
+namespace OvenProject.SensorModule
 {
-    private int _temperature = 0;
-    private List<ITemperatureSource> _tempSources = new()
+    /// <summary>
+    /// Sensor zur Ermittlung der höchsten Temperatur aus mehreren Heizquellen.
+    /// </summary>
+    public class TemperatureSensor : ISensor<int>
     {
-        TopHeater.GetInstance(),
-        RearHeater.GetInstance(),
-        BottomHeater.GetInstance()
-    };
-
-    public int GetValue()
-    {
-        #if DEBUG
-        return _temperature;
-        #endif
-        
-        UpdateTemperature();
-        return _temperature;
-    }
-
-    public void UpdateTemperature()
-    {
-        int maxTemp = 0;
-        foreach (ITemperatureSource tempSource in _tempSources)
+        private int _temperature = 0;
+        private List<ITemperatureSource> _tempSources = new()
         {
-            int currentTemp = tempSource.Temperature;
-            if (currentTemp > maxTemp)
-            {
-                maxTemp = currentTemp;
-            }
+            TopHeater.GetInstance(),
+            RearHeater.GetInstance(),
+            BottomHeater.GetInstance()
+        };
+
+        /// <summary>
+        /// Gibt die aktuell gemessene Temperatur zurück.
+        /// </summary>
+        /// <returns>Die höchste gemessene Temperatur aller Quellen.</returns>
+        public int GetValue()
+        {
+#if DEBUG
+            return _temperature;
+#endif
+            UpdateTemperature();
+            return _temperature;
         }
-        _temperature = maxTemp;
+
+        /// <summary>
+        /// Aktualisiert die Temperatur basierend auf allen verfügbaren Heizquellen.
+        /// </summary>
+        public void UpdateTemperature()
+        {
+            int maxTemp = 0;
+            foreach (ITemperatureSource tempSource in _tempSources)
+            {
+                int currentTemp = tempSource.Temperature;
+                if (currentTemp > maxTemp)
+                {
+                    maxTemp = currentTemp;
+                }
+            }
+            _temperature = maxTemp;
+        }
+
+#if DEBUG
+        /// <summary>
+        /// Setzt eine manuelle Temperatur (nur im Debug-Modus).
+        /// </summary>
+        public void SetTemperature(int temperature) => _temperature = temperature;
+#endif
     }
-    
-    #if DEBUG
-    public void SetTemperature(int temperature) => _temperature = temperature;
-    #endif
 }

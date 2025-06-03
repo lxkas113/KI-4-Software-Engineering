@@ -1,15 +1,21 @@
-﻿using OvenProject.ModeHandlerModule;
-using OvenProject.ThermalControllerModule;
+﻿using OvenProject.ThermalControllerModule;
 
-namespace OvenProject.ModeHandlerModule;
-
-public class TopHeatMode : BaseModeStrategy
+namespace OvenProject.ModeHandlerModule
 {
-    public TopHeatMode()
-        : base(new List<IThermalController>
-        {
-            TopHeater.GetInstance()
-        })
+    /// <summary>
+    /// Betriebsmodus mit reiner Oberhitze.
+    /// </summary>
+    public class TopHeatMode : BaseModeStrategy
     {
+        /// <summary>
+        /// Initialisiert den Modus mit dem oberen Heizelement.
+        /// </summary>
+        public TopHeatMode()
+            : base(new List<IThermalController>
+            {
+                TopHeater.GetInstance()
+            })
+        {
+        }
     }
 }

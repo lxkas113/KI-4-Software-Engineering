@@ -1,36 +1,32 @@
 ﻿using OvenProject.GlobalModels;
 
-namespace OvenProject.OvenControllerModule;
-
-public class IdleState : IState
+namespace OvenProject.OvenControllerModule
 {
-    private InputValues _input;
-    
-    public void Run(OvenController context, InputValues input)
+    /// <summary>
+    /// Repräsentiert den Leerlaufzustand des Ofens, wenn keine Temperatur gesetzt ist.
+    /// </summary>
+    public class IdleState : IState
     {
-        _input = input;
-        if (CheckStateTransition(context))
-        {
-            return;
-        }
-        
-        context.GetModeController().Run(_input);
-        var output = new OutputValues(
-            0,
-            false,
-            new TimeSpan(0),
-            false
-        );
-        context.GetDisplay().Update(output);
-    }
+        private InputValues _input;
 
-    public bool CheckStateTransition(OvenController context)
-    {
-        if (_input.Temperature > 0)
+        public void Run(OvenController context, InputValues input)
         {
-            context.SetState(new PreHeatingState());
-            return true;
+            _input = input;
+            if (CheckStateTransition(context)) return;
+
+            context.GetModeController().Run(_input);
+            var output = new OutputValues(0, false, TimeSpan.Zero, false);
+            context.GetDisplay().Update(output);
         }
-        return false;
+
+        public bool CheckStateTransition(OvenController context)
+        {
+            if (_input.Temperature > 0)
+            {
+                context.SetState(new PreHeatingState());
+                return true;
+            }
+            return false;
+        }
     }
 }

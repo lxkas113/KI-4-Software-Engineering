@@ -3,6 +3,9 @@
 
 namespace OvenProject.Tests.InputHandlerTests;
 
+/// <summary>
+/// Tests zur Temperaturauswahl basierend auf Drehwinkel.
+/// </summary>
 public class TemperatureRotaryControllerTest
 {
     // TC-3-1

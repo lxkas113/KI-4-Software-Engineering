@@ -3,6 +3,10 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.ModeControllerTests;
 
+/// <summary>
+/// Testet das Verhalten des BottomHeatMode, insbesondere ob nur das untere Heizelement bei Bedarf aktiviert wird.
+/// </summary>
+
 public class BottomHeatModeTest
 {
     // TC-4-1

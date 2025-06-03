@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.OvenControllerTests;
 
+/// <summary>
+/// Testet das Verhalten des IdleState, insbesondere dass keine Temperaturerhöhung erfolgt.
+/// </summary>
 public class IdleStateTest
 {
     // TC-2-4

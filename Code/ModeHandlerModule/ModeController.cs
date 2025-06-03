@@ -1,37 +1,53 @@
 ﻿using OvenProject.GlobalModels;
 
-namespace OvenProject.ModeHandlerModule;
-
-public class ModeController
+namespace OvenProject.ModeHandlerModule
 {
-    private IModeStrategy _currentStrategy = new IdleMode();
-    private CookingMode _currentMode = CookingMode.Idle;
-
-    public bool Run(InputValues input)
+    /// <summary>
+    /// Steuert den aktiven Betriebsmodus und verwaltet den Strategiewechsel.
+    /// </summary>
+    public class ModeController
     {
-        CheckStrategyForMode(input.Mode);
-        return _currentStrategy.Run(input.Temperature);
-    }
+        private IModeStrategy _currentStrategy = new IdleMode();
+        private CookingMode _currentMode = CookingMode.Idle;
 
-    private void CheckStrategyForMode(CookingMode mode)
-    {
-        if (mode == _currentMode) return;
-
-        _currentMode = mode;
-        _currentStrategy = mode switch
+        /// <summary>
+        /// Führt die aktuelle Modusstrategie basierend auf den Eingabewerten aus.
+        /// </summary>
+        /// <param name="input">Eingabewerte vom Benutzer.</param>
+        /// <returns>True, wenn noch vorgeheizt wird.</returns>
+        public bool Run(InputValues input)
         {
-            CookingMode.Idle => new IdleMode(),
-            CookingMode.TopBottomHeat => new TopBottomHeatMode(),
-            CookingMode.TopHeat => new TopHeatMode(),
-            CookingMode.BottomHeat => new BottomHeatMode(),
-            CookingMode.Grill => new GrillMode(),
-            CookingMode.CirculatingAir => new CirculatingAirMode(),
-            CookingMode.HotAir => new HotAirMode(),
-            _ => new IdleMode()
-        };
+            CheckStrategyForMode(input.Mode);
+            return _currentStrategy.Run(input.Temperature);
+        }
+
+        /// <summary>
+        /// Aktualisiert die Strategie, wenn sich der Modus geändert hat.
+        /// </summary>
+        /// <param name="mode">Der neue gewünschte Kochmodus.</param>
+        private void CheckStrategyForMode(CookingMode mode)
+        {
+            if (mode == _currentMode) return;
+
+            _currentMode = mode;
+            _currentStrategy = mode switch
+            {
+                CookingMode.Idle => new IdleMode(),
+                CookingMode.TopBottomHeat => new TopBottomHeatMode(),
+                CookingMode.TopHeat => new TopHeatMode(),
+                CookingMode.BottomHeat => new BottomHeatMode(),
+                CookingMode.Grill => new GrillMode(),
+                CookingMode.CirculatingAir => new CirculatingAirMode(),
+                CookingMode.HotAir => new HotAirMode(),
+                _ => new IdleMode()
+            };
+        }
+
+#if DEBUG
+        /// <summary>
+        /// Erlaubt das manuelle Setzen einer Strategie im Debug-Modus.
+        /// </summary>
+        public void SetModeStrategy(IModeStrategy Mode) => _currentStrategy = Mode;
+#endif
     }
-    
-    #if DEBUG
-    public void SetModeStrategy(IModeStrategy Mode) => _currentStrategy = Mode;
-    #endif
 }

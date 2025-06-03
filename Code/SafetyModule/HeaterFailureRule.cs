@@ -1,46 +1,49 @@
 ﻿using OvenProject.OvenControllerModule;
 using OvenProject.SensorModule;
 
-namespace OvenProject.SafetyModule;
-
-public class HeaterFailureRule : ISafetyRule
+namespace OvenProject.SafetyModule
 {
-    private readonly TemperatureSensor _tempSensor;
-    private readonly OvenController _oven;
-    private readonly int[] _lastTemps = new int[10];
-    private int _index = 0;
-    private int _count = 0;
-
-    public HeaterFailureRule(TemperatureSensor tempSensor, OvenController oven)
+    /// <summary>
+    /// Sicherheitsregel, die erkennt, ob das Heizelement keine Temperaturveränderung bewirkt.
+    /// </summary>
+    public class HeaterFailureRule : ISafetyRule
     {
-        _tempSensor = tempSensor;
-        _oven = oven;
-    }
+        private readonly TemperatureSensor _tempSensor;
+        private readonly OvenController _oven;
+        private readonly int[] _lastTemps = new int[10];
+        private int _index = 0;
+        private int _count = 0;
 
-    public void Check()
-    {
-        var state = ((StateProxy)_oven.GetCurrentState()).GetState();
-
-        if (state is not PreHeatingState && state is not ActiveState)
+        /// <summary>
+        /// Initialisiert die Regel mit Temperatursensor und Ofeninstanz.
+        /// </summary>
+        public HeaterFailureRule(TemperatureSensor tempSensor, OvenController oven)
         {
-            return;
+            _tempSensor = tempSensor;
+            _oven = oven;
         }
 
-        _lastTemps[_index] = _tempSensor.GetValue();
-        _index = (_index + 1) % _lastTemps.Length;
-        if (_count < _lastTemps.Length) _count++;
-
-        if (_count == _lastTemps.Length && _lastTemps.All(t => t == _lastTemps[0]))
+        /// <inheritdoc/>
+        public void Check()
         {
-            _oven.SetState(new ErrorState());
+            var state = ((StateProxy)_oven.GetCurrentState()).GetState();
+
+            if (state is not PreHeatingState && state is not ActiveState)
+                return;
+
+            _lastTemps[_index] = _tempSensor.GetValue();
+            _index = (_index + 1) % _lastTemps.Length;
+            if (_count < _lastTemps.Length) _count++;
+
+            if (_count == _lastTemps.Length && _lastTemps.All(t => t == _lastTemps[0]))
+            {
+                _oven.SetState(new ErrorState());
+            }
         }
+
+#if DEBUG
+        public int[] GetLastTemps() => _lastTemps;
+        public int GetIndex() => _index;
+#endif
     }
-    
-    #if DEBUG
-    public int[] GetLastTemps() => _lastTemps;
-    #endif
-    
-    #if DEBUG
-    public int GetIndex() => _index;
-    #endif
 }

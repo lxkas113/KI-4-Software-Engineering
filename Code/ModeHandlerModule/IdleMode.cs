@@ -1,11 +1,16 @@
-﻿using OvenProject.ThermalControllerModule;
-
-namespace OvenProject.ModeHandlerModule;
-
-public class IdleMode : BaseModeStrategy
+﻿namespace OvenProject.ModeHandlerModule
 {
-    public IdleMode()
-        : base([])
+    /// <summary>
+    /// Leerlaufmodus – deaktiviert alle Heizelemente.
+    /// </summary>
+    public class IdleMode : BaseModeStrategy
     {
+        /// <summary>
+        /// Initialisiert den Leerlaufmodus ohne aktive Komponenten.
+        /// </summary>
+        public IdleMode()
+            : base([])
+        {
+        }
     }
 }

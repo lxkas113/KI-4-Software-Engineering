@@ -6,6 +6,9 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.IntegrationTests;
 
+/// <summary>
+/// Integrationstest: Ofencontroller aktiviert Heizkomponenten korrekt.
+/// </summary>
 public class OvenControlToThermalControl
 {   
     // TC-0-7

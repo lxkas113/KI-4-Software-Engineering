@@ -3,6 +3,9 @@ using OvenProject.SafetyModule;
 
 namespace OvenProject.Tests.SafetyModuleTest;
 
+/// <summary>
+/// Testet die OverheatRule, die bei Überschreiten der maximal zulässigen Temperatur einen Fehlerzustand auslöst.
+/// </summary>
 public class OverHeatRuleTest
 {
     // TC-8-6

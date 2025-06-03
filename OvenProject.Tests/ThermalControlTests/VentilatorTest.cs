@@ -2,10 +2,12 @@
 
 namespace OvenProject.Tests.ThermalControlTests;
 
+/// <summary>
+/// Validiert die Aktivierungs- und Deaktivierungslogik des Ventilators.
+/// </summary>
 public class VentilatorTest
 {
     // TC-5-7
-    
     [Fact]
     public void TurnOn_ShouldActivateVentilator()
     {

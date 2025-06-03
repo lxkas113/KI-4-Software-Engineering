@@ -3,6 +3,9 @@ using Xunit.Abstractions;
 
 namespace OvenProject.Tests.CycleTests;
 
+/// <summary>
+/// Tests zur Laufzeit und Funktionalität des Ofens unter typischen Szenarien.
+/// </summary>
 public class CycleTest
 {
     private readonly ITestOutputHelper _testOutputHelper;

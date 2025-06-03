@@ -1,33 +1,36 @@
 ﻿using NLog;
 using OvenProject.GlobalModels;
 using OvenProject.LogginModule;
-using OvenProject.SensorModule;
 
-namespace OvenProject.OvenControllerModule;
-
-public class StateProxy : IState
+namespace OvenProject.OvenControllerModule
 {
-    private readonly IState _innerState;
-    private readonly Logger _logger;
-
-    public StateProxy(IState innerState)
+    /// <summary>
+    /// Proxy für IState mit Logging der aktuellen Zustände.
+    /// </summary>
+    public class StateProxy : IState
     {
-        _innerState = innerState;
-        _logger = LoggingHandler.Instance.GetLoggerForModule("OvenController");
-    }
+        private readonly IState _innerState;
+        private readonly Logger _logger;
 
-    public void Run(OvenController context, InputValues input)
-    {
-        _logger.Info($"Current OvenController State: {GetStateName()}");
-        _innerState.Run(context, input);
-    }
+        public StateProxy(IState innerState)
+        {
+            _innerState = innerState;
+            _logger = LoggingHandler.Instance.GetLoggerForModule("OvenController");
+        }
 
-    public bool CheckStateTransition(OvenController context)
-    {
-        return _innerState.CheckStateTransition(context);
-    }
+        public void Run(OvenController context, InputValues input)
+        {
+            _logger.Info($"Current OvenController State: {GetStateName()}");
+            _innerState.Run(context, input);
+        }
 
-    private string GetStateName() => _innerState.GetType().Name;
-    
-    public IState GetState() => _innerState;
+        public bool CheckStateTransition(OvenController context)
+        {
+            return _innerState.CheckStateTransition(context);
+        }
+
+        private string GetStateName() => _innerState.GetType().Name;
+
+        public IState GetState() => _innerState;
+    }
 }

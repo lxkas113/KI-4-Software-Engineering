@@ -4,6 +4,9 @@ using OvenProject.OvenControllerModule;
 
 namespace OvenProject.Tests.IntegrationTests;
 
+/// <summary>
+/// Integrationstest: Ofencontroller liest Temperatur korrekt vom Drehregler.
+/// </summary>
 public class OvenControllerToInput
 {
     // TC-0-6

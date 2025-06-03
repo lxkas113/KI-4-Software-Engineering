@@ -3,6 +3,9 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.ModeControllerTests;
 
+/// <summary>
+/// Stellt sicher, dass im IdleMode keine Heiz- oder Lüfterkomponenten aktiviert werden.
+/// </summary>
 public class IdleModeTest
 {
     // TC-4-6

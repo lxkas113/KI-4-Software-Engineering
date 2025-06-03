@@ -10,6 +10,7 @@
 \usepackage{tabularx}
 \usepackage{siunitx}
 \usepackage{float}
+\usepackage{lmodern}
 \usepackage{hyperref}
 
 \geometry{margin=2.5cm}
@@ -27,48 +28,105 @@
 
 \newpage
 
-\section*{Einleitung}
-
-Dieses Dokument beschreibt die funktionalen und sicherheitsrelevanten Anforderungen an die Steuerung und Temperatureinstellung eines elektrischen Haushaltsbackofens. Ziel ist es, eine benutzerfreundliche, sichere und zuverlässige Ofensteuerung zu realisieren.
+\tableofcontents
 
 \newpage
 
-\section{Annahmen}
+\section*{Einleitung}
 
-Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf denen das Design, die Funktion und die Umsetzung der Steuerung basieren:
+Im Rahmen der Projektarbeit im Fach "Software Engineering" bestand die Aufgabe darin, ein spezifisches Teilmodul eines größeren Softwaresystems eigenständig zu konzipieren und zu implementieren. Dabei lag der Fokus auf der vollständigen Durchführung aller wesentlichen Phasen des Softwareentwicklungsprozesses – von der Anforderungserhebung über Architektur und Design bis hin zur Umsetzung und Testung.
+
+Das individuelle Thema dieser Arbeit war die Entwicklung einer Steuerung zur Temperaturregelung eines Backofens. Ziel war es, ein System zu entwerfen, das dem Benutzer die Auswahl verschiedener Heizmodi sowie eine präzise Temperatureinstellung ermöglicht und dabei sicherheitsrelevante Aspekte berücksichtigt. Die Steuerung sollte außerdem hardwareunabhängig simuliert und auf einem Standard-PC lauffähig umgesetzt werden. Als Benutzerschnittstelle standen zwei simulierte Drehregler (für Temperatur und Modus) sowie ein Display zur Anzeige von Temperatur, Status und Warnhinweisen zur Verfügung.
+
+Die Umsetzung folgte einem iterativen Vorgehensmodell mit vier funktional abgeschlossenen Entwicklungszyklen. Nach jeder Iteration wurde eine lauffähige Version des Systems bereitgestellt, um schrittweise Funktionalität, Sicherheit und Benutzerfreundlichkeit zu erweitern. Im Verlauf des Projekts wurde besonderer Wert auf Modularität, Wiederverwendbarkeit, Nachvollziehbarkeit der Anforderungen und eine klare Trennung von Verantwortlichkeiten gelegt.
+
+Diese Dokumentation beschreibt im Folgenden die eingesetzten Technologien, die gewählte Architektur, das Softwaredesign, die umgesetzten Anforderungen sowie die einzelnen Iterationen inklusive ihrer Ergebnisse und Testabdeckungen.
+
+\newpage
+
+\section{Entwicklungsumgebung}
+
+Für die Umsetzung des Projekts wurde eine moderne und leistungsfähige Entwicklungsumgebung gewählt, um eine strukturierte, nachvollziehbare und effiziente Softwareentwicklung zu ermöglichen. Die eingesetzten Werkzeuge und Technologien im Überblick:
 
 \begin{itemize}
-    \item Das System verfügt über ein Display, das folgende Informationen anzeigen kann:
+    \item \textbf{Programmiersprache:} Die Anwendung wurde in \textbf{C\#} entwickelt – einer objektorientierten Programmiersprache mit starker Integration in das .NET-Ökosystem. Die Sprache zeichnet sich durch eine klare Syntax, hohe Erweiterbarkeit durch NuGet-Pakete und gute Performance aus.
+
+    \item \textbf{Entwicklungsumgebung (IDE):} Zum Einsatz kam \textbf{JetBrains Rider}, eine moderne IDE mit umfassender Unterstützung für .NET-Projekte. Sie bietet integriertes Debugging, Refactoring-Tools sowie eine enge Anbindung an Versionskontrollsysteme und Build-Werkzeuge.
+
+    \item \textbf{Testing-Framework:} Für automatisierte Komponententests wurde \textbf{xUnit} verwendet. Das Framework ermöglichte eine kontinuierliche Überprüfung und Validierung einzelner Programmteile.
+
+    \item \textbf{Diagramme und Modellierung:} Zur Erstellung von UML-Diagrammen (z.\,B. Klassen- und Aktivitätsdiagramme) wurde \textbf{draw.io} genutzt. Das Tool erleichtert die Visualisierung von Softwarearchitekturen und bietet zahlreiche Vorlagen zur effizienten Modellierung.
+
+    \item \textbf{Dokumentation:} Die gesamte Projektdokumentation wurde in \LaTeX{} verfasst, um ein konsistentes Layout, automatische Verzeichnisse sowie klar strukturierte Querverweise zu gewährleisten.
+
+    \item \textbf{Versionsverwaltung:} Die Quellcodeverwaltung erfolgte über \textbf{GitHub}. Branches, Pull Requests und Commit-Historien ermöglichten eine transparente, kollaborative Entwicklung.
+
+    \item \textbf{Aufgabenmanagement:} Für die Aufgabenplanung und Sprintverwaltung wurde \textbf{Jira} eingesetzt. Das Tool ermöglichte eine klare Zuweisung von Arbeitspaketen, Terminüberwachung und Fortschrittskontrolle.
+\end{itemize}
+
+
+\newpage
+
+\section{Vorgehen}
+
+Für die Umsetzung des Projekts wurde ein strukturierter Entwicklungsprozess gewählt, der eine Kombination aus dem klassischen Wasserfallmodell und iterativen Elementen aus dem Scrum-Ansatz darstellt. Während Analyse, Design und Planung weitgehend linear durchgeführt wurden, erfolgte die eigentliche Implementierung inkrementell in mehreren Iterationen. So konnte nach jeder Phase eine lauffähige, getestete Version der Software bereitgestellt werden.
+
+\begin{enumerate}
+    \item \textbf{Requirements Engineering:}  
+    Zu Beginn wurden sämtliche funktionalen, nicht-funktionalen und sicherheitsrelevanten Anforderungen systematisch erfasst. Anschließend wurden diese Anforderungen priorisiert, um die Umsetzung auf die wichtigsten Kernfunktionen auszurichten.
+
+    \item \textbf{Softwarearchitektur:}  
+    Auf Basis der Anforderungen wurde die Systemarchitektur entworfen. Dabei wurden die Hauptmodule, ihre Schnittstellen sowie die zentralen Datenflüsse definiert. Ziel war eine modulare, erweiterbare und wartbare Struktur als Grundlage für die Implementierung.
+
+    \item \textbf{Softwaredesign:}  
+    Aufbauend auf der Architektur wurden die einzelnen Komponenten detailliert spezifiziert. UML-Diagramme wie Klassendiagramme oder Zustandsdiagramme visualisierten dabei Strukturen und Abläufe. Im Fokus standen die klare Trennung von Verantwortlichkeiten, hohe Wiederverwendbarkeit und Erweiterbarkeit.
+
+    \item \textbf{Implementierung und Test:}  
+    Die Umsetzung erfolgte in vier aufeinander aufbauenden Iterationen. Jede Iteration beinhaltete die Implementierung neuer Funktionalitäten sowie zugehöriger automatisierter Tests mit \texttt{xUnit}. Nach jeder Iteration stand eine lauffähige Version zur Verfügung, die anschließend erweitert und optimiert wurde. Dieses Vorgehen ermöglichte eine kontinuierliche Integration und Verbesserung des Gesamtsystems.
+\end{enumerate}
+
+\newpage
+
+\section{Annahmen über das System}
+
+Die nachfolgenden Anforderungen basieren auf spezifischen Annahmen über die Systemumgebung und verfügbare Hardwarekomponenten. Diese Annahmen bilden die Grundlage für das Design, die Funktionalität und die Umsetzung der Steuerung:
+
+\begin{itemize}
+    \item \textbf{Display:}  
+    Das System verfügt über ein integriertes Display, das folgende Informationen darstellen kann:
     \begin{itemize}
         \item Aktuelle Temperatur im Garraum
-        \item Symbol für den Vorheizstatus
-        \item Aktuell ausgewählte Heizart
-        \item Uhrzeit bzw. Restlaufzeit eines Timers
-        \item Warnung bei automatischer Abschaltung des Heizvorgangs
+        \item Symbol zur Anzeige des Vorheizstatus
+        \item Uhrzeit bzw. verbleibende Laufzeit eines Timers
+        \item Warnhinweis bei automatischer Abschaltung
     \end{itemize}
 
-    \item Zur Bedienung stehen zwei physische Drehregler zur Verfügung:
+    \item \textbf{Bedienelemente:}  
+    Die Steuerung erfolgt über zwei physische Drehregler:
     \begin{itemize}
-        \item Ein Regler zur Auswahl der Betriebsart (Heizfunktion)
-        \item Ein Regler zur Einstellung der Temperatur. Dieser hat eine Einrastfunktion, dass man nicht zwischen zwei Modi sein kann.
+        \item Ein Regler zur Auswahl des Heizmodus (Betriebsart)
+        \item Ein Regler zur Temperatureinstellung mit Einrastfunktion zur sicheren Moduswahl
     \end{itemize}
 
-    \item Der Backofen verfügt über drei separat ansteuerbare Heizaggregate:
+    \item \textbf{Heizelemente:}  
+    Der Backofen besitzt drei unabhängig ansteuerbare Heizaggregate:
     \begin{itemize}
-        \item Oberer Heizkörper („Rohrhitzeaggregat“) mit einer Leistung von 3000\,W
-        \item Unterer Heizkörper mit einer Leistung von 1500\,W
-        \item Ringheizkörper an der Rückseite mit einer Leistung von 2000\,W
+        \item Oberer Heizkörper
+        \item Unterer Heizkörper
+        \item Ringheizkörper an der Rückseite
     \end{itemize}
 
-    \item Ein Ventilator befindet sich an der Rückseite des Garraums und ist separat schaltbar (Ein/Aus).
+    \item \textbf{Lüftung:}  
+    Ein Ventilator an der Rückwand kann separat ein- oder ausgeschaltet werden.
 
-    \item Ein Türkontaktsensor ist verbaut, der den Zustand der Backofentür (offen/geschlossen) erkennt.
+    \item \textbf{Sensorik:}  
+    \begin{itemize}
+        \item Ein Türkontaktsensor erkennt, ob die Backofentür geöffnet oder geschlossen ist.
+        \item Ein Temperaturfühler misst kontinuierlich die aktuelle Garraumtemperatur.
+    \end{itemize}
 
-    \item Ein Thermometer zur Messung der aktuellen Backofentemperatur ist vorhanden.
-
-    \item Alle Heizaggregate sind ausschließlich binär schaltbar (Ein/Aus).
-
-    \item Der Ventilator ist ebenfalls ausschließlich binär schaltbar (Ein/Aus).
+    \item \textbf{Schaltverhalten:}  
+    Sämtliche Heizaggregate und der Ventilator lassen sich ausschließlich binär (Ein/Aus) steuern.
 \end{itemize}
 
 \newpage
@@ -101,15 +159,15 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
         \item Heißluft: Ringheizkörper hinten + Ventilator
     \end{itemize}
     \item \label{req:1.7} Das System muss die Heizaggregate einzeln ansteuern können.
-    \item \label{req:1.8} Das System muss die Temperaturregelung mit einer Abtastrate von 1\,Hz durchführen.
+    \item \label{req:1.8} Das System muss die Temperaturregelung mit einer Abtastrate von mindestens 1\,Hz durchführen.
     \item \label{req:1.9} Das System muss alle Heizaggregate deaktivieren, wenn die aktuelle Temperatur gleich oder größer der Solltemperatur ist.
     \item \label{req:1.10} Das System muss die gemäß Betriebsart definierten Heizaggregate aktivieren, wenn die aktuelle Temperatur unterhalb der Solltemperatur liegt.
     \item \label{req:1.11} Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen umwandeln:
     \begin{itemize}
-        \item Stufe 1: bis einschließlich 240\,\textdegree{}C
-        \item Stufe 2: bis einschließlich 260\,\textdegree{}C
-        \item Stufe 3: bis einschließlich 280\,\textdegree{}C
-        \item Stufe 4: bis einschließlich 300\,\textdegree{}C
+        \item Stufe 1: 240\,\textdegree{}C
+        \item Stufe 2: 260\,\textdegree{}C
+        \item Stufe 3: 280\,\textdegree{}C
+        \item Stufe 4: 300\,\textdegree{}C
     \end{itemize}
     \item \label{req:1.12} Das System muss dem Benutzer folgende Informationen über ein Display anzeigen:
     \begin{itemize}
@@ -118,90 +176,127 @@ Für die nachfolgenden Anforderungen gelten die folgenden Systemannahmen, auf de
         \item Restzeit eines eingestellten Timers
         \item Warnung bei automatischer Abschaltung
     \end{itemize}
-    \item \label{req:1.13} Das System muss die Heizfunktion automatisch deaktivieren, wenn ein Timer abgelaufen ist. -> macht gar kein sinn weil drehregler
 \end{enumerate}
 
 \subsection{Sicherheitsanforderungen}
 
 \begin{enumerate}[label=\textbf{R-2.\arabic*}, ref=R-2.\arabic*, itemsep=0pt, topsep=0pt, font=\bfseries]
     \item \label{req:2.1} Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320\,\textdegree{}C überschreitet.
-    \item \label{req:2.2} Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
-    \item \label{req:2.3} Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn:
-    \begin{itemize}
-        \item die Temperatur innerhalb von 10 Sekunden (10 Abtastzyklen) um weniger als 1\,\textdegree{}C steigt und
-        \item gleichzeitig die Ist-Temperatur mehr als 10\,\% unter der Solltemperatur liegt.
-   \end{itemize}
-    In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
+    \item \label{req:2.2} Das System darf nicht weiter Heizen, wenn die Backofentür geöffnet ist.
+    \item \label{req:2.3} Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn die Temperatur innerhalb von 10 Abtastzyklen um weniger als 1\,\textdegree{}C steigt. In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
 \end{enumerate}
 
 \subsection{Nicht-funktionale Anforderungen}
 
 \begin{enumerate}[label=\textbf{R-3.\arabic*}, ref=R-3.\arabic*, itemsep=0pt, topsep=0pt, font=\bfseries]
     \item \label{req:3.1} Das System muss in der Lage sein, die Solltemperatur von 200\,\textdegree{}C innerhalb von maximal 10 Minuten zu erreichen.
-    \item \label{req:3.2} Das Display muss Statusänderungen (z.\,B. Temperatur, Timer) innerhalb von 1 Sekunde anzeigen.
-    \item \label{req:3.3} Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
+    \item \label{req:3.2} Das Display muss Statusänderungen innerhalb von maximal 1 Sekunde anzeigen.
+    \item \label{req:3.3} Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in der Konsole ausgeben.
 \end{enumerate}
+
+\subsection{Priorisierung}
+
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{ID} & \textbf{Requirement} & \textbf{Priorität} \\
+\hline
+R-1.1  & Temperatur über Drehregler einstellbar & 1 \\
+\hline
+R-1.2  & Temperatureinstellung in 1\,\textdegree{}C-Schritten & 1 \\
+\hline
+R-1.3  & Temperaturbereich 50–300\,\textdegree{}C          & 1 \\
+\hline
+R-1.4  & Betriebsart über Drehregler auswählbar           & 2 \\
+\hline
+R-1.5  & Auswahl definierter Betriebsmodi                 & 2 \\
+\hline
+R-1.6  & Heizaggregate je nach Betriebsart aktivieren     & 2 \\
+\hline
+R-1.7  & Heizaggregate einzeln ansteuerbar                & 1 \\
+\hline
+R-1.8  & Temperaturregelung mit mind. 1\,Hz                & 2 \\
+\hline
+R-1.9  & Heizabschaltung bei Solltemperatur erreicht      & 1 \\
+\hline
+R-1.10 & Heizaktivierung bei Temperatur unter Sollwert    & 1 \\
+\hline
+R-1.11 & Grillstufenumrechnung                            & 2 \\
+\hline
+R-1.12 & Anzeige von Temperatur, Status, Timer, Warnungen & 1 \\
+\hline
+R-2.1  & Abschaltung bei >320\,\textdegree{}C              & 3 \\
+\hline
+R-2.2  & Kein Heizen bei geöffneter Tür                   & 3 \\
+\hline
+R-2.3  & Fehlererkennung Heizaggregat                     & 3 \\
+\hline
+R-3.1  & 200\,\textdegree{}C in 10 Minuten erreichen       & 2 \\
+\hline
+R-3.2  & Statusanzeige innerhalb 1 Sekunde                & 2 \\
+\hline
+R-3.3  & Fehlerprotokoll mit Zeitstempel                  & 3 \\
+\hline
+\end{tabular}
 
 \newpage
 
-\section{Software Architektur}
+\section{Softwarearchitektur}
 
-Im Folgenden werden alle Module des Systems beschrieben und deren jeweilige Funktionalität erläutert. Die strukturellen Abhängigkeiten zwischen den Modulen sind in Abbildung~\ref{fig:moduluebersicht} visuell dargestellt.
+In diesem Kapitel werden alle zentralen Module des Systems beschrieben und ihre jeweilige Funktion erläutert. Die strukturellen Abhängigkeiten zwischen den Modulen sind in Abbildung~\ref{fig:moduluebersicht} dargestellt.
 
-Das generelle Ziel ist, die verschiedenen Aufgaben in einzelne Module zu unterteilen um alles klar und verständlich zu verteilen. Außerdem werden alle gegebenen Hardwarekomponenten wie Sensoren oder Heizkörper in eigenen Klassen und Modulen gekapselt. Ebenso wie die Informationen die zwischen Modulen geschickt werden. Diese Klassen werden in den Global Models definiert und überall im Code hergenommen. Ebenso wird das Logging in ein eigenes Modul ausgelagert um dies aus dem Produktivcode herauszulassen.
+Das Architekturkonzept verfolgt das Ziel, sämtliche Systemaufgaben in klar abgegrenzte Module zu unterteilen. Dabei werden alle Hardwarekomponenten (z.\,B. Sensoren, Heizkörper) sowie übertragene Daten in separaten Klassen gekapselt. Dies unterstützt eine saubere Trennung der Verantwortlichkeiten und erleichtert die Wartung und Erweiterung des Systems. Zentrale Datenstrukturen werden im Modul \texttt{GlobalModels} definiert und systemweit verwendet. Zusätzlich wird ein dediziertes \texttt{LoggingModule} eingesetzt, um alle Protokollierungsaufgaben vom Anwendungscode zu trennen.
 
 \subsection*{Main}
-Das \texttt{Main}-Modul bildet den Einstiegspunkt des Programms. Es initialisiert das Gesamtsystem und erstellt eine Instanz des zentralen Steuerungsmoduls \texttt{OvenRunner}.
+Das Modul \texttt{Main} dient als Einstiegspunkt des Programms. Es initialisiert alle notwendigen Komponenten und erstellt eine Instanz des zentralen Steuerungsmoduls \texttt{OvenController}.
 
-\subsection*{OvenRunner}
-Der \texttt{OvenRunner} ist die zentrale Steuereinheit der Anwendung. Er übernimmt die Koordination aller funktionalen Module innerhalb einer kontinuierlich laufenden Hauptschleife. Zu seinen Aufgaben gehören:
+\subsection*{OvenControllerModule}
+Der \texttt{OvenController} stellt die zentrale Steuereinheit des Systems dar. Er koordiniert die Funktionsmodule innerhalb einer fortlaufenden Hauptschleife. Zu seinen Aufgaben zählen:
 \begin{itemize}
-    \item Aufruf und Steuerung aller relevanten Module (z.\,B. \texttt{InputHandlerModule}, \texttt{ModeControlModule}, \texttt{OutputHandlerModule})
-    \item Initialisierung und Start des \texttt{SafetyModule} in einem separaten Thread
-    \item Start eines Timers nach Empfang eines entsprechenden Signals vom \texttt{InputHandlerModule}
+    \item Erfassen der Benutzereingaben über das \texttt{InputHandlerModule}
+    \item Weitergabe der Eingaben an das \texttt{ModeControlModule} zur Interpretation
+    \item Ausgabe von Informationen über das \texttt{OutputHandlerModule}
+    \item Start und Überwachung des \texttt{SafetyModule} in einem separaten Thread
 \end{itemize}
-Der genaue Ablauf dieser Kontrollschleife ist in Abbildung~\ref{fig:controllloop} dargestellt.
+Die Ablauflogik der Steuerungsschleife ist in Abbildung~\ref{fig:controllloop} dargestellt.
 
 \subsection*{SafetyModule}
-Das \texttt{SafetyModule} führt kontinuierlich Sicherheitsüberprüfungen durch (z.\,B. Temperaturüberschreitung, geöffnete Tür, Ausfall eines Heizaggregats). Es wird in einem eigenen Thread betrieben und läuft parallel zu den übrigen Modulen.
+Das \texttt{SafetyModule} führt kontinuierlich Sicherheitsüberprüfungen durch und läuft unabhängig vom Hauptprozess in einem eigenen Thread. Dadurch werden kritische Systemzustände (z.\,B. Überhitzung oder geöffnete Tür) frühzeitig erkannt und entsprechende Maßnahmen eingeleitet.
 
 \subsection*{InputHandlerModule}
-Dieses Modul erfasst und verarbeitet sämtliche Benutzereingaben. Es liest die Drehregler für Temperatur und Betriebsmodus aus und erkennt, ob ein Timerwert eingestellt wurde. Die daraus resultierenden Informationen werden an den \texttt{OvenRunner} zurückgemeldet.
+Dieses Modul verarbeitet alle Benutzereingaben. Es liest die Einstellungen der beiden Drehregler (Temperatur und Betriebsmodus) sowie den Timerwert aus. Die gesammelten Eingaben werden als strukturierte Objekte an den \texttt{OvenController} übergeben.
 
 \subsection*{ModeControlModule}
-Das \texttt{ModeControlModule} interpretiert die übergebenen Eingabewerte und leitet basierend darauf die Steuerung der Heizaggregate ein. Die konkrete Aktivierung erfolgt über das \texttt{ThermalControlModule}.
+Das \texttt{ModeControlModule} interpretiert die übergebenen Eingaben und entscheidet, welche Heizaggregate in Abhängigkeit vom gewählten Modus aktiviert werden sollen. Die konkrete Steuerung erfolgt über das \texttt{ThermalControlModule}.
 
 \subsection*{ThermalControlModule}
-Im \texttt{ThermalControlModule} ist die Logik zur Steuerung aller Heizaggregate und des Ventilators implementiert. Es bildet die Schnittstelle zur Hardware und übernimmt das gezielte Aktivieren oder Deaktivieren der Komponenten gemäß dem gewählten Betriebsmodus.
+Dieses Modul enthält die Ansteuerlogik für alle Heizaggregate und den Ventilator. Es stellt die direkte Schnittstelle zur (simulierten) Hardware dar und aktiviert oder deaktiviert Komponenten gemäß den Anforderungen des \texttt{ModeControlModule}.
 
 \subsection*{OutputHandlerModule}
-Das \texttt{OutputHandlerModule} ist für die Darstellung aller relevanten Systeminformationen auf dem Display verantwortlich. Dazu zählen insbesondere:
+Das \texttt{OutputHandlerModule} ist für die Darstellung aller relevanten Informationen auf dem Display zuständig. Dies umfasst:
 \begin{itemize}
-    \item Aktuelle Temperatur
-    \item Eingestellter Betriebsmodus
-    \item Status des Timers
-    \item Sicherheits- und Warnhinweise (z.\,B. automatische Abschaltung)
+    \item Aktuelle Temperatur im Garraum
+    \item Gewählter Betriebsmodus
+    \item Timerstatus
+    \item Warnmeldungen und Sicherheitsanzeigen
 \end{itemize}
 
 \subsection*{SensorModule}
-Das \texttt{SensorModule} stellt die Anbindung und Abfrage der physischen Sensoren des Backofens bereit. Es enthält unter anderem:
+Das \texttt{SensorModule} kapselt die simulierten Sensoren des Systems. Dazu gehören:
 \begin{itemize}
-    \item einen \texttt{TemperatureSensor}, der die aktuelle Temperatur im Garraum liefert
-    \item einen \texttt{DoorSensor}, der überprüft, ob die Backofentür geöffnet oder geschlossen ist
+    \item \texttt{TemperatureSensor}: misst die aktuelle Temperatur im Garraum
+    \item \texttt{DoorSensor}: erkennt den Zustand der Backofentür (offen/geschlossen)
 \end{itemize}
 
 \subsection*{GlobalModels}
-Das \texttt{GlobalModels}-Modul kapselt zentrale Datenstrukturen, die zur systemweiten Kommunikation und Zustandshaltung verwendet werden. Dazu gehören unter anderem:
+Im Modul \texttt{GlobalModels} sind alle zentralen Datenstrukturen definiert, die zur intermodularen Kommunikation und Zustandshaltung benötigt werden:
 \begin{itemize}
-    \item \texttt{InputValues}: Enthält Temperatur, Modus und Timerinformationen aus der Benutzereingabe
-    \item \texttt{CookingMode}: Definiert alle verfügbaren Betriebsmodi des Backofens (z.\,B. Grill, Umluft, Ober-/Unterhitze)
-    \item \texttt{OvenState}: Hält den aktuellen Zustand des Backofens (z.\,B. \texttt{Idle}, \texttt{Preheating}, \texttt{Active})
+    \item \texttt{InputValues}: enthält Temperatur, Modus und Timerdaten
+    \item \texttt{CookingMode}: beschreibt alle verfügbaren Betriebsmodi
+    \item \texttt{OvenState}: bildet den aktuellen Zustand des Systems ab (z.\,B. \texttt{Idle}, \texttt{Preheating}, \texttt{Active})
 \end{itemize}
 
 \subsection*{LoggingModule}
-Das \texttt{LoggingModule} verwaltet die zentrale Protokollierung aller sicherheitsrelevanten Ereignisse und Zustandsänderungen. Es wird von sämtlichen Modulen aufgerufen und speichert alle Einträge mit einem Zeitstempel. Üblicherweise ist dieses Modul als Singleton implementiert, um globalen Zugriff zu gewährleisten.
-
-\clearpage
+Das \texttt{LoggingModule} ist für die zentrale Protokollierung aller sicherheitsrelevanten Ereignisse und Statusänderungen verantwortlich. Alle Module können dieses zur Ausgabe strukturierter Logeinträge mit Zeitstempel nutzen.
 
 \begin{figure}[h!]
   \centering
@@ -213,226 +308,330 @@ Das \texttt{LoggingModule} verwaltet die zentrale Protokollierung aller sicherhe
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{src/software_architecture_controll_loop.png}
-  \caption{Kontrollschleife des OvenRunners}
+  \caption{Kontrollschleife des OvenControllers (Iteration 1)}
   \label{fig:controllloop}
 \end{figure}
 
 \clearpage
 
-
 \section{Software Design}
 
-Im Folgenden werden alle zentralen Module des Backofensystems beschrieben. Jedes Modul erfüllt eine klar definierte Aufgabe und folgt etablierten Software-Designprinzipien wie beispiel den \textit{Strategy Pattern}, \textit{State Pattern} oder der Trennung von Sensorik, Steuerung und Darstellung.
+Im Folgenden wird das Design der zentralen Module des Backofensystems beschrieben. Jedes Modul übernimmt eine klar definierte Aufgabe und orientiert sich an bewährten Software-Designprinzipien, insbesondere dem \textit{Strategy Pattern}, \textit{State Pattern} sowie der strikten Trennung zwischen Sensorik, Steuerung und Darstellung.
+
+\subsection*{Designziele}
+
+Das Software-Design verfolgt folgende Hauptziele:
+
+\begin{itemize}
+    \item \textbf{Erweiterbarkeit:}  
+    Neue Betriebsmodi, Funktionen oder Anzeigeelemente sollen mit minimalem Änderungsaufwand integrierbar sein. Dies wird durch konsequente Modularisierung und lose Kopplung erreicht.
+
+    \item \textbf{Beherrschbare Komplexität:}  
+    Durch den Einsatz etablierter Entwurfsmuster – wie dem \textit{Strategy Pattern} für Regelalgorithmen und dem \textit{State Pattern} für Zustandsverwaltung – wird die Systemlogik übersichtlich und nachvollziehbar strukturiert.
+
+    \item \textbf{Klare Verantwortungstrennung:}  
+    Die Architektur folgt einem Schichtenmodell mit den Bereichen \textit{Sensorik} (Datenerfassung), \textit{Steuerung} (Verarbeitung und Logik) und \textit{Darstellung} (Benutzerausgabe). Jede Schicht ist funktional abgegrenzt, was Wartbarkeit und Erweiterbarkeit fördert.
+
+    \item \textbf{Clean Code:}  
+    Der Quellcode ist klar strukturiert, konsistent dokumentiert und folgt gängigen Namenskonventionen. Das unterstützt die langfristige Pflege des Systems.
+
+    \item \textbf{Trennung von Produktivcode und Logging:}  
+    Logging-Mechanismen sind vom Anwendungscode entkoppelt und in einem eigenen Modul gekapselt. Dadurch bleibt die Steuerlogik schlank und frei von Nebenfunktionen.
+
+    \item \textbf{Testbarkeit:}  
+    Die lose Kopplung und klar definierten Schnittstellen zwischen Modulen erleichtern Unit-Tests. Durch die konsequente Entkopplung lassen sich Komponenten isoliert validieren.
+\end{itemize}
+
+Diese Designprinzipien stellen sicher, dass das System nicht nur funktional robust ist, sondern auch langfristig wartbar und flexibel weiterentwickelt werden kann.
 
 \newpage
 
 \subsection*{GlobalModels}
 
-Das Modul \texttt{GlobalModels} stellt die grundlegenden Datenmodelle und Enums bereit, die als gemeinsame Kommunikationsstruktur zwischen den Modulen dienen.
+Das Modul \texttt{GlobalModels} definiert zentrale Datenstrukturen und Enumerationen, die als gemeinsame Kommunikationsschnittstelle zwischen den Modulen dienen. Die Übergabe von Informationen erfolgt über klar gekapselte Objekte, was die Erweiterbarkeit fördert und die Konsistenz der Datenhaltung sicherstellt.
 
-Das zentrale Eingabeobjekt ist \texttt{InputValues}, welches die drei wesentlichen Benutzereingaben enthält: die gewünschte Temperatur (als \texttt{double}), den gewählten Modus des Backens (als \texttt{CookingMode}-Enum) sowie die Timerdauer (als \texttt{TimeSpan}).
+Die Klasse \texttt{InputValues} aggregiert alle wesentlichen Eingaben des Benutzers:
+\begin{itemize}
+    \item die gewünschte Zieltemperatur (Typ: \texttt{double}),
+    \item den gewählten Heizmodus (Typ: \texttt{CookingMode}),
+    \item sowie die eingestellte Timerdauer (Typ: \texttt{TimeSpan}).
+\end{itemize}
 
-Analog dazu enthält die Klasse \texttt{OutputValues} alle Informationen, die dem Benutzer angezeigt werden sollen – also die aktuelle Temperatur, eine Markierung, ob die Zieltemperatur erreicht ist, der aktuelle Timerstatus sowie ein Flag, ob eine Warnung angezeigt werden soll.
+Ergänzend dazu enthält die Klasse \texttt{OutputValues} alle Informationen, die dem Benutzer auf dem Display angezeigt werden sollen:
+\begin{itemize}
+    \item die aktuelle Temperatur,
+    \item ein Statusindikator zur Zieltemperatur,
+    \item der aktuelle Timerstand,
+    \item sowie ein Warnhinweis bei sicherheitsrelevanten Ereignissen.
+\end{itemize}
 
-Die Enumeration \texttt{CookingMode} beschreibt die verschiedenen verfügbaren Heizarten des Ofens (z.\,B. Grill, Umluft, Ober-/Unterhitze).
+Die Enumeration \texttt{CookingMode} beschreibt alle verfügbaren Heizmodi des Backofens, darunter z.\,B. \texttt{Grill}, \texttt{Umluft} oder \texttt{OberUnterhitze}.
 
-Der \texttt{OvenState}-Enum definiert die internen Zustände der Gerätesteuerung, wie z.\,B. \texttt{Idle}, \texttt{Preheating}, \texttt{Active}, \texttt{Error} und \texttt{Off}.
+Der Enum \texttt{OvenState} bildet die internen Zustände des Systems ab, darunter \texttt{Idle}, \texttt{Preheating}, \texttt{Active}, \texttt{Error} und \texttt{Off}.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{src/GlobalModels.png}
-  \caption{Klassendiagram der Global Models}
+  \caption{Klassendiagramm des Moduls \texttt{GlobalModels}}
   \label{fig:globalmodels}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{Main Modul}
 
-Das \texttt{Main}-Modul stellt den Einstiegspunkt des Systems dar. Es enthält die Main-Methode, welche beim Programmstart automatisch ausgeführt wird.
+Das \texttt{Main}-Modul bildet den Einstiegspunkt der Anwendung. Es enthält die \texttt{Main()}-Methode, die beim Start des Programms automatisch ausgeführt wird.
 
-Im Rahmen dieser Methode wird die zentrale Komponente des Backofensystems, der \texttt{OvenController}, initialisiert und anschließend die \texttt{Run()}-Methode aufgerufen, um den Prozess zu starten.
+In dieser Methode wird das Gesamtsystem initialisiert. Insbesondere wird eine Instanz des zentralen Steuerungsmoduls \texttt{OvenController} erstellt und dessen \texttt{Run()}-Methode aufgerufen, um den Betriebsablauf des Systems zu starten.
 
-Das \texttt{Main}-Modul hat somit die alleinige Aufgabe, das System einmalig korrekt zu starten.
+Das Modul übernimmt ausschließlich die Initialisierung und den einmaligen Systemstart. Weitere Logik ist im Sinne der Trennung von Verantwortlichkeiten nicht enthalten.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.4\textwidth]{src/Main.png}
-  \caption{Klassendiagram der Mainklasse}
+  \caption{Klassendiagramm des \texttt{Main}-Moduls}
   \label{fig:main}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{OvenControllerModule}
 
-Das \texttt{OvenControllerModule} ist das zentrale Steuerungsmodul des Systems. Es steuert den Ablauf über ein State Pattern und enthält eine Referenz auf den aktuellen Zustand des Ofens.
+Das \texttt{OvenControllerModule} ist das zentrale Steuerungsmodul des Systems. Es implementiert die Ablaufsteuerung mithilfe des \textit{State Pattern}, wobei der aktuelle Betriebszustand über eine Referenz auf ein entsprechendes Zustandsobjekt verwaltet wird.
 
-In regelmäßigen Zyklen ruft der Controller die Methode \texttt{Run()} auf, in der zunächst die Eingaben abgefragt und anschließend an das \texttt{ModeControlModule} weitergegeben werden. Der Controller ist auch für die Aktualisierung des Displays verantwortlich, indem er das \texttt{OutputHandlerModule} mit neuen Daten versorgt.
-
-Zudem werden in dieser Schleife der \texttt{Temperatursensor} aktualisiert, um das Verhalten eines physikalischen Sensors zu simulieren.
-
-Die Zustände sind wie folgt umgesetzt:
-
+In regelmäßigen Zyklen wird die Methode \texttt{Run()} aufgerufen. Innerhalb dieses Zyklus:
 \begin{itemize}
-    \item \texttt{IdleState}: Der Ofen ist inaktiv, alle Heizungen sind abgeschaltet.
-    \item \texttt{PreHeatingState}: Der Ofen heizt auf die Zieltemperatur auf.
-    \item \texttt{ActiveState}: Der Ofen hält die Zieltemperatur konstant.
-    \item \texttt{ErrorState}: Eine Sicherheitsverletzung wurde festgestellt, alle Systeme werden abgeschaltet. Aus diesem Zustand kann nicht zurückgekehrt werden.
-    \item \texttt{OffState}: Der Ofen wurde manuell oder nach Ablauf des Timers deaktiviert.
+    \item werden die aktuellen Benutzereingaben über das \texttt{InputHandlerModule} erfasst,
+    \item an das \texttt{ModeControlModule} zur Heizlogik-Interpretation übergeben,
+    \item und die resultierenden Informationen über das \texttt{OutputHandlerModule} auf dem Display ausgegeben.
 \end{itemize}
 
-Der Controller kann durch das \texttt{SafetyModule} asynchron in den \texttt{ErrorState} versetzt werden, um auf kritische Ereignisse sofort reagieren zu können.
+Zusätzlich wird in jeder Iteration der \texttt{TemperatureSensor} aktualisiert, um das Verhalten eines realen Sensors zu simulieren.
+
+Die Zustandsverwaltung erfolgt über folgende implementierte State-Klassen:
+\begin{itemize}
+    \item \texttt{IdleState} – Der Ofen ist inaktiv, sämtliche Heizungen sind deaktiviert.
+    \item \texttt{PreHeatingState} – Der Ofen heizt aktiv auf die vorgegebene Zieltemperatur.
+    \item \texttt{ActiveState} – Die Zieltemperatur ist erreicht und wird konstant gehalten.
+    \item \texttt{ErrorState} – Es wurde ein sicherheitskritischer Zustand erkannt; alle Komponenten werden abgeschaltet. Rückkehr in einen anderen Zustand ist ausgeschlossen.
+    \item \texttt{OffState} – Der Ofen wurde manuell oder durch Ablauf des Timers deaktiviert.
+\end{itemize}
+
+Das Modul reagiert asynchron auf Sicherheitsereignisse: Das \texttt{SafetyModule} kann den Controller unmittelbar in den \texttt{ErrorState} versetzen, um eine sofortige Abschaltung bei Gefährdung sicherzustellen.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{src/OvenControllerModule.png}
-  \caption{Klassendiagram des OvenController Moduls}
+  \caption{Klassendiagramm des \texttt{OvenControllerModule}}
   \label{fig:ovencontrollermodule}
 \end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\textwidth]{src/OvenControllerModule_Zustand.png}
+  \caption{Zustandsdiagramm des \texttt{OvenControllerModule}}
+  \label{fig:ovencontrollermodule_state}
+\end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{SafetyModule}
 
-Das \texttt{SafetyModule} ist strikt vom restlichen System entkoppelt und läuft in einem eigenen Thread. Es überwacht kontinuierlich den Zustand von Sensoren, um sicherheitsrelevante Fehler frühzeitig zu erkennen.
+Das \texttt{SafetyModule} ist vollständig vom übrigen System entkoppelt und wird in einem separaten Thread ausgeführt. Es überwacht kontinuierlich sicherheitsrelevante Systemzustände und reagiert im Fehlerfall unverzüglich.
 
-Die Klasse \texttt{SafetyHandler} verwaltet eine Liste von Sicherheitsregeln und ruft deren \texttt{Check()}-Methoden in regelmäßigen Intervallen auf. Wird eine Regel verletzt, so wird der \texttt{OvenController} sofort benachrichtigt und in den \texttt{ErrorState} oder \texttt{OffState} versetzt.
+Die zentrale Klasse \texttt{SafetyHandler} verwaltet eine Sammlung von Sicherheitsregeln. In festen Intervallen ruft sie deren \texttt{Check()}-Methoden auf. Bei einem Regelverstoß wird der \texttt{OvenController} unmittelbar benachrichtigt und in einen sicheren Zustand versetzt – entweder den \texttt{IdleState} oder \texttt{ErrorState}, je nach Schwere des Ereignisses.
 
-Folgende Regeln sind implementiert:
+Folgende Sicherheitsregeln sind aktuell implementiert:
 
 \begin{itemize}
-    \item \texttt{OverheatRule}: Schlägt Alarm, wenn die Temperatur einen kritischen Maximalwert überschreitet. Führt zum Wechsel in den \texttt{ErrorState}.
-    \item \texttt{DoorOpenRule}: Erkennt eine geöffnete Tür während des Heizbetriebs. Führt zum Wechsel in den \texttt{OffState}.
-    \item \texttt{HeaterFailureRule}: Erkennt, ob bei aktiver Heizung die Temperatur über längere Zeit nicht steigt. Führt ebenfalls zum Wechsel in den \texttt{ErrorState}.
+    \item \texttt{OverheatRule}: Detektiert eine kritische Überschreitung der maximal zulässigen Temperatur und führt zum Wechsel in den \texttt{ErrorState}.
+    \item \texttt{DoorOpenRule}: Erkennt eine geöffnete Tür während des Heizbetriebs. In diesem Fall wird in den \texttt{IdleState} gewechselt.
+    \item \texttt{HeaterFailureRule}: Identifiziert defekte Heizaggregate, wenn trotz aktivierter Heizung über mehrere Zyklen kein Temperaturanstieg festgestellt wird. Dies führt zum Übergang in den \texttt{ErrorState}.
 \end{itemize}
 
-Durch die Ausführung in einem eigenen Thread ist das Modul vollständig von der Hauptlogik entkoppelt und gewährleistet somit eine hohe Reaktionssicherheit. Selbst wenn es im restlichen System zu Verzögerungen oder Fehlern kommt, laufen die sicherheitsrelevanten Prüfungen unabhängig und kontinuierlich weiter.
+Durch die eigenständige Ausführung ist das \texttt{SafetyModule} in der Lage, unabhängig von Verzögerungen im Hauptprozess zuverlässig zu arbeiten. Damit trägt es wesentlich zur Betriebssicherheit und Fehlertoleranz des Systems bei.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{src/SafetyModule.png}
-  \caption{Klassendiagram des Safety Moduls}
+  \caption{Klassendiagramm des \texttt{SafetyModule}}
   \label{fig:safetymodule}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{InputHandlerModule}
 
-Das \texttt{InputHandlerModule} dient der Erfassung physischer Benutzereingaben. Es verarbeitet keine automatischen Sensordaten, sondern ausschließlich manuelle Interaktionen.
+Das \texttt{InputHandlerModule} ist für die Erfassung manueller Benutzereingaben zuständig. Es verarbeitet ausschließlich physische Interaktionen, nicht jedoch automatische Sensordaten.
 
-Es liest die Drehwinkel zweier Regler – einen für die Temperatur und einen für den Modus – sowie den eingestellten Timerwert. Die Drehregler implementieren ein generisches Interface \texttt{IRotaryController<T>}, um unterschiedliche Rückgabetypen (z.\,B. \texttt{int} oder \texttt{Enum}) zu ermöglichen.
+Konkret werden die Drehwinkel zweier Regler ausgelesen:
+\begin{itemize}
+    \item ein Regler zur Temperatureinstellung,
+    \item ein Regler zur Auswahl des Betriebsmodus,
+    \item sowie ein optionaler Timerwert.
+\end{itemize}
 
-Die Klasse \texttt{InputHandler} aggregiert alle Eingaben in einem \texttt{InputValues}-Objekt, das so eine kompakte und erweiterbare Übergabestruktur bereitstellt. Der Zugriff erfolgt über einen \texttt{InputHandlerProxy}, der gleichzeitig für das Logging der Eingaben verantwortlich ist.
+Die Drehregler implementieren ein generisches Interface \texttt{IRotaryController<T>}, das unterschiedliche Rückgabetypen wie \texttt{int} (für Temperatur) oder \texttt{Enum} (für Moduswahl) unterstützt. Der aktuelle Winkel wird intern gespeichert und über die Methode \texttt{ReadInput()} in einen konkreten Wert übersetzt.
 
-Das Proxy-Pattern wurde gewählt, um die Protokollierungslogik vom Produktivcode zu trennen.
+Die zentrale Klasse \texttt{InputHandler} bündelt alle Eingabewerte in einem Objekt vom Typ \texttt{InputValues}. Diese strukturierte Datenübergabe vereinfacht die Verarbeitung in nachgelagerten Modulen und unterstützt die Erweiterbarkeit.
+
+Der Zugriff erfolgt über den \texttt{InputHandlerProxy}, der zusätzlich alle Eingaben protokolliert. Das zugrunde liegende Proxy-Pattern trennt dabei strikt zwischen Anwendungscode und Logging, wodurch die Hauptlogik schlank und wartbar bleibt.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{src/InputHandlerModule.png}
-  \caption{Klassendiagram des InputHandler Moduls}
+  \caption{Klassendiagramm des \texttt{InputHandlerModule}}
   \label{fig:inputhandlermodule}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{ModeControlModule}
 
-Das \texttt{ModeControlModule} realisiert das Strategy Pattern, um die Heizlogik modular und austauschbar zu gestalten. Die zentrale Klasse \texttt{ModeControl} hält eine Referenz auf die aktuell aktive \texttt{IModeStrategy} und kann diese zur Laufzeit austauschen, basierend auf dem übergebenen \texttt{CookingMode}.
+Das \texttt{ModeControlModule} implementiert die Heizlogik des Backofens nach dem \textit{Strategy Pattern}. Die zentrale Klasse \texttt{ModeControl} verwaltet eine Referenz auf die aktuell aktive Strategie (\texttt{IModeStrategy}), die zur Laufzeit anhand des ausgewählten \texttt{CookingMode} ausgetauscht werden kann.
 
-Die Strategie wird anschließend vom \texttt{OvenController} verwendet, um die notwendigen Heizkomponenten zu aktivieren.
+Die gewählte Strategie wird vom \texttt{OvenController} aufgerufen, um die entsprechenden Heizaggregate zu steuern. Dabei gibt jede Strategie einen Boolean-Wert zurück, der angibt, ob sich das System aktuell im Aufheizprozess befindet. Diese Information ist für den Zustand der Statemachine im \texttt{OvenControllerModule} relevant.
 
-Folgende Strategien sind verfügbar:
+Folgende Heizstrategien sind verfügbar:
 
 \begin{itemize}
     \item \texttt{IdleMode}: keine Heizkomponenten aktiv (Standardzustand)
-    \item \texttt{TopBottomHeatMode}: obere und untere Heizkörper aktiv
+    \item \texttt{TopBottomHeatMode}: oberer und unterer Heizkörper aktiv
     \item \texttt{TopHeatMode}: nur oberer Heizkörper aktiv
     \item \texttt{BottomHeatMode}: nur unterer Heizkörper aktiv
-    \item \texttt{GrillMode}: oberer Heizkörper aktiv
-    \item \texttt{ConvectionMode}: Ober- und Unterhitze plus Ventilator
-    \item \texttt{HotAirMode}: hinterer Heizkörper und Ventilator aktiv
+    \item \texttt{GrillMode}: oberer Heizkörper aktiv, Zieltemperatur wird in Grillstufen übersetzt
+    \item \texttt{CirculatingAirMode}: Ober- und Unterhitze kombiniert mit Ventilator
+    \item \texttt{HotAirMode}: Ringheizkörper und Ventilator aktiv
 \end{itemize}
 
-Wie beim Input-Modul erfolgt der Zugriff über einen \texttt{ModeControlProxy}, um Logging-Funktionalität zu kapseln.
+Jede Strategie besitzt eine eigene Liste von \texttt{IThermalController}-Instanzen, über die die jeweiligen Heizkomponenten und der Ventilator gezielt angesteuert werden können. Der \texttt{GrillMode} bildet dabei eine Sonderform: Die eingestellte Zieltemperatur wird hier in definierte Grillstufen umgewandelt (z.\,B. 240–300\textdegree C).
+
+Der Zugriff auf das Modul erfolgt über einen \texttt{ModeControlProxy}, der zusätzlich für die Protokollierung zuständig ist. Damit bleibt die Heizlogik vom Logging vollständig getrennt.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{src/ModeHandlerModule.png}
-  \caption{Klassendiagram des ModeControl Moduls}
+  \caption{Klassendiagramm des \texttt{ModeControlModule}}
   \label{fig:modecontrolmodule}
 \end{figure}
 
 \clearpage
+
 \newpage
 
 \subsection*{ThermalControlModule}
 
-Das \texttt{ThermalControlModule} bildet die unterste Schicht zur Ansteuerung der Heizkörper und Lüfter. Jede Komponente ist als Singleton implementiert, um zu garantieren, dass es von jedem Aktor nur genau eine Instanz im System gibt.
+Das \texttt{ThermalControlModule} bildet die unterste Abstraktionsebene zur gezielten Ansteuerung der Heizkörper und des Ventilators. Jede Komponente ist als Singleton implementiert, um sicherzustellen, dass im System stets nur eine Instanz pro Aktor existiert.
 
-Die Klassen implementieren die Interfaces \texttt{IThermalController} (für Ansteuerung) sowie \texttt{ITemperatureSource} (für Temperaturmessung). Die Heiz- und Lüftereinheiten werden ausschließlich von Strategien im \texttt{ModeControlModule} aktiviert.
-
-Die verfügbaren Komponenten sind:
-
+Die beteiligten Klassen implementieren zwei zentrale Schnittstellen:
 \begin{itemize}
-    \item \texttt{TopHeater}
-    \item \texttt{BottomHeater}
-    \item \texttt{RearHeater}
-    \item \texttt{RearFan}
+    \item \texttt{IThermalController} – zur Aktivierung und Deaktivierung der Komponente (Ein/Aus),
+    \item \texttt{ITemperatureSource} – zur Bereitstellung von Temperaturwerten (sofern relevant).
 \end{itemize}
 
-Da die Ansteuerlogik vollständig ausgelagert ist, bleibt das Modul selbst zustandslos und wartungsarm.
+Die Steuerung der Komponenten erfolgt ausschließlich durch Strategien im \texttt{ModeControlModule}, wodurch eine klare Trennung zwischen Logik und Ausführung gewährleistet ist.
+
+Die folgenden Komponenten sind im Modul enthalten:
+
+\begin{itemize}
+    \item \texttt{TopHeater} – oberer Heizkörper,
+    \item \texttt{BottomHeater} – unterer Heizkörper,
+    \item \texttt{RearHeater} – Ringheizkörper an der Rückseite,
+    \item \texttt{Ventilator} – Umluftventilator.
+\end{itemize}
+
+Da die Steuerungslogik vollständig in den jeweiligen Strategien gekapselt ist, bleibt das \texttt{ThermalControlModule} selbst zustandslos, wartungsarm und gut testbar.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{src/ThermalControllerModule.png}
-  \caption{Klassendiagram des ThermalControl Moduls}
+  \caption{Klassendiagramm des \texttt{ThermalControlModule}}
   \label{fig:thermalcontrolmodule}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{OutputHandlerModule}
 
-Das \texttt{OutputHandlerModule} simuliert die grafische Anzeige des Backofens. Die Klasse \texttt{DisplayDummy} erhält regelmäßig ein \texttt{OutputValues}-Objekt mit allen anzuzeigenden Informationen.
+Das \texttt{OutputHandlerModule} übernimmt die Darstellung aller relevanten Systeminformationen auf einer simulierten Anzeige. Es bildet die logische Schnittstelle zu einem realen Display und sorgt für die visuelle Rückmeldung an den Benutzer.
 
-Dazu gehören die aktuelle Temperatur, der Vorheizstatus, die verbleibende Garzeit sowie sicherheitsrelevante Hinweise. Das Modul stellt so die Schnittstelle zu einem realen Display dar und ermöglicht eine klare Trennung zwischen Steuerlogik und Präsentation.
+Die zentrale Klasse \texttt{DisplayDummy} empfängt in regelmäßigen Intervallen ein Objekt vom Typ \texttt{OutputValues}, das sämtliche anzuzeigenden Informationen enthält. Dazu gehören:
+
+\begin{itemize}
+    \item die aktuelle Temperatur im Garraum,
+    \item der Status des Vorheizvorgangs (z.\,B. durch ein Symbol),
+    \item die verbleibende Timerlaufzeit,
+    \item sowie eine Warnanzeige bei sicherheitsrelevanten Zuständen.
+\end{itemize}
+
+Durch die Trennung von Darstellung und Logik bleibt das Modul klar abgegrenzt, erweiterbar und leicht austauschbar – beispielsweise bei einer späteren Integration eines echten Displays.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.6\textwidth]{src/OutputHandlerModule.png}
-  \caption{Klassendiagram des OutputHandler Moduls}
+  \caption{Klassendiagramm des \texttt{OutputHandlerModule}}
   \label{fig:outputhandlermodule}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{SensorModule}
 
-Im \texttt{SensorModule} sind alle Sensoren abstrahiert und zentral definiert. Jeder Sensor implementiert das generische Interface \texttt{ISensor<T>} zur typisierten Abfrage.
+Das \texttt{SensorModule} kapselt alle Sensoren, die unabhängig von Benutzereingaben automatisch Daten liefern. Jeder Sensor implementiert das generische Interface \texttt{ISensor<T>}, welches eine typisierte und standardisierte Abfrage der Sensordaten ermöglicht.
 
-Der \texttt{TemperatureSensor} berechnet die durchschnittliche Temperatur aus den Heizaggregaten, während der \texttt{DoorSensor} meldet, ob die Tür geöffnet ist. Beide Sensoren können von mehreren Modulen (z.\,B. Safety und OvenController) gleichzeitig verwendet werden.
+Aktuell sind zwei Sensoren im System implementiert:
+
+\begin{itemize}
+    \item \texttt{TemperatureSensor}: Aggregiert die Temperaturinformationen aller aktiven Heizaggregate und liefert die aktuelle Garraumtemperatur.
+    \item \texttt{DoorSensor}: Erkennt, ob die Backofentür geöffnet oder geschlossen ist, und meldet den Zustand binär.
+\end{itemize}
+
+Das Modul sorgt für eine saubere Trennung zwischen Sensorik und Logik. Die zentrale Definition der Sensoren erleichtert deren Austausch, Erweiterung oder Simulation in Testszenarien.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{src/SensorModule.png}
-  \caption{Klassendiagram des Sensor Moduls}
+  \caption{Klassendiagramm des \texttt{SensorModule}}
   \label{fig:sensormodule}
 \end{figure}
+
+\clearpage
 
 \newpage
 
 \subsection*{LoggingModule}
 
-Das \texttt{LoggingModule} verwaltet die zentrale Protokollierung aller Systemereignisse. Über das Singleton \texttt{LoggingHandler} lassen sich für jedes Subsystem individuelle Logger abrufen.
+Das \texttt{LoggingModule} ist für die zentrale Protokollierung aller relevanten Systemereignisse verantwortlich. Es dient der Laufzeitüberwachung, Fehleranalyse und Nachvollziehbarkeit sicherheitsrelevanter Zustände.
 
-Diese protokollieren Ereignisse mit Zeitstempel, etwa Eingaben, Zustandswechsel oder Warnungen. Durch die zentrale Verwaltung ist eine konsistente und nachvollziehbare Dokumentation aller Vorgänge gewährleistet.
+Die zentrale Komponente des Moduls ist der \texttt{LoggingHandler}. Über ihn kann jeder Systemteil einen spezifischen Logger anfordern, der automatisch in einer zentralen Instanz verwaltet wird. Um sicherzustellen, dass genau eine gemeinsame Logging-Instanz im System existiert, ist der \texttt{LoggingHandler} nach dem Singleton-Prinzip implementiert.
+
+Das Modul protokolliert u.\,a.:
+\begin{itemize}
+    \item Benutzereingaben,
+    \item Zustandswechsel der Statemachine,
+    \item Warnungen und Fehlerereignisse.
+\end{itemize}
+
+Alle Logeinträge werden mit Zeitstempel versehen, wodurch eine konsistente und nachvollziehbare Historie der Systemaktivitäten gewährleistet ist.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.8\textwidth]{src/LoggingModule.png}
-  \caption{Klassendiagram des LoggingHandlers}
+  \caption{Klassendiagramm des \texttt{LoggingModule}}
   \label{fig:loggingmodule}
 \end{figure}
 
@@ -442,27 +641,56 @@ Diese protokollieren Ereignisse mit Zeitstempel, etwa Eingaben, Zustandswechsel 
 
 \section{Geplante Implementierungsiterationen}
 
-Die Implementierung des Backofensystems soll in mehreren aufeinander aufbauenden Iterationen erfolgen. Jede Iteration verfolgt dabei konkrete Entwicklungsziele, sodass schrittweise eine vollständige und modular aufgebaute Steuerungssoftware entsteht. Im Folgenden ist der geplante Ablauf detailliert beschrieben.
+Die Implementierung des Backofensystems erfolgt schrittweise in mehreren aufeinander aufbauenden Iterationen. Jede Iteration verfolgt ein klar abgegrenztes Entwicklungsziel und liefert eine lauffähige Teillösung. Auf diese Weise entsteht schrittweise eine modular aufgebaute und testbare Steuerungssoftware.
 
 \subsection*{Iteration 1: Grundstruktur und Kernfunktionalität}
 
-In der ersten Iteration wird die grundlegende Systemarchitektur geschaffen. Das \texttt{Main}-Modul wird vollständig implementiert, um den Einstiegspunkt und die Initialisierung des Gesamtsystems zu realisieren. Ebenso werden im \texttt{GlobalModels}-Modul die zentralen Datenklassen \texttt{InputValues} und \texttt{OutputValues} erstellt.
+In der ersten Iteration wird das Grundgerüst des Systems aufgebaut. Ziel ist es, eine erste funktionsfähige Version der Steuerung mit Temperaturregelung zu realisieren:
 
-Das \texttt{OvenControllerModule} wird vorerst nur mit dem \texttt{ActiveState} ausgestattet, um eine einfache Temperatursteuerung zu ermöglichen. Die Module zur Eingabe- und Ausgabeerfassung (\texttt{InputHandlerModule} und \texttt{OutputHandlerModule}) werden vollständig umgesetzt, sodass die Benutzerschnittstelle initial funktionsfähig ist.
+\begin{itemize}
+    \item Implementierung des \texttt{Main}-Moduls zur Initialisierung des Gesamtsystems.
+    \item Erstellung der zentralen Datenklassen \texttt{InputValues} und \texttt{OutputValues} im \texttt{GlobalModels}-Modul.
+    \item Umsetzung des \texttt{OvenControllerModule} mit einem initialen \texttt{ActiveState} zur Steuerung der Temperatur.
+    \item Vollständige Implementierung des \texttt{InputHandlerModule} und \texttt{OutputHandlerModule} zur Benutzerschnittstelle.
+    \item Erste Heizlogik im \texttt{ModeControlModule} mit Standardstrategie, die alle Heizaggregate aktiviert.
+    \item Implementierung des \texttt{ThermalControlModule} mit allen Aktoren (Heizelemente und Ventilator).
+    \item Umsetzung des \texttt{SensorModule} mit \texttt{TemperatureSensor} und \texttt{DoorSensor}.
+\end{itemize}
 
-Im \texttt{ModeControlModule} wird eine erste Standardstrategie realisiert, die alle verfügbaren Heizaggregate gleichzeitig nutzt. Das \texttt{ThermalControlModule} mit sämtlichen Aktoren (Heizkörper und Ventilator) sowie das \texttt{SensorModule} zur Temperatur- und Türerfassung sollen bereits vollständig implementiert werden.
+\subsection*{Iteration 2: Logging und Architekturstrukturierung}
 
-\subsection*{Iteration 2: Logging und Strukturierung}
+In dieser Iteration wird die Protokollierung eingeführt, um Systemereignisse nachvollziehbar zu dokumentieren:
 
-In der zweiten Iteration wird das \texttt{LoggingModule} hinzugefügt, um sicherheitsrelevante und benutzerbezogene Ereignisse zentral zu protokollieren. Zusätzlich sollen Proxy-Klassen für das \texttt{InputHandlerModule} und das \texttt{ModeControlModule} eingeführt werden, um eine saubere Trennung zwischen Produktivcode und Logging umzusetzen. So wird eine erweiterbare, wartbare Architektur geschaffen.
+\begin{itemize}
+    \item Entwicklung des zentralen \texttt{LoggingModule} mit Singleton-Loggerstruktur.
+    \item Einführung von Proxy-Klassen für das \texttt{InputHandlerModule} und \texttt{ModeControlModule}, um Logging vom Produktivcode zu entkoppeln.
+    \item Strukturverbesserungen zur Vorbereitung auf erweiterte Funktionalitäten.
+\end{itemize}
 
-\subsection*{Iteration 3: Erweiterung der Zustände und Heizmodi}
+\subsection*{Iteration 3: Zustandslogik und Heizstrategien}
 
-In der dritten Iteration wird das \texttt{OvenControllerModule} um alle noch fehlenden Zustände ergänzt. Dazu zählen \texttt{IdleState}, \texttt{PreHeatingState}, \texttt{ErrorState} und \texttt{OffState}, welche gemäß dem \texttt{State Pattern} implementiert werden. Parallel dazu werden im \texttt{ModeControlModule} sämtliche Heizstrategien umgesetzt.
+In der dritten Iteration wird die vollständige Zustandsmaschine implementiert. Die Heizlogik wird um alle Betriebsmodi ergänzt:
 
-\subsection*{Iteration 4: Sicherheitsmodul}
+\begin{itemize}
+    \item Erweiterung des \texttt{OvenControllerModule} um die Zustände \texttt{IdleState}, \texttt{PreHeatingState}, \texttt{ErrorState} und \texttt{OffState}.
+    \item Umsetzung aller im System definierten Heizstrategien im \texttt{ModeControlModule}.
+    \item Erweiterung der Proxy-Mechanismen für Zustandsübergänge (z.\,B. Logging bei Zustandswechseln).
+\end{itemize}
 
-Die finale Iteration wird sich der Umsetzung des \texttt{SafetyModule} widmen. Dieses soll als eigenständiger Thread agieren und kontinuierlich alle sicherheitsrelevanten Bedingungen überwachen. Die Implementierung umfasst die drei Sicherheitsregeln \texttt{OverheatRule}, \texttt{DoorOpenRule} und \texttt{HeaterFailureRule}. Damit wird ein zuverlässiger Schutz des Gesamtsystems sichergestellt.
+\subsection*{Iteration 4: Sicherheitslogik und Timer}
+
+Die finale Iteration fokussiert sich auf die Absicherung des Systems durch Echtzeitüberwachung:
+
+\begin{itemize}
+    \item Implementierung des \texttt{SafetyModule} als paralleler Thread mit zyklischer Regelprüfung.
+    \item Umsetzung der Sicherheitsregeln:
+    \begin{itemize}
+        \item \texttt{OverheatRule}: Überhitzungsschutz,
+        \item \texttt{DoorOpenRule}: Türkontrolle bei Heizbetrieb,
+        \item \texttt{HeaterFailureRule}: Erkennung fehlerhafter Heizaggregate.
+    \end{itemize}
+    \item Ergänzung eines Timer-Features, das vom Benutzer gesetzt werden kann und die Restlaufzeit im Display anzeigt.
+\end{itemize}
 
 \newpage
 
@@ -472,65 +700,70 @@ Die finale Iteration wird sich der Umsetzung des \texttt{SafetyModule} widmen. D
 \subsection{Zeitraum}
 29.05.2025 – 30.05.2025
 
-\subsection{Ziele der Iteration}
-Ziel dieser Iteration war die Implementierung einer grundlegenden Temperaturregelung. Die Temperatur sollte über einen simulierten Drehregler einstellbar sein. Entsprechend dem gewählten Wert sollten alle relevanten Heizaggregate sowie der Ventilator automatisch aktiviert werden. Das System sollte die Zieltemperatur erreichen und anschließend stabil halten. Komplexe Zustandsverwaltung oder alternative Steuerstrategien wurden in dieser Phase noch nicht berücksichtigt.
+\subsection{Zielsetzung}
 
-Folgende Anforderungen wurden in dieser Iteration umgesetzt:
+Ziel dieser ersten Iteration war die Umsetzung einer funktionsfähigen Grundversion des Systems mit Temperaturregelung. Dabei sollte es möglich sein, die gewünschte Temperatur über einen simulierten Drehregler einzustellen. Das System sollte die ausgewählten Heizaggregate sowie den Ventilator entsprechend aktivieren und die Solltemperatur zuverlässig erreichen und halten. Eine differenzierte Zustandsverwaltung oder komplexe Modusstrategien wurden in dieser Phase noch nicht berücksichtigt.
+
+\subsection{Umgesetzte Anforderungen}
+
+Im Rahmen dieser Iteration wurden die folgenden Anforderungen vollständig implementiert:
 
 \begin{itemize}
-    \item \label{req:1.1} \textbf{R-\ref{req:1.1}}: Temperatureinstellung über Drehregler
-    \item \label{req:1.2} \textbf{R-\ref{req:1.2}}: Temperatureinstellung in 1 °C-Schritten
-    \item \label{req:1.3} \textbf{R-\ref{req:1.3}}: Temperaturbereich von 50 °C bis 300 °C
-    \item \label{req:1.7} \textbf{R-\ref{req:1.7}}: Einzelansteuerung der Heizaggregate
-    \item \label{req:1.8} \textbf{R-\ref{req:1.8}}: Temperaturregelung mit 1 Hz Abtastrate
-    \item \label{req:1.9} \textbf{R-\ref{req:1.9}}: Abschalten der Heizaggregate bei erreichter Zieltemperatur
-    \item \label{req:1.10} \textbf{R-\ref{req:1.10}}: Aktivierung der Heizaggregate unterhalb der Zieltemperatur
-    \item \label{req:1.12} \textbf{R-\ref{req:1.12}}: Anzeige von Temperatur, Vorheizstatus, Timer und Warnungen auf dem Display
-    \item \label{req:3.1} \textbf{R-\ref{req:3.1}}: Erreichen von 200 °C innerhalb von 10 Minuten
+    \item \textbf{\ref{req:1.1}} – Temperatureinstellung über Drehregler
+    \item \textbf{\ref{req:1.2}} – Einstellbare Temperatur in 1°C-Schritten
+    \item \textbf{\ref{req:1.3}} – Temperaturbereich von 50°C bis 300°C
+    \item \textbf{\ref{req:1.7}} – Einzelansteuerung der Heizaggregate
+    \item \textbf{\ref{req:1.8}} – Temperaturregelung mit 1 Hz Abtastrate
+    \item \textbf{\ref{req:1.9}} – Abschalten der Heizelemente bei Erreichen der Solltemperatur
+    \item \textbf{\ref{req:1.10}} – Aktivierung der Heizelemente bei Unterschreiten der Solltemperatur
+    \item \textbf{\ref{req:1.12}} – Anzeige von Temperatur, Vorheizstatus, Timer und Warnungen
+    \item \textbf{\ref{req:3.1}} – Erreichen von 200°C innerhalb von 10 Minuten
 \end{itemize}
 
-\subsection{Tracability}
+\subsection{Traceability-Matrix}
 
-\begin{tabular}{|l|p{5cm}|l|l|l|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|p{5cm}|l|l|l|l|}
 \hline
-\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse} & \textbf{Methode} & \textbf{Testfälle} & \textbf{Status} \\
 \hline
-R-\ref{req:1.1} & Temperatureinstellung über einen Drehregler & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\ref{req:1.1} & Temperatureinstellung über Drehregler & TemperatureRotaryController & ReadInput() & TC-3-1 & OK \\
 \hline
-R-\ref{req:1.2} & Temperatureinstellungen in 1 °C-Schritten & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\ref{req:1.2} & Temperatureingabe in 1°C-Schritten & TemperatureRotaryController & ReadInput() & TC-3-1 & OK \\
 \hline
-R-\ref{req:1.3} & Temperaturbereich von 50 °C bis 300 °C & TemperatureRotaryController.ReadInput() & TC-3-1 & OK \\
+\ref{req:1.3} & Temperaturbereich 50–300°C & TemperatureRotaryController & ReadInput() & TC-3-1 & OK \\
 \hline
-R-\ref{req:1.7} & Einzelansteuerung der Heizaggregate & IModeStrategy.Run(int targetTemperature) & TC-5-1 & OK \\
+\ref{req:1.7} & Einzelsteuerung der Heizaggregate & IModeStrategy & Run() & TC-5-1 & OK \\
 \hline
-R-\ref{req:1.8} & Temperaturregelung mit 1 Hz Abtastrate & OvenController.Run() & TC-0-1 & OK \\
+\ref{req:1.8} & Regelung mit 1 Hz & OvenController & Run() & TC-0-1 & OK \\
 \hline
-R-\ref{req:1.9} & Abschalten der Heizaggregate bei Zieltemperatur & IModeStrategy.Run(int targetTemperature) & TC-4-2, TC-5-1 & OK \\
+\ref{req:1.9} & Abschalten bei Solltemperatur & IModeStrategy & Run() & TC-4-2, TC-5-1 & OK \\
 \hline
-R-\ref{req:1.10} & Aktivierung der Heizaggregate unterhalb der Zieltemperatur & IModeStrategy.Run(int targetTemperature) & TC-4-2, TC-5-1 & OK \\
+\ref{req:1.10} & Aktivieren bei Unterschreitung & IModeStrategy & Run() & TC-4-2, TC-5-1 & OK \\
 \hline
-R-\ref{req:1.12} & Anzeige von Temperatur, Status, Timer und Warnungen & DisplayDummy.Update(OutputValues) & TC-6-1 & OK \\
+\ref{req:1.12} & Anzeigeelemente am Display & DisplayDummy & Update() & TC-6-1 & OK \\
 \hline
-R-\ref{req:3.1} & Erreichen von 200 °C in 10 Minuten & OvenController.Run() & TC-0-2 & OK \\
+\ref{req:3.1} & 200°C in unter 10 Minuten & OvenController & Run() & TC-0-2 & OK \\
 \hline
 \end{tabular}
+}
 
 \subsection{Abweichungen vom Feinentwurf}
 
+Im Zuge der Implementierung wurden einige Anpassungen gegenüber dem ursprünglichen Design vorgenommen:
+
 \begin{itemize}
-    \item \texttt{BaseRotaryController}: Methode \texttt{GetModuloAngle()} hinzugefügt, um das Durchdrehen zu ermöglichen
-    \item \texttt{BaseRotaryController}: neue Eigenschaft \texttt{Angle}, um Vererbung zu erleichtern
-    \item \texttt{TemperatureRotaryController}: neue Parameter \texttt{min} und \texttt{max} zur Begrenzung der Temperatur
-    \item \texttt{Main} wurde in \texttt{Program} umbenannt (C\#-Konvention)
-    \item \texttt{ModeControl} wurde in \texttt{ModeController} umbenannt
-    \item \texttt{Modes} enthalten jetzt eine Liste von \texttt{ThermalController} zur gezielten Steuerung
-    \item \texttt{DisplayDummy}: neue Methode zur Anzeige von Werten auf der Konsole
-    \item \texttt{OvenController}: neue Referenz auf \texttt{InputHandler}
-    \item \texttt{OvenController}: Methode \texttt{GetTemperature()} zur Abfrage des Sensors
-    \item \texttt{OvenController}: neue Methode \texttt{Loop()} für zyklisches \texttt{Run()}
-    \item \texttt{DoorSensor}: neue Variable für Türstatus und Methode \texttt{SetDoorState()}
-    \item \texttt{TemperatureSensor}: neue Variable für Temperaturwert und Methode \texttt{UpdateTemperature()}
-    \item \texttt{FanController}: Methode \texttt{GetTemperature()} entfernt
+    \item \texttt{BaseRotaryController}: Methode \texttt{GetModuloAngle()} ergänzt, um durchdrehende Regler zu unterstützen.
+    \item \texttt{BaseRotaryController}: Eigenschaft \texttt{Angle} hinzugefügt für bessere Vererzbarkeit.
+    \item \texttt{TemperatureRotaryController}: Einführung der Parameter \texttt{min} und \texttt{max} zur Wertebegrenzung.
+    \item \texttt{Main} in \texttt{Program} umbenannt gemäß C\#-Konventionen.
+    \item \texttt{ModeControl} wurde in \texttt{ModeController} umbenannt.
+    \item \texttt{Modes}: verwenden nun eine Liste von \texttt{ThermalController}-Instanzen zur gezielten Steuerung.
+    \item \texttt{OvenController}: neue Referenz auf \texttt{InputHandler} integriert.
+    \item \texttt{OvenController}: Methoden \texttt{GetTemperature()} und \texttt{Loop()} ergänzt.
+    \item \texttt{DoorSensor}: neue Zustandsvariable und Methode \texttt{SetDoorState()} eingeführt.
+    \item \texttt{TemperatureSensor}: neue Variable zur Temperaturhaltung sowie Methode \texttt{UpdateTemperature()}.
+    \item \texttt{Ventilator}: Methode \texttt{GetTemperature()} entfernt.
 \end{itemize}
 
 \newpage
@@ -539,34 +772,39 @@ R-\ref{req:3.1} & Erreichen von 200 °C in 10 Minuten & OvenController.Run() & T
 \label{sec:iteration2}
 
 \subsection{Zeitraum}
-01.06.2025 – 01.06.2025
+01.06.2025
 
-\subsection{Ziele der Iteration}
-Ziel dieser Iteration war die Entwicklung und Integration einer grundlegenden Logging-Struktur zur Protokollierung von Systemverhalten und potenziellen Fehlern. Die Funktionalität wurde exemplarisch in bestehenden Komponenten eingebaut, sodass sie bereits zur Laufzeit relevante Informationen ausgeben können. Zudem wurden die Voraussetzungen geschaffen, um zukünftige Module ohne zusätzlichen Implementierungsaufwand in das Logging-System einzubinden.
+\subsection{Zielsetzung}
 
-Folgende Anforderung wurde in dieser Iteration (teilweise) umgesetzt:
+Ziel dieser Iteration war die Einführung eines zentralen Logging-Mechanismus zur Laufzeitanalyse und Fehlernachverfolgung. Dabei sollte das Logging so integriert werden, dass bestehende sowie zukünftige Systemkomponenten Meldungen strukturiert und konsistent ausgeben können – ohne die eigentliche Anwendungslogik zu beeinträchtigen.
+
+Die Logging-Funktionalität wurde exemplarisch in bereits vorhandene Module eingebunden und über manuelle Tests überprüft.
+
+\subsection{Umgesetzte Anforderungen}
 
 \begin{itemize}
-    \item \textbf{\ref{req:3.3}}: Logging von Informationen und Fehlern (teilweise umgesetzt; derzeit beschränkt auf bereits entwickelte Funktionalitäten)
+    \item \textbf{\ref{req:3.3}} – Protokollierung von Systemereignissen und Fehlern mit Zeitstempel (teilweise umgesetzt; Fokus auf grundlegende Funktionalität)
 \end{itemize}
 
-\subsection{Tracability}
+\subsection{Traceability-Matrix}
 
-\begin{tabular}{|l|p{5cm}|l|l|l|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|p{5cm}|l|l|l|l|}
 \hline
-\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse} & \textbf{Methode} & \textbf{Testfälle} & \textbf{Status} \\
 \hline
-\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\ref{req:3.3} & Logging von Informationsmeldungen & Logger & Info(string) & manueller Test & OK \\
 \hline
 \end{tabular}
+}
 
-Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+\vspace{1em}
+Die Überprüfung erfolgte manuell: Ein definierter Winkelwert wurde dem \texttt{TemperatureRotaryController} zugewiesen. Anschließend wurde kontrolliert, ob die erwarteten Log-Ausgaben korrekt und vollständig in der Konsole erschienen. Dieses Verfahren bestätigte die erfolgreiche Integration der Logging-Funktion in das bestehende Systemverhalten.
 
 \subsection{Abweichungen vom Feinentwurf}
 
 \begin{itemize}
-    \item Zusätzlich zum ursprünglichen Entwurf wurde für die Display-Komponente eine Proxy-Klasse eingeführt, um gezielt Logging-Funktionalitäten zu integrieren.
-    \item Der \texttt{TemperatureRotaryController} wurde um eine dedizierte Testmethode erweitert, mit der der Winkelwert direkt aus Testfällen heraus gesetzt werden kann. Diese Methode ist mit einem \texttt{\#if DEBUG}-Block versehen und wird im Release-Build ausgeschlossen.
+    \item Entgegen dem ursprünglichen Entwurf wurde zusätzlich eine Proxy-Klasse für das \texttt{Display}-Modul (\texttt{DisplayDummy}) eingeführt, um auch hier eine saubere Entkopplung von Darstellung und Protokollierung zu gewährleisten.
 \end{itemize}
 
 \newpage
@@ -575,60 +813,61 @@ Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde 
 \label{sec:iteration3}
 
 \subsection{Zeitraum}
-02.06.2025 – 02.06.2025
+02.06.2025
 
-\subsection{Ziele der Iteration}
-Das Ziel dieser Iteration ist die Implementierung einer Statemachine des Ofens und von verschiedenen Strategien die je nach ausgewähltem Modus unterschiedlich agieren. Dies ermöglicht erstmals eine variable Nutzung des Backofens.
+\subsection{Zielsetzung}
+
+Ziel dieser Iteration war die Einführung einer zustandsbasierten Steuerungslogik (Statemachine) sowie die Umsetzung verschiedener Heizstrategien entsprechend der gewählten Betriebsart. Dadurch wurde die Grundlage für einen dynamischen und realitätsnahen Betrieb des Systems geschaffen.
+
+\subsection{Umgesetzte Anforderungen}
+
+In dieser Iteration wurden folgende Anforderungen erfolgreich implementiert:
 
 \begin{itemize}
-    \item \textbf{\ref{req:1.4}}: Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
-    \item \textbf{\ref{req:1.5}}: Folgende Betriebsmodi müssen wählbar sein: Ober-/Unterhitze, Oberhitze, Unterhitze, Grillfunktion, Umluft, Heißluft.
-    \item \textbf{\ref{req:1.6}}: Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
-    \begin{itemize}
-        \item Ober-/Unterhitze: Oberer und unterer Heizkörper
-        \item Oberhitze: Oberer Heizkörper
-        \item Unterhitze: Unterer Heizkörper
-        \item Grillfunktion: Oberer Heizkörper
-        \item Umluft: Oberer und unterer Heizkörper + Ventilator
-        \item Heißluft: Ringheizkörper hinten + Ventilator
-    \end{itemize}
-    \item \textbf{\ref{req:1.11}}: Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen (240–300°C) umwandeln.
-    \item \textbf{\ref{req:3.3}}: Logging von Informationen und Fehlern (teilweise umgesetzt; derzeit beschränkt auf bereits entwickelte Funktionalitäten)
-    \item Todo requirement 2.3
+    \item \textbf{\ref{req:1.4}} – Auswahl des Betriebsmodus über einen separaten Drehregler
+    \item \textbf{\ref{req:1.5}} – Sechs vordefinierte Heizmodi: Ober-/Unterhitze, Oberhitze, Unterhitze, Grill, Umluft, Heißluft
+    \item \textbf{\ref{req:1.6}} – Automatische Aktivierung der zugehörigen Heizaggregate gemäß Modusdefinition
+    \item \textbf{\ref{req:1.11}} – Umsetzung von Grillstufen durch Umrechnung der Temperatur in vier feste Stufen (240–300°C)
+    \item \textbf{\ref{req:3.2}} – Anzeige von Statusänderungen innerhalb von maximal 1 Sekunde
+    \item \textbf{\ref{req:3.3}} – Logging von Systemereignissen (erweitert)
 \end{itemize}
 
-\subsection{Tracability}
+\subsection{Traceability-Matrix}
 
-\begin{tabular}{|l|p{5cm}|l|l|l|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|p{5cm}|l|l|l|l|}
 \hline
-\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse} & \textbf{Methode} & \textbf{Testfälle} & \textbf{Status} \\
 \hline
-\ref{req:1.4} & Auswählen eines Betriebsmodus über einen Drehregler & \texttt{ModeRotaryController.ReadInput()} & TC-3-2 & OK \\
+\ref{req:1.4} & Auswahl des Modus über Drehregler & ModeRotaryController & ReadInput() & TC-3-2 & OK \\
 \hline
-\ref{req:1.5} & Auswahl an Betriebsmodi & \texttt{BaseModeStrategy.Run()} & TC-3-2 & OK \\
+\ref{req:1.5} & Bereitstellung vordefinierter Modi & BaseModeStrategy & Run() & TC-3-2 & OK \\
 \hline
-\ref{req:1.6} & Zuordnung der Heizaggregate zu den Betriebsmodi & \texttt{BaseModeStrategy.\_thermalControllers} & TC-4-1, TC-4-2, TC-4-3, TC-4-5, TC-4-6, TC-4-7, TC-4-8 & OK \\
+\ref{req:1.6} & Aktivierung passender Heizaggregate & BaseModeStrategy & \_thermalControllers & TC-4-1 bis TC-4-8 & OK \\
 \hline
-\ref{req:1.11} & Stufen der Grillfunktion & \texttt{GrillMode.CalculateStepTemperature()} & TC-4-4 & OK \\
+\ref{req:1.11} & Grillstufen-Logik (240–300°C) & GrillMode & CalculateStepTemperature() & TC-4-4 & OK \\
 \hline
-\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\ref{req:3.2} & Reaktionszeit Display < 1 Sekunde & OvenController & Run() & TC-0-1 & OK \\
 \hline
-\ref{req:2.3} & Durchlaufzeit von unter 1 Sekunde & \texttt{todo} & TC-0-1 & OK \\
+\ref{req:3.3} & Logging von Statusmeldungen & Logger & Info(string) & manueller Test & OK \\
 \hline
 \end{tabular}
+}
 
-
-Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen, ebenso die der \texttt{ModeRotaryController}. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+\vspace{1em}
+Die Funktionalität des Loggings wurde erneut manuell verifiziert. Dabei wurden gezielt Einstellungen am \texttt{TemperatureRotaryController} und \texttt{ModeRotaryController} vorgenommen. Die Ausgaben wurden auf Korrektheit und Vollständigkeit hin analysiert und erfüllten alle Anforderungen.
 
 \subsection{Abweichungen vom Feinentwurf}
 
+Während der Umsetzung wurden folgende Anpassungen gegenüber dem ursprünglichen Design vorgenommen:
+
 \begin{itemize}
-    \item Es wurde eine weitere Proxyklasse für die Statemachine im OvenControllerModule implementiert um auch das verhalten dieser zu loggen. Daher benötigt auch der OvenController keine Loggingfunktionalität mehr.
-    \item Der OvenState wurde gänzlich weg gelassen, da er bei der Implementierung als irrelevant empfunden wurde. CurrentState im OvenController wird direkt über das State-Objekt geregelt.
-    \item Der Übergang von einem State in einen anderen wurde in IState eine eigene Methode CheckStateTransition() ausgelagert. Diese wird in jeder Unterklasse implementiert.
-    \item Die States bekommen wichtige Instanzvariablen, die sie für ihre Funktionalität benötigen.
-    \item Der OffState wurde weg gelassen, da er bei der Implementierung als irrelevant empfunden wurde.
-    \item Die Vererbungshierarchie im ModeControlModule wurde um die BaseModeStrategy erweitert. Diese übernimmt Algorithmen, die in jedem State vorhanden wäre. Ebenso bekommt diese eine Liste mit IThermalController die die jeweilige Strategie steuert. 
+    \item Einführung einer eigenen Proxy-Klasse für die Statemachine im \texttt{OvenControllerModule}, um Zustandsübergänge zu protokollieren. Dadurch entfiel die Logging-Logik im Controller selbst.
+    \item Verzicht auf die ursprünglich geplante Enum-Klasse \texttt{OvenState}; der aktuelle Zustand wird stattdessen direkt über das aktive State-Objekt verwaltet.
+    \item Zustandswechsel wurden in die Methode \texttt{CheckStateTransition()} innerhalb des Interfaces \texttt{IState} ausgelagert.
+    \item States erhielten Zugriff auf notwendige Instanzvariablen zur Umsetzung ihres Verhaltens.
+    \item Der \texttt{OffState} wurde verworfen, da seine Funktionalität durch bestehende States ausreichend abgedeckt ist.
+    \item Einführung einer abstrakten Basisklasse \texttt{BaseModeStrategy} im \texttt{ModeControlModule}, um wiederkehrende Logik zwischen den Heizstrategien zu kapseln. Diese verwaltet auch die zugehörigen \texttt{IThermalController}-Instanzen.
 \end{itemize}
 
 \newpage
@@ -639,48 +878,61 @@ Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde 
 \subsection{Zeitraum}
 02.06.2025 – 03.06.2025
 
-\subsection{Ziele der Iteration}
-Diese Iteration ist dafür da Sicherheitsüberprüfungen in dem Backofen einzubauen. Diese setzen die Requirements \ref{req:2.1} bis \ref{req:2.3} ab. Außerdem wurde ein Timer implementiert.
+\subsection{Zielsetzung}
+
+Ziel dieser Iteration war die Implementierung von sicherheitsrelevanten Prüfmechanismen zur Überwachung des Systemzustands sowie die Integration eines Benutzer-Timers. Die Sicherheitsfunktionen sollen kritische Betriebszustände erkennen und entsprechende Gegenmaßnahmen automatisch einleiten. Zusätzlich wurde die Logging-Funktionalität erweitert, um auch sicherheitsrelevante Ereignisse strukturiert zu protokollieren.
+
+\subsection{Umgesetzte Anforderungen}
+
+Die folgenden Anforderungen wurden vollständig umgesetzt:
 
 \begin{itemize}
-    \item \textbf{\ref{req:2.1}}: Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320°C überschreitet.
-    \item \textbf{\ref{req:2.2}}: Das System darf den Heizbetrieb nicht aktivieren, wenn die Backofentür geöffnet ist.
-    \item \textbf{\ref{req:2.3}}: Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn die Temperatur innerhalb von 10 Abtastzyklen um weniger als 1°C steigt. In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
-    \item \textbf{\ref{req:3.3}}: Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in einer Logdatei protokollieren.
+    \item \textbf{\ref{req:2.1}} – Automatische Abschaltung bei Überhitzung (> 320°C)
+    \item \textbf{\ref{req:2.2}} – Verhinderung des Heizbetriebs bei geöffneter Backofentür
+    \item \textbf{\ref{req:2.3}} – Fehlererkennung bei defektem Heizaggregat durch unzureichenden Temperaturanstieg
+    \item \textbf{\ref{req:3.3}} – Protokollierung aller sicherheitsrelevanten Zustandsänderungen mit Zeitstempel
 \end{itemize}
 
-\subsection{Tracability}
+\subsection{Traceability-Matrix}
 
-\begin{tabular}{|l|p{5cm}|l|l|l|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|l|p{5cm}|l|l|l|l|}
 \hline
-\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse/Methode} & \textbf{Testfälle} & \textbf{Status} \\
+\textbf{Requirement} & \textbf{Beschreibung} & \textbf{Klasse} & \textbf{Methode} & \textbf{Testfälle} & \textbf{Status} \\
 \hline
-\ref{req:2.1} & Überhitzcheck & \texttt{OverheatRule.Check()} & TC-8-6 & OK \\
+\ref{req:2.1} & Überwachung der Temperatur (Überhitzung) & OverheatRule & Check() & TC-8-6 & OK \\
 \hline
-\ref{req:2.2} & Türcheck & \texttt{DoorOpenRule.Check()} & TC-8-1, TC-8-2 & OK \\
+\ref{req:2.2} & Türüberwachung & DoorOpenRule & Check() & TC-8-1, TC-8-2 & OK \\
 \hline
-\ref{req:2.3} & Hitzeaggregatcheck & \texttt{HeaterFailureRule.Check()} & TC-8-3, TC-8-4, TC-8-5 & OK \\
+\ref{req:2.3} & Heizfehler-Erkennung & HeaterFailureRule & Check() & TC-8-3 bis TC-8-5 & OK \\
 \hline
-\ref{req:3.3} & Logging von Informationsmeldungen & \texttt{Logger.Info(string)} & manueller Test & OK \\
+\ref{req:3.3} & Logging sicherheitsrelevanter Ereignisse & Logger & Info(string) & manueller Test & OK \\
 \hline
 \end{tabular}
+}
 
-
-Die Logging-Funktion wurde durch einen manuellen Tests überprüft. Dabei wurde dem \texttt{TemperatureRotaryController} ein definierter Winkelwert zugewiesen, ebenso die der \texttt{ModeRotaryController}. Es wurde Werte ausgewählt, um gezielt die Sicherheitschecks zu verletzen. Anschließend wurde mittels der Konsolenausgabe überprüft, ob die Loggerausgaben korrekt generiert wurden und alle relevanten Informationen enthalten waren. Diese Vorgehensweise ermöglichte eine effektive Analyse des Systemverhaltens zur Laufzeit und bestätigte die Funktionalität der implementierten Logging-Infrastruktur.
+\vspace{1em}
+Zur Verifikation der Logging-Funktion wurden gezielt Szenarien erzeugt, die Sicherheitsregeln verletzen – beispielsweise Überhitzung oder Öffnen der Tür im Heizbetrieb. Die resultierenden Konsolenausgaben wurden manuell überprüft und als korrekt bewertet.
 
 \subsection{Abweichungen vom Feinentwurf}
 
+Während der Umsetzung wurden folgende Abweichungen gegenüber dem initialen Entwurf vorgenommen:
+
 \begin{itemize}
-    \item Es wurde sich dagegen entschieden nach Ablauf des Timers den Backofen aus zu schalten, da man sonst einen Motor im Drehregler benötigen würde um diesen auf den Ursprung zurück zu stellen oder es kommt zu inkonsistenz. Ebenso ist es bei den meisten herkömmlichen Backöfen nicht der Fall, dass ein integrierter Timer diesen Ausschalten kann.
-    \item Es wurde eine weitere Proxyklasse für die Sicherheitsregeln implementiert um das Loggen außerhalb des Produktivcodes zu haben.
-    \item Die HeaterFailureRule bekommt ein int-Array anstatt eines double-Arrays für die letzten Temperaturen.
+    \item \textbf{Kein automatisches Ausschalten über Timer:} Auf eine automatische Deaktivierung nach Ablauf des Timers wurde verzichtet. In der Praxis würde dies entweder einen motorisierten Regler erfordern oder zu inkonsistentem Systemverhalten führen. Die Timerfunktion dient ausschließlich der Anzeige.
+    
+    \item \textbf{Proxy-Klasse für Sicherheitsregeln:} Zur Trennung von Logging und Prüflogik wurde eine zusätzliche Proxy-Klasse für das \texttt{SafetyModule} eingeführt.
+    
+    \item \textbf{HeaterFailureRule:} Die Temperaturhistorie wird nun als \texttt{int}-Array anstelle von \texttt{double} gespeichert, da für die Regelung eine Ganzzahldarstellung ausreicht und Rechengenauigkeit nicht erforderlich ist.
+    
+    \item \textbf{OvenController-Zugriff:} Der \texttt{OvenController} wurde um eine Methode zur Abfrage des aktuellen Zustands erweitert. Ebenso wurde der entsprechende Zugriff im \texttt{StateProxy} implementiert.
 \end{itemize}
 
 \newpage
 
-\section*{Quellen}
+\section{Quellen}
 
-Die folgenden Onlinequellen wurden für die Erstellung der funktionalen und technischen Anforderungen herangezogen. Alle Links wurden zuletzt am \textbf{28.05.2025} auf ihren Inhalt überprüft (Zugriffsdatum).
+Die folgenden Onlinequellen wurden zur Recherche und Erstellung der funktionalen sowie technischen Anforderungen verwendet. Der Zugriff erfolgte zuletzt am \textbf{28.05.2025}.
 
 \begin{itemize}
     \item \url{https://www.hea.de/fachwissen/herde-backoefen/elektroherde-aufbau-und-funktion}
@@ -690,17 +942,19 @@ Die folgenden Onlinequellen wurden für die Erstellung der funktionalen und tech
 
 \newpage
 
-\section*{Nutzung von Künstlicher Intelligenz als Unterstützung}
+\section{Einsatz von Künstlicher Intelligenz}
 
-\subsection*{Requirements Engineering}
+Im Rahmen dieses Projekts wurde ChatGPT-4o (OpenAI) als unterstützendes Werkzeug eingesetzt. Die KI kam in verschiedenen Phasen der Softwareentwicklung zum Einsatz – stets mit dem Ziel, eigene Ideen effizienter auszuarbeiten, zu validieren oder zu formulieren. Die finale Umsetzung und technische Verantwortung lagen dabei vollständig beim Autor.
 
-Für die Umsetzung dieses Projektes wurde ChatGPT4o als Unterstützung verwendet. Die folgenden Punkte zeigen, wo in welcher Form KI zum Einzatz kam.
+\subsection*{Verwendete Einsatzbereiche}
 
 \begin{itemize}
-    \item Beim Requirements Engineering wurde es zur Formulierung und Validierung eigener Ideen verwendet.
-    \item Beim der Software-Architektur wurde es zur Formulierung, Benennung von Modulen und Validierung eigener Ideen verwendet.
-    \item Beim dem Software Design wurde es zur Formulierung, Benennung von Modulen und Validierung eigener Ideen verwendet.
-    \item Der OvenController bekommt eine Methode um den aktuellen State zurückzugeben, ebenso wie der StateProxy.
+    \item \textbf{Requirements Engineering:} Unterstützung bei der Formulierung und Strukturierung von funktionalen und nicht-funktionalen Anforderungen.
+    \item \textbf{Softwarearchitektur:} Diskussion und Validierung von Architekturentwürfen sowie Namensgebung der Module.
+    \item \textbf{Softwaredesign:} Beratung zur Wahl geeigneter Entwurfsmuster (z.\,B. \textit{State Pattern}, \textit{Strategy Pattern}) und Strukturierung der Modullogik.
+    \item \textbf{Implementierung:} Übersetzung von Klassendiagrammen in strukturierten Beispielcode (C\#).
+    \item \textbf{Softwaretest:} Unterstützung bei der Erstellung von Unit-Tests; alle generierten Tests wurden überprüft und bei Bedarf überarbeitet.
+    \item \textbf{Dokumentation:} Formulierungshilfen und sprachliche Optimierung von Kapiteln und Abschnittsüberschriften.
 \end{itemize}
 
 \end{document}

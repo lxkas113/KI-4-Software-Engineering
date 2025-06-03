@@ -3,6 +3,9 @@ using OvenProject.SafetyModule;
 
 namespace OvenProject.Tests.SafetyModuleTest;
 
+/// <summary>
+/// Überprüft die Erkennung eines Heizelementfehlers basierend auf konstant bleibender Temperatur in Heizzuständen.
+/// </summary>
 public class HeaterFailureRuleTest
 {
     // TC-8-3

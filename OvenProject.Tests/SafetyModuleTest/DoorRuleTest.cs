@@ -4,6 +4,9 @@ using OvenProject.SensorModule;
 
 namespace OvenProject.Tests.SafetyModuleTest;
 
+/// <summary>
+/// Testet die Sicherheitsregel, die den Ofen bei geöffneter Tür in den Idle-Zustand versetzt.
+/// </summary>
 public class DoorRuleTest
 {
     // TC-8-1

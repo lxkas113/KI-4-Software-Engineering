@@ -3,6 +3,9 @@ using OvenProject.OutputHandlerModule;
 
 namespace OvenProject.Tests.DisplayTest;
 
+/// <summary>
+/// Prüft die Darstellung und Aktualisierung der Ausgabewerte im Display.
+/// </summary>
 public class DisplayTest
 {
     // TC-6-1

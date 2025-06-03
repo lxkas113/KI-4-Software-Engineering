@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.ThermalControlTests;
 
+/// <summary>
+/// Testet das Verhalten des TopHeater in Bezug auf Aktivitätsstatus und Temperaturänderung.
+/// </summary>
 public class TopHeaterTest
 {
     // TC-5-5

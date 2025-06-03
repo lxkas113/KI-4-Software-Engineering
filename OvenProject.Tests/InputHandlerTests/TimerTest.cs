@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.InputHandlerTests;
 
+/// <summary>
+/// Tests für die Zeitsteuerung und verbleibende Timerberechnung.
+/// </summary>
 public class TimerTest
 {
     [Fact]

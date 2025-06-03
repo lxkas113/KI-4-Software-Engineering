@@ -1,7 +1,13 @@
-﻿namespace OvenProject.ThermalControllerModule;
-
-public interface ITemperatureSource
+﻿namespace OvenProject.ThermalControllerModule
 {
-    public int Temperature { get; set; }
-
+    /// <summary>
+    /// Schnittstelle für Komponenten, die eine Temperatur liefern können.
+    /// </summary>
+    public interface ITemperatureSource
+    {
+        /// <summary>
+        /// Die aktuell gemessene oder simulierte Temperatur.
+        /// </summary>
+        int Temperature { get; set; }
+    }
 }

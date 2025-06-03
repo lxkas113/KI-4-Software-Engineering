@@ -4,6 +4,9 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.IntegrationTests;
 
+/// <summary>
+/// Testet, ob der Ofencontroller den Displayzustand korrekt aktualisiert.
+/// </summary>
 public class OvenControllerToDisplay
 {
     // TC-0-5

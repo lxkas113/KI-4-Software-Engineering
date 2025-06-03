@@ -1,37 +1,39 @@
 ﻿using OvenProject.GlobalModels;
 
-namespace OvenProject.OvenControllerModule;
-
-public class ActiveState : IState
+namespace OvenProject.OvenControllerModule
 {
-    private bool _timerStarted = false;
-    private InputValues _input;
-    
-    public void Run(OvenController context, InputValues input)
+    /// <summary>
+    /// Zustand während der aktiven Heiz- oder Garphase.
+    /// </summary>
+    public class ActiveState : IState
     {
-        _input = input;
-        if (CheckStateTransition(context))
-        {
-            return;
-        }
-        
-        context.GetModeController().Run(_input);
-        var output = new OutputValues(
-            context.GetTemperature(),
-            false,
-            new TimeSpan(0),
-            false
-        );
-        context.GetDisplay().Update(output);
-    }
+        private bool _timerStarted = false;
+        private InputValues _input;
 
-    public bool CheckStateTransition(OvenController context)
-    {
-        if (_input.Temperature == 0)
+        public void Run(OvenController context, InputValues input)
         {
-            context.SetState(new IdleState());
-            return true;
+            _input = input;
+            if (CheckStateTransition(context)) return;
+
+            context.GetModeController().Run(_input);
+
+            var output = new OutputValues(
+                context.GetTemperature(),
+                false,
+                TimeSpan.Zero,
+                false
+            );
+            context.GetDisplay().Update(output);
         }
-        return false;
+
+        public bool CheckStateTransition(OvenController context)
+        {
+            if (_input.Temperature == 0)
+            {
+                context.SetState(new IdleState());
+                return true;
+            }
+            return false;
+        }
     }
 }

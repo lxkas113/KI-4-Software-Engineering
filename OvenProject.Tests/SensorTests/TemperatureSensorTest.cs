@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.SensorTests;
 
+/// <summary>
+/// Testet die TemperatureSensor-Klasse, insbesondere ob sie die höchste Temperaturquelle korrekt ermittelt.
+/// </summary>
 public class TemperatureSensorTest
 {
     // TC-7-3

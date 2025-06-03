@@ -3,6 +3,9 @@ using OvenProject.ThermalControllerModule;
 
 namespace OvenProject.Tests.IntegrationTests;
 
+/// <summary>
+/// Integrationstest zwischen Modusstrategie und thermischen Komponenten.
+/// </summary>
 public class ModeToThermalControl
 {
     // TC-0-3

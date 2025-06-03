@@ -7,6 +7,9 @@ using OvenProject.SafetyModule;
 
 namespace OvenProject.OvenControllerModule;
 
+/// <summary>
+/// Hauptcontroller für den Ofen. Koordiniert Zustände, Eingaben, Ausgaben, Sicherheit und Sensorik.
+/// </summary>
 public class OvenController
 {
     private IState _currentState;
@@ -18,6 +21,9 @@ public class OvenController
     private SafetyHandler _safetyHandler;
     private bool _errorSet = false;
 
+    /// <summary>
+    /// Initialisiert alle Komponenten des Ofens.
+    /// </summary>
     public OvenController()
     {
         #if DEBUG
@@ -42,6 +48,9 @@ public class OvenController
         _safetyHandler.Start();
     }
 
+    /// <summary>
+    /// Setzt den aktuellen Zustand. Fehlerzustände werden einmalig gesetzt.
+    /// </summary>
     public void SetState(IState newState)
     {
         if (_errorSet)
@@ -55,54 +64,36 @@ public class OvenController
         }
         _currentState = new StateProxy(newState);
     }
-
+    
+    /// <summary>
+    /// Führt die Logik des aktuellen Zustands aus.
+    /// </summary>
     public void Run()
     {
         _currentState.Run(this, _inputHandler.ReadInputs());
     }
 
-    public virtual ModeControllerProxy GetModeController()
-    {
-        return _modeController;
-    }
-    
-    public virtual int GetTemperature()
-    {
-        return _tempSensor.GetValue();
-    }
-
-    public virtual DisplayDummyProxy GetDisplay()
-    {
-        return _display;
-    }
-    
+    public virtual ModeControllerProxy GetModeController() => _modeController;
+    public virtual int GetTemperature() => _tempSensor.GetValue();
+    public virtual DisplayDummyProxy GetDisplay() => _display;
     public IState GetCurrentState() => _currentState;
     
+    /// <summary>
+    /// Führt die Steuerlogik in einer Schleife (z. B. für Simulation).
+    /// </summary>
     public void Loop()
     {
-        for (int i = 0; i < 10; i++)
+        while(true)
         {
             Run();
         }
     }
     
-    #if DEBUG
+#if DEBUG
     public InputValues GetInput() => _inputHandler.ReadInputs();
-    #endif
-    
-    #if DEBUG
     public void SetModeController(ModeControllerProxy modeController) => _modeController = modeController;
-    #endif
-    
-    #if DEBUG
     public void SetDisplay(DisplayDummyProxy display) => _display = display;
-    #endif
-    
-    #if DEBUG
     public TemperatureSensor GetTempSensor() => _tempSensor;
-    #endif
-    
-    #if DEBUG
     public DoorSensor GetDoorSensor() => _doorSensor;
-    #endif
+#endif
 }

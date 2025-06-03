@@ -1,38 +1,54 @@
-﻿namespace OvenProject.SafetyModule;
-
-public class SafetyHandler
+﻿namespace OvenProject.SafetyModule
 {
-    private readonly List<ISafetyRule> _rules;
-    private Thread _thread;
-    private bool _running;
-
-    public SafetyHandler(IEnumerable<ISafetyRule> rules)
+    /// <summary>
+    /// Führt alle registrierten Sicherheitsregeln in einem separaten Thread regelmäßig aus.
+    /// </summary>
+    public class SafetyHandler
     {
-        _rules = rules.ToList();
-    }
+        private readonly List<ISafetyRule> _rules;
+        private Thread _thread;
+        private bool _running;
 
-    public void Start()
-    {
-        _running = true;
-        _thread = new Thread(SafetyLoop) { IsBackground = true };
-        _thread.Start();
-    }
-
-    public void Stop()
-    {
-        _running = false;
-        _thread?.Join();
-    }
-
-    private void SafetyLoop()
-    {
-        while (_running)
+        /// <summary>
+        /// Initialisiert den Handler mit einer Menge von Sicherheitsregeln.
+        /// </summary>
+        public SafetyHandler(IEnumerable<ISafetyRule> rules)
         {
-            foreach (var rule in _rules)
+            _rules = rules.ToList();
+        }
+
+        /// <summary>
+        /// Startet die Ausführung der Sicherheitsregeln im Hintergrundthread.
+        /// </summary>
+        public void Start()
+        {
+            _running = true;
+            _thread = new Thread(SafetyLoop) { IsBackground = true };
+            _thread.Start();
+        }
+
+        /// <summary>
+        /// Stoppt die Ausführung der Sicherheitsprüfungen.
+        /// </summary>
+        public void Stop()
+        {
+            _running = false;
+            _thread?.Join();
+        }
+
+        /// <summary>
+        /// Interne Schleife zur periodischen Prüfung aller Regeln.
+        /// </summary>
+        private void SafetyLoop()
+        {
+            while (_running)
             {
-                rule.Check();
+                foreach (var rule in _rules)
+                {
+                    rule.Check();
+                }
+                Thread.Sleep(500);
             }
-            Thread.Sleep(500);
         }
     }
 }

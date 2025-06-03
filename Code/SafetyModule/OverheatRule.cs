@@ -1,17 +1,22 @@
 ﻿using OvenProject.OvenControllerModule;
 using OvenProject.SensorModule;
 
-namespace OvenProject.SafetyModule;
-
-public class OverheatRule(ISensor<int> tempSensor, OvenController oven) : ISafetyRule
+namespace OvenProject.SafetyModule
 {
-    private const int MaxTemp = 320;
-
-    public void Check()
+    /// <summary>
+    /// Sicherheitsregel, die bei Überschreiten der Maximaltemperatur einen Fehlerzustand auslöst.
+    /// </summary>
+    public class OverheatRule(ISensor<int> tempSensor, OvenController oven) : ISafetyRule
     {
-        if (tempSensor.GetValue() > MaxTemp)
+        private const int MaxTemp = 320;
+
+        /// <inheritdoc/>
+        public void Check()
         {
-            oven.SetState(new ErrorState());
+            if (tempSensor.GetValue() > MaxTemp)
+            {
+                oven.SetState(new ErrorState());
+            }
         }
     }
 }

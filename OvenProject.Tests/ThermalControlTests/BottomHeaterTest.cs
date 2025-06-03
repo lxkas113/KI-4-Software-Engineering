@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.ThermalControlTests;
 
+/// <summary>
+/// Testet die Funktionalität des BottomHeater, insbesondere Aktivierung, Deaktivierung und Temperaturänderung.
+/// </summary>
 public class BottomHeaterTest
 {
     // TC-5-1

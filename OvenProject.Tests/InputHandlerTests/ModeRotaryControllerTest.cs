@@ -3,6 +3,9 @@ using OvenProject.InputHandlerModule;
 
 namespace OvenProject.Tests.InputHandlerTests;
 
+/// <summary>
+/// Tests für die Moduserkennung über den Drehgeber.
+/// </summary>
 public class ModeRotaryControllerTest
 {
     // TC-3-2

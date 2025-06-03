@@ -1,15 +1,20 @@
 ﻿using OvenProject.OvenControllerModule;
 using OvenProject.SensorModule;
 
-namespace OvenProject.SafetyModule;
-
-public class DoorOpenRule(ISensor<bool> doorSensor, OvenController oven) : ISafetyRule
+namespace OvenProject.SafetyModule
 {
-    public void Check()
+    /// <summary>
+    /// Sicherheitsregel, die den Ofen in den Leerlauf versetzt, wenn die Tür geöffnet ist.
+    /// </summary>
+    public class DoorOpenRule(ISensor<bool> doorSensor, OvenController oven) : ISafetyRule
     {
-        if (doorSensor.GetValue())
+        /// <inheritdoc/>
+        public void Check()
         {
-            oven.SetState(new IdleState());
+            if (doorSensor.GetValue())
+            {
+                oven.SetState(new IdleState());
+            }
         }
     }
 }

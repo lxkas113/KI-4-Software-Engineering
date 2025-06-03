@@ -1,23 +1,19 @@
 ﻿using OvenProject.GlobalModels;
 
-namespace OvenProject.OvenControllerModule;
-
-public class ErrorState : IState
+namespace OvenProject.OvenControllerModule
 {
-    public void Run(OvenController context, InputValues input)
+    /// <summary>
+    /// Repräsentiert einen Fehlerzustand des Ofens, in dem eine Warnung angezeigt wird.
+    /// </summary>
+    public class ErrorState : IState
     {
-        context.GetModeController().Run(input);
-        var output = new OutputValues(
-            0,
-            false,
-            new TimeSpan(0),
-            true
-        );
-        context.GetDisplay().Update(output);
-    }
+        public void Run(OvenController context, InputValues input)
+        {
+            context.GetModeController().Run(input);
+            var output = new OutputValues(0, false, TimeSpan.Zero, true);
+            context.GetDisplay().Update(output);
+        }
 
-    public bool CheckStateTransition(OvenController context)
-    {
-        return false;
+        public bool CheckStateTransition(OvenController context) => false;
     }
 }

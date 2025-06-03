@@ -4,6 +4,9 @@ using OvenProject.OvenControllerModule;
 
 namespace OvenProject.Tests.OvenControllerTests;
 
+/// <summary>
+/// Überprüft, ob der ErrorState korrekt eine Warnung im Display anzeigt.
+/// </summary>
 public class ErrorStateTest
 {
     // TC-2-2

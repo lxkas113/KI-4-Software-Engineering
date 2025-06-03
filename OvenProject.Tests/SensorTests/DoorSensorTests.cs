@@ -2,6 +2,9 @@ using OvenProject.SensorModule;
 
 namespace OvenProject.Tests.SensorTests;
 
+/// <summary>
+/// Testet die Funktionalität des DoorSensor, insbesondere den Standardzustand und die Reaktion auf Zustandsänderungen.
+/// </summary>
 public class DoorSensorTests
 {
     // TC-7-1

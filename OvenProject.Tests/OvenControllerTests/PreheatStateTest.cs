@@ -2,6 +2,9 @@
 
 namespace OvenProject.Tests.OvenControllerTests;
 
+/// <summary>
+/// Validiert das Verhalten des PreHeatingState, insbesondere die Übergangsbedingungen und Temperaturerhöhung.
+/// </summary>
 public class PreheatStateTest
 {
     // TC-2-5

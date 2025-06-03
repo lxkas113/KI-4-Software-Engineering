@@ -10,7 +10,7 @@ namespace OvenProject.Tests.ModeControllerTests;
 public class CirculatingAirModeTest
 {
     // TC-4-2
-    // Requirements tested: R-1.6 
+    // Requirements tested: R-1.6; R-1.9, R-1.10
     [Fact]
     public void BottomHeatMode_ShouldIncreaseBottomHeaterTemperatureByOne()
     {

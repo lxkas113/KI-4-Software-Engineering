@@ -29,7 +29,7 @@
     {\LARGE Projektdokumentation\par}
     \vspace{1.5cm}
     
-    {\large Projektarbeit: Entwicklung einer Temperatursteuerung eines Backofens \par}
+    {\large Projektarbeit: Entwicklung der Temperatursteuerung eines Backofens \par}
     \vspace{2cm}
     
     \textbf{Professor:} Prof. Becker  \par
@@ -50,7 +50,7 @@
 
 \section*{Einleitung}
 
-Im Rahmen der Projektarbeit im Fach "Software Engineering" bestand die Aufgabe darin, ein spezifisches Teilmodul eines größeren Softwaresystems eigenständig zu konzipieren und zu implementieren. Dabei lag der Fokus auf der vollständigen Durchführung aller wesentlichen Phasen des Softwareentwicklungsprozesses – von der Anforderungserhebung über Architektur und Design bis hin zur Umsetzung und Testung.
+Im Rahmen der Projektarbeit im Fach Software Engineering bestand die Aufgabe darin, ein spezifisches Teilmodul eines größeren Softwaresystems eigenständig zu konzipieren und zu implementieren. Dabei lag der Fokus auf der vollständigen Durchführung aller wesentlichen Phasen des Softwareentwicklungsprozesses – von der Anforderungserhebung über Architektur und Design bis hin zur Umsetzung und dem Testen.
 
 Das individuelle Thema dieser Arbeit war die Entwicklung einer Steuerung zur Temperaturregelung eines Backofens. Ziel war es, ein System zu entwerfen, das dem Benutzer die Auswahl verschiedener Heizmodi sowie eine präzise Temperatureinstellung ermöglicht und dabei sicherheitsrelevante Aspekte berücksichtigt. Die Steuerung sollte außerdem hardwareunabhängig simuliert und auf einem Standard-PC lauffähig umgesetzt werden. Als Benutzerschnittstelle standen zwei simulierte Drehregler (für Temperatur und Modus) sowie ein Display zur Anzeige von Temperatur, Status und Warnhinweisen zur Verfügung.
 
@@ -85,7 +85,7 @@ Für die Umsetzung des Projekts wurde eine moderne und leistungsfähige Entwickl
 
 \section{Vorgehen}
 
-Für die Umsetzung des Projekts wurde ein strukturierter Entwicklungsprozess gewählt, der eine Kombination aus dem klassischen Wasserfallmodell und iterativen Elementen aus dem Scrum-Ansatz darstellt. Während Analyse, Design und Planung weitgehend linear durchgeführt wurden, erfolgte die eigentliche Implementierung inkrementell in mehreren Iterationen. So konnte nach jeder Phase eine lauffähige, getestete Version der Software bereitgestellt werden.
+Für die Umsetzung des Projekts wurde ein strukturierter Entwicklungsprozess gewählt, der Elemente des klassischen Wasserfallmodells mit iterativen Ansätzen aus Scrum kombiniert. Das Vorgehen orientierte sich dabei am Wasser-Scrum-Fall-Modell. Während die Phasen Analyse, Design und Planung weitgehend sequenziell und im Voraus durchgeführt wurden, erfolgte die Implementierung inkrementell in mehreren Iterationen. So konnte nach jeder Iteration eine funktionsfähige und getestete Version der Software bereitgestellt werden.
 
 \begin{enumerate}
     \item \textbf{Requirements Engineering:}  
@@ -95,7 +95,7 @@ Für die Umsetzung des Projekts wurde ein strukturierter Entwicklungsprozess gew
     Auf Basis der Anforderungen wurde die Systemarchitektur entworfen. Dabei wurden die Hauptmodule, ihre Schnittstellen sowie die zentralen Datenflüsse definiert. Ziel war eine modulare, erweiterbare und wartbare Struktur als Grundlage für die Implementierung.
 
     \item \textbf{Softwaredesign:}  
-    Aufbauend auf der Architektur wurden die einzelnen Komponenten detailliert spezifiziert. UML-Diagramme wie Klassendiagramme oder Zustandsdiagramme visualisierten dabei Strukturen und Abläufe. Im Fokus standen die klare Trennung von Verantwortlichkeiten, hohe Wiederverwendbarkeit und Erweiterbarkeit.
+    Aufbauend auf der Architektur wurden die einzelnen Komponenten detailliert spezifiziert. UML-Diagramme wie Klassendiagramme oder Zustandsdiagramme visualisieren dabei Strukturen und Abläufe. Im Fokus standen die klare Trennung von Verantwortlichkeiten, hohe Wiederverwendbarkeit und Erweiterbarkeit.
 
     \item \textbf{Implementierung und Test:}  
     Die Umsetzung erfolgte in vier aufeinander aufbauenden Iterationen. Jede Iteration beinhaltete die Implementierung neuer Funktionalitäten sowie zugehöriger automatisierter Tests mit \texttt{xUnit}. Nach jeder Iteration stand eine lauffähige Version zur Verfügung, die anschließend erweitert und optimiert wurde. Dieses Vorgehen ermöglichte eine kontinuierliche Integration und Verbesserung des Gesamtsystems.
@@ -114,14 +114,14 @@ Die nachfolgenden Anforderungen basieren auf spezifischen Annahmen über die Sys
         \item Aktuelle Temperatur im Garraum
         \item Symbol zur Anzeige des Vorheizstatus
         \item Uhrzeit bzw. verbleibende Laufzeit eines Timers
-        \item Warnhinweis bei automatischer Abschaltung
+        \item Warnhinweis bei internem Fehler
     \end{itemize}
 
     \item \textbf{Bedienelemente:}  
     Die Steuerung erfolgt über zwei physische Drehregler:
     \begin{itemize}
-        \item Ein Regler zur Auswahl des Heizmodus (Betriebsart)
-        \item Ein Regler zur Temperatureinstellung mit Einrastfunktion zur sicheren Moduswahl
+        \item Ein Regler mit Einrastfunktion zur Auswahl des Heizmodus (Betriebsart)
+        \item Ein Regler zur Temperatureinstellung
     \end{itemize}
 
     \item \textbf{Heizelemente:}  
@@ -368,7 +368,7 @@ Das Modul \texttt{GlobalModels} definiert zentrale Datenstrukturen und Enumerati
 
 Die Klasse \texttt{InputValues} aggregiert alle wesentlichen Eingaben des Benutzers:
 \begin{itemize}
-    \item die gewünschte Zieltemperatur (Typ: \texttt{double}),
+    \item die gewünschte Zieltemperatur (Typ: \texttt{Integer}),
     \item den gewählten Heizmodus (Typ: \texttt{CookingMode}),
     \item sowie die eingestellte Timerdauer (Typ: \texttt{TimeSpan}).
 \end{itemize}
@@ -488,11 +488,10 @@ Durch die eigenständige Ausführung ist das \texttt{SafetyModule} in der Lage, 
 
 Das \texttt{InputHandlerModule} ist für die Erfassung manueller Benutzereingaben zuständig. Es verarbeitet ausschließlich physische Interaktionen, nicht jedoch automatische Sensordaten.
 
-Konkret werden die Drehwinkel zweier Regler ausgelesen:
+Konkret wird ein Timer ausgelesen, sowie die Drehwinkel zweier Regler ausgelesen:
 \begin{itemize}
     \item ein Regler zur Temperatureinstellung,
-    \item ein Regler zur Auswahl des Betriebsmodus,
-    \item sowie ein optionaler Timerwert.
+    \item ein Regler zur Auswahl des Betriebsmodus
 \end{itemize}
 
 Die Drehregler implementieren ein generisches Interface \texttt{IRotaryController<T>}, das unterschiedliche Rückgabetypen wie \texttt{int} (für Temperatur) oder \texttt{Enum} (für Moduswahl) unterstützt. Der aktuelle Winkel wird intern gespeichert und über die Methode \texttt{ReadInput()} in einen konkreten Wert übersetzt.
@@ -530,7 +529,7 @@ Folgende Heizstrategien sind verfügbar:
     \item \texttt{HotAirMode}: Ringheizkörper und Ventilator aktiv
 \end{itemize}
 
-Jede Strategie besitzt eine eigene Liste von \texttt{IThermalController}-Instanzen, über die die jeweiligen Heizkomponenten und der Ventilator gezielt angesteuert werden können. Der \texttt{GrillMode} bildet dabei eine Sonderform: Die eingestellte Zieltemperatur wird hier in definierte Grillstufen umgewandelt (z.\,B. 240–300\textdegree C).
+Jede Strategie besitzt eine eigene Liste von \texttt{IThermalController}-Instanzen, über die die jeweiligen Heizkomponenten und der Ventilator gezielt angesteuert werden können. Der \texttt{GrillMode} bildet dabei eine Sonderform: Die eingestellte Zieltemperatur wird hier in definierte Grillstufen umgewandelt.
 
 Der Zugriff auf das Modul erfolgt über einen \texttt{ModeControlProxy}, der zusätzlich für die Protokollierung zuständig ist. Damit bleibt die Heizlogik vom Logging vollständig getrennt.
 
@@ -637,8 +636,8 @@ Die zentrale Komponente des Moduls ist der \texttt{LoggingHandler}. Über ihn ka
 
 Das Modul protokolliert u.\,a.:
 \begin{itemize}
-    \item Benutzereingaben,
     \item Zustandswechsel der Statemachine,
+    \item Resultate, 
     \item Warnungen und Fehlerereignisse.
 \end{itemize}
 
@@ -725,15 +724,21 @@ Ziel dieser ersten Iteration war die Umsetzung einer funktionsfähigen Grundvers
 Im Rahmen dieser Iteration wurden die folgenden Anforderungen vollständig implementiert:
 
 \begin{itemize}
-    \item \textbf{\ref{req:1.1}} – Temperatureinstellung über Drehregler
-    \item \textbf{\ref{req:1.2}} – Einstellbare Temperatur in 1°C-Schritten
-    \item \textbf{\ref{req:1.3}} – Temperaturbereich von 50°C bis 300°C
-    \item \textbf{\ref{req:1.7}} – Einzelansteuerung der Heizaggregate
-    \item \textbf{\ref{req:1.8}} – Temperaturregelung mit 1 Hz Abtastrate
-    \item \textbf{\ref{req:1.9}} – Abschalten der Heizelemente bei Erreichen der Solltemperatur
-    \item \textbf{\ref{req:1.10}} – Aktivierung der Heizelemente bei Unterschreiten der Solltemperatur
-    \item \textbf{\ref{req:1.12}} – Anzeige von Temperatur, Vorheizstatus, Timer und Warnungen
-    \item \textbf{\ref{req:3.1}} – Erreichen von 200°C innerhalb von 10 Minuten
+    \item \textbf{\ref{req:1.1}} – Das System muss es dem Benutzer ermöglichen, die Temperatur über einen Drehregler einzustellen.
+    \item \textbf{\ref{req:1.2}} – Das System muss Temperatureinstellungen in 1°C-Schritten zulassen.
+    \item \textbf{\ref{req:1.3}} – Das System muss Temperatureinstellungen im Bereich von 50°C bis 300°C unterstützen.
+    \item \textbf{\ref{req:1.7}} – Das System muss die Heizaggregate einzeln ansteuern können.
+    \item \textbf{\ref{req:1.8}} – Das System muss die Temperaturregelung mit einer Abtastrate von mindestens 1Hz durchführen.
+    \item \textbf{\ref{req:1.9}} – Das System muss alle Heizaggregate deaktivieren, wenn die aktuelle Temperatur gleich oder größer der Solltemperatur ist.
+    \item \textbf{\ref{req:1.10}} – Das System muss die gemäß Betriebsart definierten Heizaggregate aktivieren, wenn die aktuelle Temperatur unterhalb der Solltemperatur liegt.
+    \item \textbf{\ref{req:1.12}} – Das System muss dem Benutzer folgende Informationen über ein Display anzeigen:
+    \begin{itemize}
+        \item Aktuelle Temperatur im Garraum
+        \item Vorheizstatus (z.\,B. Symbol, wenn Solltemperatur erreicht)
+        \item Restzeit eines eingestellten Timers
+        \item Warnung bei automatischer Abschaltung
+    \end{itemize}
+    \item \textbf{\ref{req:3.1}} – Das System muss in der Lage sein, die Solltemperatur von 200°C innerhalb von maximal 10 Minuten zu erreichen.
 \end{itemize}
 
 \subsection{Traceability-Matrix}
@@ -770,7 +775,7 @@ Im Zuge der Implementierung wurden einige Anpassungen gegenüber dem ursprüngli
 
 \begin{itemize}
     \item \texttt{BaseRotaryController}: Methode \texttt{GetModuloAngle()} ergänzt, um durchdrehende Regler zu unterstützen.
-    \item \texttt{BaseRotaryController}: Eigenschaft \texttt{Angle} hinzugefügt für bessere Vererzbarkeit.
+    \item \texttt{BaseRotaryController}: Eigenschaft \texttt{Angle} hinzugefügt.
     \item \texttt{TemperatureRotaryController}: Einführung der Parameter \texttt{min} und \texttt{max} zur Wertebegrenzung.
     \item \texttt{Main} in \texttt{Program} umbenannt gemäß C\#-Konventionen.
     \item \texttt{ModeControl} wurde in \texttt{ModeController} umbenannt.
@@ -815,7 +820,7 @@ Die Logging-Funktionalität wurde exemplarisch in bereits vorhandene Module eing
 }
 
 \vspace{1em}
-Die Überprüfung erfolgte manuell: Ein definierter Winkelwert wurde dem \texttt{TemperatureRotaryController} zugewiesen. Anschließend wurde kontrolliert, ob die erwarteten Log-Ausgaben korrekt und vollständig in der Konsole erschienen. Dieses Verfahren bestätigte die erfolgreiche Integration der Logging-Funktion in das bestehende Systemverhalten.
+Die Überprüfung erfolgte manuell: Ein definierter Wert für den Winkel wurde dem \texttt{TemperatureRotaryController} zugewiesen. Anschließend wurde kontrolliert, ob die erwarteten Log-Ausgaben korrekt und vollständig in der Konsole erschienen. Dieses Verfahren bestätigte die erfolgreiche Integration der Logging-Funktion in das bestehende Systemverhalten.
 
 \subsection{Abweichungen vom Feinentwurf}
 
@@ -840,12 +845,34 @@ Ziel dieser Iteration war die Einführung einer zustandsbasierten Steuerungslogi
 In dieser Iteration wurden folgende Anforderungen erfolgreich implementiert:
 
 \begin{itemize}
-    \item \textbf{\ref{req:1.4}} – Auswahl des Betriebsmodus über einen separaten Drehregler
-    \item \textbf{\ref{req:1.5}} – Sechs vordefinierte Heizmodi: Ober-/Unterhitze, Oberhitze, Unterhitze, Grill, Umluft, Heißluft
-    \item \textbf{\ref{req:1.6}} – Automatische Aktivierung der zugehörigen Heizaggregate gemäß Modusdefinition
-    \item \textbf{\ref{req:1.11}} – Umsetzung von Grillstufen durch Umrechnung der Temperatur in vier feste Stufen (240–300°C)
-    \item \textbf{\ref{req:3.2}} – Anzeige von Statusänderungen innerhalb von maximal 1 Sekunde
-    \item \textbf{\ref{req:3.3}} – Logging von Systemereignissen (erweitert)
+    \item \textbf{\ref{req:1.4}} – Das System muss dem Benutzer erlauben, eine Betriebsart über einen separaten Drehregler auszuwählen.
+    \item \textbf{\ref{req:1.5}} – Folgende Betriebsmodi müssen wählbar sein:
+    \begin{itemize}
+        \item Ober-/Unterhitze
+        \item Oberhitze
+        \item Unterhitze
+        \item Grillfunktion
+        \item Umluft
+        \item Heißluft
+    \end{itemize}
+    \item \textbf{\ref{req:1.6}} – Das System muss die Heizaggregate entsprechend der gewählten Betriebsart automatisch aktivieren:
+    \begin{itemize}
+        \item Ober-/Unterhitze: Oberer und unterer Heizkörper
+        \item Oberhitze: Oberer Heizkörper
+        \item Unterhitze: Unterer Heizkörper
+        \item Grillfunktion: Oberer Heizkörper
+        \item Umluft: Oberer und unterer Heizkörper + Ventilator
+        \item Heißluft: Ringheizkörper hinten + Ventilator
+    \end{itemize}
+    \item \textbf{\ref{req:1.11}} – Im Grillmodus muss das System die eingestellte Temperatur intern in vier Grillstufen umwandeln:
+    \begin{itemize}
+        \item Stufe 1: 240\,\textdegree{}C
+        \item Stufe 2: 260\,\textdegree{}C
+        \item Stufe 3: 280\,\textdegree{}C
+        \item Stufe 4: 300\,\textdegree{}C
+    \end{itemize}
+    \item \textbf{\ref{req:3.2}} – Das Display muss Statusänderungen innerhalb von maximal 1 Sekunde anzeigen.
+    \item \textbf{\ref{req:3.3}} – Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in der Konsole ausgeben. (erweitert)
 \end{itemize}
 
 \subsection{Traceability-Matrix}
@@ -903,10 +930,10 @@ Ziel dieser Iteration war die Implementierung von sicherheitsrelevanten Prüfmec
 Die folgenden Anforderungen wurden vollständig umgesetzt:
 
 \begin{itemize}
-    \item \textbf{\ref{req:2.1}} – Automatische Abschaltung bei Überhitzung (> 320°C)
-    \item \textbf{\ref{req:2.2}} – Verhinderung des Heizbetriebs bei geöffneter Backofentür
-    \item \textbf{\ref{req:2.3}} – Fehlererkennung bei defektem Heizaggregat durch unzureichenden Temperaturanstieg
-    \item \textbf{\ref{req:3.3}} – Protokollierung aller sicherheitsrelevanten Zustandsänderungen mit Zeitstempel
+    \item \textbf{\ref{req:2.1}} – Das System muss den Heizbetrieb automatisch abschalten, wenn die Temperatur 320°C überschreitet.
+    \item \textbf{\ref{req:2.2}} – Das System darf nicht weiter Heizen, wenn die Backofentür geöffnet ist.
+    \item \textbf{\ref{req:2.3}} – Das System muss eine Fehlfunktion eines Heizaggregats erkennen, wenn die Temperatur innerhalb von 10 Abtastzyklen um weniger als 1°C steigt. In diesem Fall muss eine Warnung ausgegeben oder der Fehler im Systemprotokoll erfasst werden.
+    \item \textbf{\ref{req:3.3}} – Das System muss alle sicherheitsrelevanten Zustandsänderungen und Fehlerereignisse mit Zeitstempel in der Konsole ausgeben.
 \end{itemize}
 
 \subsection{Traceability-Matrix}
@@ -966,11 +993,11 @@ Im Rahmen dieses Projekts wurde ChatGPT-4o (OpenAI) als unterstützendes Werkzeu
 
 \begin{itemize}
     \item \textbf{Requirements Engineering:} Unterstützung bei der Formulierung und Strukturierung von funktionalen und nicht-funktionalen Anforderungen.
-    \item \textbf{Softwarearchitektur:} Diskussion und Validierung von Architekturentwürfen sowie Namensgebung der Module.
-    \item \textbf{Softwaredesign:} Beratung zur Wahl geeigneter Entwurfsmuster (z.\,B. \textit{State Pattern}, \textit{Strategy Pattern}) und Strukturierung der Modullogik.
+    \item \textbf{Softwarearchitektur:} Validierung von Architekturentwürfen.
+    \item \textbf{Softwaredesign:} Validierung der Designentwürfen.
     \item \textbf{Implementierung:} Übersetzung von Klassendiagrammen in strukturierten Beispielcode (C\#).
     \item \textbf{Softwaretest:} Unterstützung bei der Erstellung von Unit-Tests; alle generierten Tests wurden überprüft und bei Bedarf überarbeitet.
-    \item \textbf{Dokumentation:} Formulierungshilfen und sprachliche Optimierung von Kapiteln und Abschnittsüberschriften.
+    \item \textbf{Dokumentation:} Formulierungshilfen und sprachliche Optimierung von Kapiteln und Abschnittsüberschriften, sowie der Kommentierung des Programmcodes.
 \end{itemize}
 
 \end{document}

@@ -6,7 +6,7 @@
     public interface ISafetyRule
     {
         /// <summary>
-        /// Führt eine Sicherheitsprüfung durch und leitet ggf. Maßnahmen ein.
+        /// Führt eine Sicherheitsprüfung durch und leitet Maßnahmen ein.
         /// </summary>
         void Check();
     }

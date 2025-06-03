@@ -1,7 +1,7 @@
 ﻿namespace OvenProject.InputHandlerModule
 {
     /// <summary>
-    /// Abstrakte Basisklasse für Drehgeber-Controller zur Eingabe von Werten über Rotationswinkel.
+    /// Abstrakte Basisklasse für Drehregler-Controller zur Eingabe von Werten über Rotationswinkel.
     /// </summary>
     /// <typeparam name="T">Der Datentyp des Eingabewerts.</typeparam>
     public abstract class BaseRotaryController<T> : IRotaryController<T>

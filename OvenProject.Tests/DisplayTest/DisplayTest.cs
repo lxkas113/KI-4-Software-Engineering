@@ -4,7 +4,7 @@ using OvenProject.OutputHandlerModule;
 namespace OvenProject.Tests.DisplayTest;
 
 /// <summary>
-/// Prüft die Darstellung und Aktualisierung der Ausgabewerte im Display.
+/// Prüft die Aktualisierung der Ausgabewerte im Display.
 /// </summary>
 public class DisplayTest
 {

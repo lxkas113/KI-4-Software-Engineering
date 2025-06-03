@@ -4,7 +4,10 @@ using OvenProject.OvenControllerModule;
 
 namespace OvenProject.Tests;
 
-public class GlobalHelper
+/// <summary>
+/// Testes die Datenkapslung der GobalModels.
+/// </summary>
+public class GlobalModelTests
 {
     // TC-0-3
     public static void SetTargetTemperature(OvenController oven, int targetTemp)
@@ -45,5 +48,4 @@ public class GlobalHelper
         var tempControllerField = inputHandler.GetType().GetField("_tempController", BindingFlags.NonPublic | BindingFlags.Instance)!;
         return (TemperatureRotaryController)tempControllerField.GetValue(inputHandler)!;
     }
-
 }

@@ -4,7 +4,7 @@ using OvenProject.ThermalControllerModule;
 namespace OvenProject.Tests.ModeControllerTests;
 
 /// <summary>
-/// Testet den CirculatingAirMode hinsichtlich Aktivierung von Ober- und Unterhitze sowie Ventilatorfunktion.
+/// Testet den CirculatingAirMode.
 /// </summary>
 
 public class CirculatingAirModeTest

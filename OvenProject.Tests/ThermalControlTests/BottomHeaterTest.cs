@@ -3,7 +3,7 @@
 namespace OvenProject.Tests.ThermalControlTests;
 
 /// <summary>
-/// Testet die Funktionalität des BottomHeater, insbesondere Aktivierung, Deaktivierung und Temperaturänderung.
+/// Testet die Funktionalität des BottomHeater.
 /// </summary>
 public class BottomHeaterTest
 {

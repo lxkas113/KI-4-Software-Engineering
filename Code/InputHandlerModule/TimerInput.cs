@@ -7,10 +7,7 @@
     {
         private DateTime? _endTime = null;
 
-        /// <summary>
-        /// Gibt die verbleibende Zeit zurück oder 0, wenn keine gesetzt ist.
-        /// </summary>
-        /// <returns>Die verbleibende Zeit bis zum Ablauf.</returns>
+        /// <inheritdoc />
         public TimeSpan ReadInput()
         {
             if (_endTime == null)

@@ -11,12 +11,12 @@
         public int Temperature { get; set; }
 
         /// <summary>
-        /// Der gewählte Kochmodus, z. B. Umluft oder Ober-/Unterhitze.
+        /// Der gewählte Kochmodus, z.B. Umluft oder Ober-/Unterhitze.
         /// </summary>
         public CookingMode Mode { get; set; }
 
         /// <summary>
-        /// Die eingestellte Zeitdauer für den Betrieb.
+        /// Die eingestellte Timerdauer für den Betrieb.
         /// </summary>
         public TimeSpan Timer { get; set; }
     }

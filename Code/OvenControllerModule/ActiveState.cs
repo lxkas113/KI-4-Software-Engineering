@@ -9,7 +9,8 @@ namespace OvenProject.OvenControllerModule
     {
         private bool _timerStarted = false;
         private InputValues _input;
-
+        
+        /// <inheritdoc />
         public void Run(OvenController context, InputValues input)
         {
             _input = input;
@@ -26,6 +27,7 @@ namespace OvenProject.OvenControllerModule
             context.GetDisplay().Update(output);
         }
 
+        /// <inheritdoc />
         public bool CheckStateTransition(OvenController context)
         {
             if (_input.Temperature == 0)

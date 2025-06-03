@@ -13,17 +13,17 @@ namespace OvenProject.OutputHandlerModule
         public int Temperature { get; private set; }
 
         /// <summary>
-        /// Gibt an, ob das Vorheizen abgeschlossen ist.
+        /// Gibt an, ob gerade vorgeheizt wird.
         /// </summary>
         public bool PreheatStatus { get; private set; }
 
         /// <summary>
-        /// Die auf dem Display angezeigte Zeit (z. B. verbleibende Garzeit).
+        /// Die auf dem Display angezeigte Restzeit des Timers.
         /// </summary>
         public TimeSpan Timer { get; private set; }
 
         /// <summary>
-        /// Gibt an, ob eine Warnung angezeigt wird (z. B. Überhitzung).
+        /// Gibt an, ob eine Warnung angezeigt wird.
         /// </summary>
         public bool Warning { get; private set; }
 

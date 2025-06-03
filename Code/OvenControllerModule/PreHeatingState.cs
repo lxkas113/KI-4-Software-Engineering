@@ -10,6 +10,7 @@ namespace OvenProject.OvenControllerModule
         private bool _stillPreheating = true;
         private InputValues _input;
 
+        /// <inheritdoc />
         public void Run(OvenController context, InputValues input)
         {
             _input = input;
@@ -26,6 +27,7 @@ namespace OvenProject.OvenControllerModule
             CheckStateTransition(context);
         }
 
+        /// <inheritdoc />
         public bool CheckStateTransition(OvenController context)
         {
             if (_input.Temperature == 0)

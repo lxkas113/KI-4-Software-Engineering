@@ -10,7 +10,7 @@
         private bool _running;
 
         /// <summary>
-        /// Initialisiert den Handler mit einer Menge von Sicherheitsregeln.
+        /// Initialisiert den Handler mit einer Liste von Sicherheitsregeln.
         /// </summary>
         public SafetyHandler(IEnumerable<ISafetyRule> rules)
         {

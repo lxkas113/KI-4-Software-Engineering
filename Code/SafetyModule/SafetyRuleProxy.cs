@@ -23,7 +23,9 @@ namespace OvenProject.SafetyModule
             _logger = LoggingHandler.Instance.GetLoggerForModule("SafetyModule");
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Überprüft die Sicherheitsregel der internen Regel und protokolliert Änderungen.
+        /// </summary>
         public void Check()
         {
             var before = ((StateProxy)_oven.GetCurrentState()).GetState();

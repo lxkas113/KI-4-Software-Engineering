@@ -3,7 +3,7 @@
 namespace OvenProject.InputHandlerModule
 {
     /// <summary>
-    /// Interpretiert den Winkel eines Drehreglers zur Auswahl des Kochmodus.
+    /// Interpretiert den Winkel eines Drehreglers zur Auswahl des Backmodus.
     /// </summary>
     public class ModeRotaryController : BaseRotaryController<CookingMode>
     {

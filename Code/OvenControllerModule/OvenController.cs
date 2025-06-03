@@ -73,13 +73,28 @@ public class OvenController
         _currentState.Run(this, _inputHandler.ReadInputs());
     }
 
+    /// <summary>
+    /// Gibt den ModeController zurück, der die Betriebsmodi des Ofens steuert.
+    /// </summary>
     public virtual ModeControllerProxy GetModeController() => _modeController;
+    
+    /// <summary>
+    /// Git die aktuelle Temperatur vom Temperatursensor zurück.
+    /// </summary>
     public virtual int GetTemperature() => _tempSensor.GetValue();
+    
+    /// <summary>
+    /// Gibt die Displayklasse zurück.
+    /// </summary>
     public virtual DisplayDummyProxy GetDisplay() => _display;
+    
+    /// <summary>
+    /// Gibt die Proxyklasse des aktuellen Zustand des Ofens zurück.
+    /// </summary>
     public IState GetCurrentState() => _currentState;
     
     /// <summary>
-    /// Führt die Steuerlogik in einer Schleife (z. B. für Simulation).
+    /// Führt die Steuerlogik in einer Endlosschleife.
     /// </summary>
     public void Loop()
     {
@@ -90,10 +105,29 @@ public class OvenController
     }
     
 #if DEBUG
+    /// <summary>
+    /// Gibt den Input des Users zurück.
+    /// </summary>
     public InputValues GetInput() => _inputHandler.ReadInputs();
+    
+    /// <summary>
+    /// Setzt den ModeController, um die Betriebsmodi zu steuern.
+    /// </summary>
     public void SetModeController(ModeControllerProxy modeController) => _modeController = modeController;
+    
+    /// <summary>
+    /// Setzt die Display-Klasse.
+    /// </summary>
     public void SetDisplay(DisplayDummyProxy display) => _display = display;
+    
+    /// <summary>
+    /// Gibt den Temperatursensor zurück.
+    /// </summary>
     public TemperatureSensor GetTempSensor() => _tempSensor;
+    
+    /// <summary>
+    /// Gibt den Türsensor zurück.
+    /// </summary>
     public DoorSensor GetDoorSensor() => _doorSensor;
 #endif
 }

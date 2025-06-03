@@ -3,7 +3,7 @@
 namespace OvenProject.Tests.ThermalControlTests;
 
 /// <summary>
-/// Validiert die Aktivierungs- und Deaktivierungslogik des Ventilators.
+/// Testet die Funktionalität des Ventiators.
 /// </summary>
 public class VentilatorTest
 {

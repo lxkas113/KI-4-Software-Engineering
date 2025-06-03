@@ -4,7 +4,7 @@ using OvenProject.ThermalControllerModule;
 namespace OvenProject.Tests.ModeControllerTests;
 
 /// <summary>
-/// Überprüft, ob im TopHeatMode ausschließlich das obere Heizelement anspringt.
+/// Überprüft, ob der TopHeatMode funktioniert.
 /// </summary>
 public class TopHeatModeTest
 {

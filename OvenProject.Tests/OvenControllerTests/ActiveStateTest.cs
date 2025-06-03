@@ -6,7 +6,7 @@ using OvenProject.OvenControllerModule;
 namespace OvenProject.Tests.OvenControllerTests;
 
 /// <summary>
-/// Testet das Verhalten des ActiveState, insbesondere ob die Temperaturerhöhung korrekt ausgelöst wird.
+/// Testet das Verhalten des ActiveState.
 /// </summary>
 public class ActiveStateTest
 {

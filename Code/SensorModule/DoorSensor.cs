@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Setzt den Türstatus (geöffnet oder geschlossen).
+        /// Setzt den Türstatus.
         /// </summary>
         /// <param name="open">True, wenn die Tür geöffnet ist.</param>
         public void SetDoorState(bool open)
@@ -27,7 +27,7 @@
 
 #if DEBUG
         /// <summary>
-        /// Setzt den Türstatus (nur für Tests im Debug-Modus).
+        /// Setzt den Türstatus.
         /// </summary>
         public void SetDoorValue(bool open) => _isDoorOpen = open;
 #endif

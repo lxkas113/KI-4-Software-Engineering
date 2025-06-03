@@ -4,7 +4,7 @@ using OvenProject.ThermalControllerModule;
 namespace OvenProject.Tests.ModeControllerTests;
 
 /// <summary>
-/// Testet, ob im TopBottomHeatMode sowohl Ober- als auch Unterhitze aktiviert werden, alle anderen aber nicht.
+/// Testet, ob der TopBottomHeatMode funktioniert.
 /// </summary>
 public class TopBottomHeatModeTest
 {

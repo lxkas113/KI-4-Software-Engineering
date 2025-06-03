@@ -23,7 +23,9 @@ namespace OvenProject.SafetyModule
             _oven = oven;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Checkt ob die Heizaggregate keine Temperaturveränderung bewirken.
+        /// </summary>
         public void Check()
         {
             var state = ((StateProxy)_oven.GetCurrentState()).GetState();
@@ -42,7 +44,13 @@ namespace OvenProject.SafetyModule
         }
 
 #if DEBUG
+        /// <summary>
+        /// Gibt die letzten 10 gemessenen Temperaturen zurück.
+        /// </summary>
         public int[] GetLastTemps() => _lastTemps;
+        /// <summary>
+        /// Gibt den aktuellen Index für die Temperaturmessung zurück.
+        /// </summary>
         public int GetIndex() => _index;
 #endif
     }

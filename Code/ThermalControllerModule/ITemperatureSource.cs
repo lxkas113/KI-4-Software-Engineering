@@ -6,7 +6,7 @@
     public interface ITemperatureSource
     {
         /// <summary>
-        /// Die aktuell gemessene oder simulierte Temperatur.
+        /// Die aktuell gemessene Temperatur.
         /// </summary>
         int Temperature { get; set; }
     }

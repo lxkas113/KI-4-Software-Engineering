@@ -3,7 +3,7 @@
 namespace OvenProject.Tests.ThermalControlTests;
 
 /// <summary>
-/// Überprüft die Steuerung des RearHeater, einschließlich Ein-/Ausschalten und Temperaturverhalten.
+/// Testet die Funktionalität des RearHeaters.
 /// </summary>
 public class RearHeaterTest
 {

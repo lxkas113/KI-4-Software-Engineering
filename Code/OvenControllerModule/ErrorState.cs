@@ -7,6 +7,7 @@ namespace OvenProject.OvenControllerModule
     /// </summary>
     public class ErrorState : IState
     {
+        /// <inheritdoc />
         public void Run(OvenController context, InputValues input)
         {
             context.GetModeController().Run(input);
@@ -14,6 +15,7 @@ namespace OvenProject.OvenControllerModule
             context.GetDisplay().Update(output);
         }
 
+        /// <inheritdoc />
         public bool CheckStateTransition(OvenController context) => false;
     }
 }

@@ -5,7 +5,7 @@ using OvenProject.LogginModule;
 namespace OvenProject.InputHandlerModule
 {
     /// <summary>
-    /// Stellt eine Proxyschicht bereit, um Eingaben zu lesen und zu protokollieren.
+    /// Stellt eine Proxyschicht bereit, um zu loggen.
     /// </summary>
     public class InputHandlerProxy
     {

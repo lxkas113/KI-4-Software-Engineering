@@ -7,7 +7,7 @@ using OvenProject.OvenControllerModule;
 namespace OvenProject.Tests.OvenControllerTests;
 
 /// <summary>
-/// Testet alle möglichen Zustandsübergänge im Zustandsautomaten des Ofens, z. B. Idle → PreHeating oder PreHeating → Active.
+/// Testet alle möglichen Zustandsübergänge im Zustandsautomaten des Ofens.
 /// </summary>
 public class TransitionTests
 {

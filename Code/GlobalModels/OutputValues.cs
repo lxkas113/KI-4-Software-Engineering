@@ -16,12 +16,12 @@
         public bool PreheatStatus { get; set; }
 
         /// <summary>
-        /// Die verbleibende oder vergangene Zeit der laufenden Operation.
+        /// Die verbleibende Zeit des laufenden Timers.
         /// </summary>
         public TimeSpan Timer { get; set; }
 
         /// <summary>
-        /// Gibt an, ob ein Warnzustand erkannt wurde (z. B. Überhitzung).
+        /// Gibt an, ob ein Warnzustand erkannt wurde (z.B. Überhitzung).
         /// </summary>
         public bool Warning { get; set; }
 

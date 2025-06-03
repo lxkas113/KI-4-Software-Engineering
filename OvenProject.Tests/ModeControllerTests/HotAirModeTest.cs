@@ -4,7 +4,7 @@ using OvenProject.ThermalControllerModule;
 namespace OvenProject.Tests.ModeControllerTests;
 
 /// <summary>
-/// Validiert, dass im HotAirMode der hintere Heizkörper sowie der Ventilator korrekt arbeiten.
+/// Testet den HotAirMode.
 /// </summary>
 public class HotAirModeTest
 {

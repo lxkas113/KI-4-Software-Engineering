@@ -4,7 +4,7 @@ using OvenProject.ThermalControllerModule;
 namespace OvenProject.Tests.ModeControllerTests;
 
 /// <summary>
-/// Überprüft die Funktion des GrillMode inkl. Temperaturstufung und Aktivierung des oberen Heizelements.
+/// Überprüft die Funktion des GrillMode.
 /// </summary>
 public class GrillModeTest
 {

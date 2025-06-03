@@ -10,7 +10,9 @@ namespace OvenProject.SafetyModule
     {
         private const int MaxTemp = 320;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Checkt, ob die aktuelle Temperatur den Maximalwert überschreitet.
+        /// </summary>
         public void Check()
         {
             if (tempSensor.GetValue() > MaxTemp)

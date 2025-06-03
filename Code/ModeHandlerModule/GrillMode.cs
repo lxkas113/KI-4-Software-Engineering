@@ -18,11 +18,7 @@ namespace OvenProject.ModeHandlerModule
         {
         }
 
-        /// <summary>
-        /// Führt den Modus mit abgestufter Zieltemperatur aus.
-        /// </summary>
-        /// <param name="targetTemperature">Die vom Benutzer gewünschte Temperatur.</param>
-        /// <returns>Gibt zurück, ob sich der Ofen noch im Vorheizvorgang befindet.</returns>
+        /// <inheritdoc />
         public override bool Run(int targetTemperature)
         {
             return base.Run(CalculateStepTemperature(targetTemperature));
@@ -32,7 +28,7 @@ namespace OvenProject.ModeHandlerModule
         /// Berechnet eine abgestufte Zieltemperatur je nach Vorgabe.
         /// </summary>
         /// <param name="targetTemperature">Die ursprünglich gewählte Zieltemperatur.</param>
-        /// <returns>Die nächstniedrigere Stufe in 20°C-Schritten, max. 300°C.</returns>
+        /// <returns>Die gewählte Stufe.</returns>
         private int CalculateStepTemperature(int targetTemperature)
         {
             if (targetTemperature >= 300) return 300;

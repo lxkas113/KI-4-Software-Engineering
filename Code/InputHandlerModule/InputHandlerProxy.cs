@@ -22,5 +22,13 @@ namespace OvenProject.InputHandlerModule
             _logger.Info($"Target Temperature: {inputValues.Temperature} | CookingMode: {inputValues.Mode} | Timer: {inputValues.Timer}");
             return inputValues;
         }
+
+#if DEBUG
+        /// <summary>
+        /// Gibt den InputHandler zurück.
+        /// </summary>
+        /// <returns><see cref="InputHandler"/></returns>
+        public InputHandler GetInputHandler() => _inputHandler;
+#endif
     }
 }

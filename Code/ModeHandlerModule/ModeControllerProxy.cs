@@ -28,6 +28,12 @@ namespace OvenProject.ModeHandlerModule
         /// Setzt den internen ModeController im Debug-Modus.
         /// </summary>
         public void SetModeController(ModeController modeController) => _controller = modeController;
+        
+        /// <summary>
+        /// Gibt den ModeController zurück.
+        /// </summary>
+        /// <returns><see cref="ModeController"/></returns>
+        public ModeController GetModeController() => _controller;
 #endif
     }
 }

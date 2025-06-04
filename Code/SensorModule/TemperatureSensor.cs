@@ -8,6 +8,10 @@ namespace OvenProject.SensorModule
     public class TemperatureSensor : ISensor<int>
     {
         private int _temperature = 0;
+        #if  DEBUG
+        public bool ModulTest = true;
+        #endif
+        
         private List<ITemperatureSource> _tempSources = new()
         {
             TopHeater.GetInstance(),
@@ -22,7 +26,10 @@ namespace OvenProject.SensorModule
         public int GetValue()
         {
 #if DEBUG
-            return _temperature;
+            if (ModulTest)
+            {
+               return _temperature; 
+            }
 #endif
             UpdateTemperature();
             return _temperature;
@@ -50,6 +57,12 @@ namespace OvenProject.SensorModule
         /// Setzt eine manuelle Temperatur (nur im Debug-Modus).
         /// </summary>
         public void SetTemperature(int temperature) => _temperature = temperature;
+        
+        /// <summary>
+        /// Setzt den boolean Wert, ob der aktuelle Test ein Modultest oder ein Integrationstest ist.
+        /// </summary>
+        /// <param name="modultest">true wenn Modultest, false wenn Integrationstest</param>
+        public void SetModultest(bool modultest) => ModulTest = modultest;
 #endif
     }
 }

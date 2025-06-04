@@ -13,36 +13,47 @@ public class OvenControlToThermalControl
 {   
     // TC-0-7
     [Fact]
-    public void OvenController_Run_ActivatesThermalControllers()
+    public void OvenController_Run_ActivatesThermalControllers_CirculatingAir()
     {
         var oven = new OvenController();
+        oven.GetTempSensor().ModulTest = false;
         oven.SetState(new ActiveState());
-        var strategy = new DefaultMode();
-        var modeController = new ModeController();
-        modeController.SetModeStrategy(strategy);
+        oven.GetInputHandler().GetInputHandler().GetModeController().Angle = 250;
+        oven.GetInputHandler().GetInputHandler().GetTempController().SetTestAngle(180);
 
-        var proxy = new ModeControllerProxy();
-        proxy.SetModeController(modeController);
-
-        oven.SetModeController(proxy);
-        
         var top = TopHeater.GetInstance();
         var bottom = BottomHeater.GetInstance();
-        var rear = RearHeater.GetInstance();
         var fan = Ventilator.GetInstance();
 
         top.TurnOff(); top.Temperature = 100;
         bottom.TurnOff(); bottom.Temperature = 100;
-        rear.TurnOff(); rear.Temperature = 100;
         fan.TurnOff();
-
-        var tempController = GlobalHelper.GetTemperatureController(oven);
-        tempController.SetTestAngle(162);
-
+        
         oven.Run();
         
         Assert.True(top.IsActive(), "Top heater should be active");
         Assert.True(bottom.IsActive(), "Bottom heater should be active");
+        Assert.True(fan.IsActive(), "Ventilator should be active");
+    }
+    
+    // TC-0-8
+    [Fact]
+    public void OvenController_Run_ActivatesThermalControllers_HotAir()
+    {
+        var oven = new OvenController();
+        oven.GetTempSensor().ModulTest = false;
+        oven.SetState(new ActiveState());
+        oven.GetInputHandler().GetInputHandler().GetModeController().Angle = 300;
+        oven.GetInputHandler().GetInputHandler().GetTempController().SetTestAngle(180);
+
+        var rear = RearHeater.GetInstance();
+        var fan = Ventilator.GetInstance();
+
+        rear.TurnOff(); rear.Temperature = 100;
+        fan.TurnOff();
+        
+        oven.Run();
+        
         Assert.True(rear.IsActive(), "Rear heater should be active");
         Assert.True(fan.IsActive(), "Ventilator should be active");
     }

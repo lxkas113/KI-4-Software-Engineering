@@ -9,6 +9,9 @@ namespace OvenProject.ModeHandlerModule
     {
         private IModeStrategy _currentStrategy = new IdleMode();
         private CookingMode _currentMode = CookingMode.Idle;
+        #if DEBUG
+        public int TargetTemperature { get; set; }
+        #endif
 
         /// <summary>
         /// Führt die aktuelle Modusstrategie basierend auf den Eingabewerten aus.
@@ -18,6 +21,9 @@ namespace OvenProject.ModeHandlerModule
         public bool Run(InputValues input)
         {
             CheckStrategyForMode(input.Mode);
+            #if DEBUG
+            TargetTemperature = input.Temperature;
+            #endif
             return _currentStrategy.Run(input.Temperature);
         }
 
@@ -48,6 +54,18 @@ namespace OvenProject.ModeHandlerModule
         /// Erlaubt das manuelle Setzen einer Strategie im Debug-Modus.
         /// </summary>
         public void SetModeStrategy(IModeStrategy Mode) => _currentStrategy = Mode;
+        
+        /// <summary>
+        /// Gibt die Zieltemperatur zurück.
+        /// </summary>
+        /// <returns>Zieltemperatur</returns>
+        public int GetTargetTemperature() => TargetTemperature;
+        
+        /// <summary>
+        /// Gibt den aktuell gewählten Modus zurück.
+        /// </summary>
+        /// <returns>Modus als <see cref="CookingMode"/></returns>
+        public CookingMode GetCurrentMode() => _currentMode;
 #endif
     }
 }

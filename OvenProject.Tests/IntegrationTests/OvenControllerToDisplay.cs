@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using OvenProject.GlobalModels;
+using OvenProject.ModeHandlerModule;
 using OvenProject.OvenControllerModule;
 using OvenProject.ThermalControllerModule;
 
@@ -14,23 +16,19 @@ public class OvenControllerToDisplay
     public void OvenController_Run_UpdatesDisplayCorrectly()
     {
         var oven = new OvenController();
+        oven.GetTempSensor().ModulTest = false;
         oven.SetState(new ActiveState());
-        GlobalHelper.SetTargetTemperature(oven, 200);
+        oven.GetInputHandler().GetInputHandler().GetModeController().Angle = 50;
+        oven.GetInputHandler().GetInputHandler().GetTempController().SetTestAngle(180);
 
         TopHeater.GetInstance().Temperature = 180;
         RearHeater.GetInstance().Temperature = 180;
         BottomHeater.GetInstance().Temperature = 180;
-
-        var tempSensorField = typeof(OvenController)
-            .GetField("_tempSensor", BindingFlags.NonPublic | BindingFlags.Instance)!;
-        var tempSensor = tempSensorField.GetValue(oven)!;
-        var updateMethod = tempSensor.GetType().GetMethod("UpdateTemperature")!;
-        updateMethod.Invoke(tempSensor, null);
-            
+        
         oven.Run();
 
         var display = oven.GetDisplay().GetDisplayDummy();
-        Assert.Equal(180, display.Temperature);
+        Assert.Equal(181, display.Temperature);
         Assert.False(display.PreheatStatus);
         Assert.Equal(TimeSpan.Zero, display.Timer);
         Assert.False(display.Warning);

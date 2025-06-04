@@ -129,5 +129,11 @@ public class OvenController
     /// Gibt den Türsensor zurück.
     /// </summary>
     public DoorSensor GetDoorSensor() => _doorSensor;
+    
+    /// <summary>
+    /// Gibt den Inputhandler zurück.
+    /// </summary>
+    /// <returns><see cref="InputHandler"/></returns>
+    public InputHandlerProxy GetInputHandler() => _inputHandler;
 #endif
 }

@@ -24,5 +24,19 @@ namespace OvenProject.InputHandlerModule
                 Timer = _timerInput.ReadInput()
             };
         }
+
+#if  DEBUG
+        /// <summary>
+        /// Gibt den Drehregler für den Modus zurück.
+        /// </summary>
+        /// <returns><see cref="ModeRotaryController"/></returns>
+        public ModeRotaryController GetModeController() => _modeController;
+        
+        /// <summary>
+        /// Gibt den Drehregler für die Temperatur zurück.
+        /// </summary>
+        /// <returns><see cref="TemperatureRotaryController"/></returns>
+        public TemperatureRotaryController GetTempController() => _tempController;
+#endif
     }
 }
